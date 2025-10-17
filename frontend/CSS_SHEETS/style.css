@@ -97,7 +97,7 @@
             top: 0;
             z-index: 1000;
             font-family: "Nata sans", sans-serif;
-            background: linear-gradient(135deg, #42647F, #F0135E);
+            background: linear-gradient(135deg, #1a1a2e, #16213e);
             padding: 0.8em 2em;
             color: #ffffff;
             box-shadow: 0 2px 15px rgba(0,0,0,0.1);
@@ -206,17 +206,16 @@
             border-radius: 8px;
             color: #ffffff;
             font-family: "Nata sans", sans-serif;
-            background-color: #f56565;
+           background-color: #2d3748;
             transition: all 0.3s ease;
-            box-shadow: 0 2px 6px rgba(245, 101, 101, 0.3);
             font-size: 0.9em;
             white-space: nowrap;
         }
 
         .header .otherIcn:hover {
-            background-color: #e85555;
+           background-color: #1a202c;
             transform: translateY(-1px);
-            box-shadow: 0 3px 10px rgba(245, 101, 101, 0.4);
+            
         }
 
         /* Dropdown Styles */
@@ -265,7 +264,7 @@
 
         .dropdown-menu a:hover {
             background: linear-gradient(90deg, rgba(240, 19, 94, 0.1), transparent);
-            border-left-color: #F0135E;
+            border-left-color: #2d3748;
             padding-left: 1.5em;
         }
 
@@ -288,7 +287,7 @@
 
         .main nav span:not(.bold):hover {
             background-color: #f0f0f5;
-            color: #F0135E;
+            color: #2d3748;
             transform: translateY(-2px);
         }
 
