@@ -251,7 +251,6 @@ main {
 /* === HERO SECTION === */
 .hero-section {
   display: flex;
-  align-items: flex-start;
   justify-content: space-between;
   gap: 3em;
   margin-top: 2em;
@@ -598,6 +597,8 @@ main {
     flex: 0 0 auto;
     padding: 0.7em;
     width: auto;
+    margin-left: auto;
+    margin-right: 2em;
     min-width: auto;
   }
 
