@@ -11,6 +11,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Mona+Sans:ital,wght@0,200..900;1,200..900&family=Nata+Sans:wght@100..900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="/frontend/CSS_SHEETS/style.css">
     <link rel="stylesheet" href="/frontend/CSS_SHEETS/animations.css">
+    <link rel="stylesheet" href="/frontend/CSS_SHEETS/responsive_mobile.css">
 </head>
 <body class="flex-col">
     <!-- Sidebar Overlay -->
@@ -21,7 +22,6 @@
         <div class="mobile-sidebar-header">
             <h3>Menu</h3>
             <div class="close-sidebar">
-                <div data-lucide="x"></div>
             </div>
         </div>
 
@@ -123,15 +123,31 @@
 
     <!-- Main Content -->
     <main class="main-content">
+        <!-- Hero Section -->
         <div class="flex-row hero-section">
             <section class="hero-title flex-col">
                 <h1>Discover the Best Designs and Outfits</h1>
                 <div class="animateTxt hero-title-tagline">
-                    <span>The</span> <span>sparkle</span> <span>and</span> <span>craftsmanship</span> <span>partner</span> <span>for</span> <span>your</span> <span>style,</span> <span>crafted</span> <span>with</span> <span>elegance</span> <span>and</span> <span>passion</span> <span>you</span> <span>deserve.</span>
+                    The sparkle and craftsmanship partner for your style, crafted with elegance and passion you deserve.
                 </div>
-                <button class="hero-btn">Start Exploring</button>
+                
+                <!-- Tabs -->
+                <div class="tabs">  
+                    <div class="tab active" data-tab="collections">  
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2.7 10.3a2.41 2.41 0 0 0 0 3.41l7.59 7.59a2.41 2.41 0 0 0 3.41 0l7.59-7.59a2.41 2.41 0 0 0 0-3.41l-7.59-7.59a2.41 2.41 0 0 0-3.41 0Z"/></svg>  
+                        Collections  
+                    </div>  
+                    <div class="tab" data-tab="artisans">  
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>  
+                        Artisans  
+                    </div>  
+                    <div class="tab" data-tab="custom">  
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 12-8.5 8.5c-.83.83-2.17.83-3 0 0 0 0 0 0 0a2.12 2.12 0 0 1 0-3L12 9"/><path d="M17.64 15 22 10.64"/><path d="m20.91 11.7-1.25-1.25c-.6-.6-.93-1.4-.93-2.25v-.86L16.01 4.6a5.56 5.56 0 0 0-3.94-1.64H9l.92.82A6.18 6.18 0 0 1 12 8.4v1.56l2 2h2.47l2.26 1.91"/></svg>  
+                        Custom Orders  
+                    </div>  
+                </div>
             </section>
-            <br>
+            
             <div class="imageSlider">
                 <div class="slider-track">
                     <img src="https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?w=500&h=400&fit=crop" alt="Diamond Ring" class="imageCarousel">
@@ -143,9 +159,26 @@
             </div>
         </div>
         
-        <div class="collections">
-            <!-- Collections content will go here -->
-        </div>
+        <!-- Content Below Hero -->
+        <section class="collections">
+            <!-- Popular Tags -->
+            <div class="popular-tags">
+                <span class="tags-label">Popular:</span>
+                <div class="tags-list">
+                    <span class="tag">dashboard</span>
+                    <span class="tag">landing page</span>
+                    <span class="tag">e-commerce</span>
+                    <span class="tag">logo</span>
+                    <span class="tag">card</span>
+                    <span class="tag">icons</span>
+                </div>
+            </div>
+
+            <!-- Content Grid -->
+            <div class="content-grid">
+                <!-- Your content cards will go here -->
+            </div>
+        </section>
     </main>
 
     <script src="https://unpkg.com/lucide@latest"></script>

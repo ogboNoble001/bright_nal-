@@ -16,19 +16,6 @@ window.addEventListener("load", () => {
         });
     });
 
-    //Intro taglline animation
-  const container = document.querySelector(".animateTxt");
-  if (container) {
-    const words = container.textContent.trim().split(/\s+/);
-    container.textContent = "";
-    words.forEach((word, index) => {
-      const span = document.createElement("span");
-      span.textContent = word + "\u00A0";
-      span.style.animationDelay = `${index * 0.15}s`;
-      container.appendChild(span);
-    });
-  }
-  
     // Mobile menu functionality
     const menuToggle = document.querySelector('.menu-toggle');
     const mobileSidebar = document.querySelector('.mobile-sidebar');
@@ -182,4 +169,21 @@ window.addEventListener("load", () => {
         setInterval(updateImageClasses, 100);
         updateImageClasses();
     }
+
+    // === TABS FUNCTIONALITY ===
+    const tabs = document.querySelectorAll('.tab');
+    
+    tabs.forEach(tab => {
+        tab.addEventListener('click', () => {
+            // Remove active class from all tabs
+            tabs.forEach(t => t.classList.remove('active'));
+            // Add active class to clicked tab
+            tab.classList.add('active');
+            
+            // Get the tab data attribute
+            const tabType = tab.getAttribute('data-tab');
+            console.log('Active tab:', tabType);
+            // You can add logic here to show/hide different content based on the tab
+        });
+    });
 });
