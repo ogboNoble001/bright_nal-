@@ -16,6 +16,19 @@ window.addEventListener("load", () => {
         });
     });
 
+    //Intro taglline animation
+  const container = document.querySelector(".animateTxt");
+  if (container) {
+    const words = container.textContent.trim().split(/\s+/);
+    container.textContent = "";
+    words.forEach((word, index) => {
+      const span = document.createElement("span");
+      span.textContent = word + "\u00A0";
+      span.style.animationDelay = `${index * 0.15}s`;
+      container.appendChild(span);
+    });
+  }
+  
     // Mobile menu functionality
     const menuToggle = document.querySelector('.menu-toggle');
     const mobileSidebar = document.querySelector('.mobile-sidebar');

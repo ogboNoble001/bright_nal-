@@ -283,6 +283,13 @@ main {
   line-height: 1.6;
 }
 
+.animateTxt span {
+  display: inline-block;
+  opacity: 0;
+  animation:
+    text-focus-in 1s cubic-bezier(0.550, 0.085, 0.680, 0.530) forwards,
+    scale-in-tl 0.5s cubic-bezier(0.250, 0.460, 0.450, 0.940) forwards;
+}
 .hero-btn {
   background-color: #111;
   color: #fff;
