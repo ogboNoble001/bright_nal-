@@ -111,7 +111,7 @@ window.addEventListener("load", () => {
     if (slider && sliderTrack) {
         const originalImages = Array.from(sliderTrack.querySelectorAll('.imageCarousel'));
         
-        for (let i = 0; i < 176; i++) {
+        for (let i = 0; i < 1; i++) {
             originalImages.forEach(img => {
                 const clone = img.cloneNode(true);
                 sliderTrack.appendChild(clone);
@@ -188,7 +188,9 @@ window.addEventListener("load", () => {
     // Render products on page load
     renderProducts();
 });
-
+const searchBtn = document.getElementById('searchInputBar');
+    searchBtn.addEventListener('click', () => {
+    });
 // Product data and cart functions (add these globally)
 const products = [
     { id: 1, name: "Elegant Summer Dress", category: "Dresses", price: 35999, originalPrice: 51999, image: "https://images.unsplash.com/photo-1595777457583-95e059d581b8?w=400&h=500&fit=crop", badge: "NEW ARRIVAL", productClass: "new", rating: 4.5 },
@@ -250,7 +252,7 @@ function addToCart(productId) {
     }
     
     updateCart();
-    console.log('✅ Item added to cart!');
+    alert('✅ Item added to cart!');
 }
 
 function updateCart() {
@@ -305,26 +307,26 @@ function toggleCart() {
 
 function checkout() {
     if (cart.length === 0) {
-        console.log('Your cart is empty!');
+        alert('Your cart is empty!');
         return;
     }
-    console.log('🎉 Thank you for your purchase! Total: ' + document.getElementById('cartTotal').textContent);
+    alert('🎉 Thank you for your purchase! Total: ' + document.getElementById('cartTotal').textContent);
     cart = [];
     updateCart();
     toggleCart();
 }
 
 function addToWishlist(productId) {
-    console.log('❤️ Added to wishlist!');
+    alert('❤️ Added to wishlist!');
 }
 
 function quickView(productId) {
     const product = products.find(p => p.id === productId);
-    console.log(`Quick View: ${product.name}\nPrice: ₦${product.price.toLocaleString()}`);
+    alert(`Quick View: ${product.name}\nPrice: ₦${product.price.toLocaleString()}`);
 }
 
 function subscribeNewsletter(event) {
     event.preventDefault();
-    console.log('✅ Thank you for subscribing!');
+    alert('✅ Thank you for subscribing!');
     event.target.reset();
 }

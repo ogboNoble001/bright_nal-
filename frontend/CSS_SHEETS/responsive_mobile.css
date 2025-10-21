@@ -8,7 +8,20 @@
   box-sizing: border-box;
 }
 *::-webkit-scrollbar {
-  display: none;
+  width: 8px;
+}
+
+*::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+*::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 4px;
+}
+
+*::-webkit-scrollbar-thumb:hover {
+  background: #555;
 }
 /* === MOBILE MENU TOGGLE === */
 .menu-toggle {
@@ -207,7 +220,10 @@
     width: auto;
     min-width: auto;
   }
-
+  .searchBar.active {
+        width: 80%;
+        justify-content: space-between;
+      }
   .searchBar input,
   .animatedPlaceholder {
     display: none;
@@ -278,14 +294,10 @@
 /* 
 /* === POPULAR TAGS === */
 .popular-tags {
-  padding: .4em 0;
-width: 100%;
-overflow-x: auto;
-scrollbar-width: 1px;
-display: flex;
-gap: 1em;
-justify-content: flex-start;
-align-items: center;
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  gap: 1em;
 }
   .tags-title{
     color: #111;
