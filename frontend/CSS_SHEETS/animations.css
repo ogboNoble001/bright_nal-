@@ -158,10 +158,10 @@
 }
 
 /* === Slider Animation === */
-.imageSlider {
-  animation: tilt 10s ease-in-out infinite;
+.imageSlider .slider-track .slide {
+  animation: tilt 12s ease-in-out infinite;
 }
 
 .slider-track {
-  animation: slideLeft 90s linear infinite;
+  animation: slideLeft 20s linear infinite;
 }

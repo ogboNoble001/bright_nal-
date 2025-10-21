@@ -385,12 +385,6 @@ main {
   display: flex;
   align-items: flex-end;
   justify-content: center;
-  animation: tilt 10s ease-in-out infinite;
-}
-
-@keyframes tilt {
-  0%, 100% { transform: perspective(1000px) rotateY(0deg); }
-  50% { transform: perspective(1000px) rotateY(3deg); }
 }
 
 .slider-track {
@@ -399,7 +393,7 @@ main {
   padding-top: 1em;
   align-items: flex-end;
   position: relative;
-  animation: slideLeft 90s linear infinite;
+  animation: slideLeft 30s linear infinite;
   will-change: transform;
 }
 
@@ -414,7 +408,7 @@ main {
   object-fit: cover;
   border-radius: 8px;
   flex-shrink: 0;
-  transition: all 0.1s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: all .2s cubic-bezier(0.4, 0, 0.2, 1);
   transform: scale(0.7) translateY(20px);
   opacity: 0.4;
   filter: brightness(0.6);
@@ -852,10 +846,9 @@ main {
 .cart-badge {
   background: #ff4757;
   color: #fff;
+  border-radius: 50%;
   font-size: 0.65rem;
   font-weight: 600;
-  padding: 0.15rem 0.4rem;
-  border-radius: 50%;
   display: inline-flex;
   align-items: center;
   justify-content: center;

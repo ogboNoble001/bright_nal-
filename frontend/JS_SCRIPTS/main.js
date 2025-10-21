@@ -202,7 +202,8 @@ const products = [
 ];
 
 let cart = [];
-
+let badgeCount = document.getElementById('headerCartCount');
+if (badgeCount) badgeCount.style.display = 'none';
 function renderProducts() {
     const grid = document.getElementById('productGrid');
     if (!grid) return;
