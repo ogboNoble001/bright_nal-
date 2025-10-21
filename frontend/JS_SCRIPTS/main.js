@@ -170,6 +170,20 @@ window.addEventListener("load", () => {
         updateImageClasses();
     }
 
+
+    //Intro taglline animation
+  const container = document.querySelector(".animateTxt");
+  if (container) {
+    const words = container.textContent.trim().split(/\s+/);
+    container.textContent = "";
+    words.forEach((word, index) => {
+      const span = document.createElement("span");
+      span.textContent = word + "\u00A0";
+      span.style.animationDelay = `${index * 0.15}s`;
+      container.appendChild(span);
+    });
+  }
+
     // === TABS FUNCTIONALITY ===
     const tabs = document.querySelectorAll('.tab');
     

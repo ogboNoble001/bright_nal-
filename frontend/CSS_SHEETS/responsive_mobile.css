@@ -285,6 +285,10 @@
   .hero-title-tagline {
     font-size: 1em;
   }
+  .animateTxt {
+    text-align: center;
+    justify-content: center;
+  }
 
   .imageSlider {
     height: 250px;
