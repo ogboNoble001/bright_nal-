@@ -8,20 +8,7 @@
   box-sizing: border-box;
 }
 *::-webkit-scrollbar {
-  width: 8px;
-}
-
-*::-webkit-scrollbar-track {
-  background: #f1f1f1;
-}
-
-*::-webkit-scrollbar-thumb {
-  background: #888;
-  border-radius: 4px;
-}
-
-*::-webkit-scrollbar-thumb:hover {
-  background: #555;
+  display: none;
 }
 /* === MOBILE MENU TOGGLE === */
 .menu-toggle {
@@ -291,10 +278,14 @@
 /* 
 /* === POPULAR TAGS === */
 .popular-tags {
-  width: 100%;
-  display: flex;
-  flex-direction: row;
-  gap: 1em;
+  padding: .4em 0;
+width: 100%;
+overflow-x: auto;
+scrollbar-width: 1px;
+display: flex;
+gap: 1em;
+justify-content: flex-start;
+align-items: center;
 }
   .tags-title{
     color: #111;
