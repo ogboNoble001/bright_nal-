@@ -587,8 +587,8 @@ main {
   width: fit-content;
 }
 
-.badge.new{ background: #4CAF50; }
-.badge.NEW{ background: #f44336; }
+.badge.sale{ background: #4CAF50; }
+.badge.new{ background: #f44336; }
 
 .product-actions {
   position: absolute;
@@ -862,8 +862,9 @@ main {
   font-weight: 600;
   align-items: center;
   justify-content: center;
-  min-width: 16px;
-  height: 16px;
+  min-width: 13px;
+  width: 13px;
+  height: 13px;
   text-align: center;
   line-height: 1;
 }
