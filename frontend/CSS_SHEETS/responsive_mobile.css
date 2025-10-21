@@ -1,3 +1,28 @@
+/* === GLOBAL RESET === */
+*, *::before, *::after {
+  margin: 0;
+  padding: 0;
+  outline: none;
+  font-family: "Nata sans", sans-serif;
+  -webkit-tap-highlight-color: transparent;
+  box-sizing: border-box;
+}
+*::-webkit-scrollbar {
+  width: 8px;
+}
+
+*::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+*::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 4px;
+}
+
+*::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
 /* === MOBILE MENU TOGGLE === */
 .menu-toggle {
   display: none !important;
@@ -162,7 +187,7 @@
 }
 
 /* === RESPONSIVE === */
-@media (max-width: 900px) {
+@media (max-width:1088px) {
   /* Show mobile menu elements */
   .mobile-sidebar {
     display: block;
@@ -213,7 +238,7 @@
     justify-content: center;
     gap: 2em;
     min-height: auto;
-    margin-bottom: 2em;
+    margin: 2em 0;
   }
 
   .hero-title {
@@ -244,6 +269,7 @@
   }
 
   .collections {
+    width: 100%;
     max-width: 100%;
     order: 3;
   }
@@ -262,22 +288,50 @@
     height: 45px;
   }
 
-  .popular-tags {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 0.8em;
+/* 
+/* === POPULAR TAGS === */
+.popular-tags {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  gap: 1em;
+}
+  .tags-title{
+    color: #111;
+    font-size: 0.95rem;
+    flex: 0 0 auto;
   }
+.tags-label {
+  font-weight: 600;
+  color: #111;
+  font-size: 0.95rem;
+}
 
-  .tags-list {
-    justify-content: center;
-    width: 100%;
-  }
+.tags-list {
+  display: flex;
+  width: 100%;
+  flex-wrap: nowrap;
+  gap: 0.8em;
+}
 
-  .tag {
-    font-size: 0.85rem;
-    padding: 0.5em 1em;
-  }
-  
+.tag {
+  flex: 0 0 auto;
+  padding: 0.6em 1.2em;
+  background: #f5f5f5;
+  border-radius: 30px;
+  font-size: 0.9rem;
+  color: #555;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border: 1px solid transparent;
+}
+.tag:hover {
+  background: #fff;
+  border-color: #111;
+  color: #111;
+  transform: translateY(-2px);
+}
+
   .hero-title h1 {
     font-size: 2.5em;
   }
@@ -339,10 +393,6 @@
     padding: 3rem 1.5em;
   }
 
-  .features-grid {
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 2rem;
-  }
 
   /* Newsletter */
   .newsletter {
@@ -372,7 +422,12 @@
     gap: 2rem;
   }
 }
-
+@media (max-width: 10087px ) {
+  .features-grid {
+   grid-template-columns: repeat(2, 1fr);
+    gap: 2rem;
+  }
+}
 @media (max-width: 600px) {
   
   .hero-title h1 {
@@ -434,7 +489,7 @@
 
   /* Features single column */
   .features-grid {
-    grid-template-columns: 1fr;
+     grid-template-columns: 1fr;
   }
 
   /* Footer single column */
