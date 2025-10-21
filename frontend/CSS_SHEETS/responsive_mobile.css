@@ -240,7 +240,6 @@
 
   .imageSlider {
     width: 100%;
-    height: 300px;
     order: 2;
   }
 
@@ -355,9 +354,6 @@
     justify-content: center;
   }
 
-  .imageSlider {
-    height: 250px;
-  }
 
   .imageCarousel.active {
     height: 150px;
@@ -451,9 +447,6 @@
     padding: 0.6rem 1rem;
   }
 
-  .imageSlider {
-    height: 200px;
-  }
 
   .imageCarousel.active {
     height: 120px;
