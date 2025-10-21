@@ -412,7 +412,6 @@ main {
 }
 
 .imageCarousel.active {
-  transition: border-radius .6s ease;
   transform: scale(1.2) translateY(0);
   opacity: 1;
   filter: brightness(1);

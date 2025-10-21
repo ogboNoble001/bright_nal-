@@ -111,7 +111,7 @@ window.addEventListener("load", () => {
     if (slider && sliderTrack) {
         const originalImages = Array.from(sliderTrack.querySelectorAll('.imageCarousel'));
         
-        for (let i = 0; i < 1; i++) {
+        for (let i = 0; i < 123; i++) {
             originalImages.forEach(img => {
                 const clone = img.cloneNode(true);
                 sliderTrack.appendChild(clone);
