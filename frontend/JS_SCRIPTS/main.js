@@ -191,14 +191,14 @@ window.addEventListener("load", () => {
 
 // Product data and cart functions (add these globally)
 const products = [
-    { id: 1, name: "Elegant Summer Dress", category: "Dresses", price: 35999, originalPrice: 51999, image: "https://images.unsplash.com/photo-1595777457583-95e059d581b8?w=400&h=500&fit=crop", badge: "sale", rating: 4.5 },
-    { id: 2, name: "Designer Leather Jacket", category: "Outerwear", price: 99999, image: "https://images.unsplash.com/photo-1551028719-00167b16eac5?w=400&h=500&fit=crop", badge: "new", rating: 5 },
+    { id: 1, name: "Elegant Summer Dress", category: "Dresses", price: 35999, originalPrice: 51999, image: "https://images.unsplash.com/photo-1595777457583-95e059d581b8?w=400&h=500&fit=crop", badge: "NEW", productClass: "new", rating: 4.5 },
+    { id: 2, name: "Designer Leather Jacket", category: "Outerwear", price: 99999, image: "https://images.unsplash.com/photo-1551028719-00167b16eac5?w=400&h=500&fit=crop", badge: "SALE", rating: 5 },
     { id: 3, name: "Casual Cotton T-Shirt", category: "Tops", price: 11999, image: "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=400&h=500&fit=crop", rating: 4 },
     { id: 4, name: "Premium Wool Sweater", category: "Knitwear", price: 47999, image: "https://images.unsplash.com/photo-1434389677669-e08b4cac3105?w=400&h=500&fit=crop", rating: 4.5 },
     { id: 5, name: "Silk Blouse", category: "Tops", price: 31999, originalPrice: 39999, image: "https://images.unsplash.com/photo-1485968579580-b6d095142e6e?w=400&h=500&fit=crop", badge: "sale", rating: 4 },
-    { id: 6, name: "Tailored Blazer", category: "Outerwear", price: 75999, image: "https://images.unsplash.com/photo-1591369822096-ffd140ec948f?w=400&h=500&fit=crop", badge: "new", rating: 5 },
+    { id: 6, name: "Tailored Blazer", category: "Outerwear", price: 75999, image: "https://images.unsplash.com/photo-1591369822096-ffd140ec948f?w=400&h=500&fit=crop", badge: "New Arrival", productClass: "new",  rating: 5 },
     { id: 7, name: "Denim Jeans", category: "Bottoms", price: 27999, image: "https://images.unsplash.com/photo-1542272604-787c3835535d?w=400&h=500&fit=crop", rating: 4.5 },
-    { id: 8, name: "Evening Gown", category: "Dresses", price: 119999, image: "https://images.unsplash.com/photo-1566174053879-31528523f8ae?w=400&h=500&fit=crop", badge: "new", rating: 5 },
+    { id: 8, name: "Evening Gown", category: "Dresses", price: 119999, image: "https://images.unsplash.com/photo-1566174053879-31528523f8ae?w=400&h=500&fit=crop", badge: "new", productClass: "new", rating: 5 },
 ];
 
 let cart = [];
@@ -210,15 +210,16 @@ function renderProducts() {
         <div class="product-card">
             <div class="product-image-container">
                 <img src="${product.image}" alt="${product.name}" class="product-image">
-                ${product.badge ? `<div class="product-badges"><span class="badge ${product.badge}">${product.badge.toUpperCase()}</span></div>` : ''}
+                ${product.badge ? `<div class="product-badges"><span class="badge ${product.productClass}">${product.badge.toUpperCase()}</span></div>` : ''}
                 <div class="product-actions">
-                    <button class="action-btn" onclick="addToWishlist(${product.id})" title="Add to Wishlist">❤️</button>
-                    <button class="action-btn" onclick="quickView(${product.id})" title="Quick View">👁️</button>
-                </div>
+                    <button class="action-btn" onclick="addToWishlist(${product.id})" title="Add to Wishlist">
+                   <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-bookmark-icon lucide-bookmark"><path d="m19 21-7-4-7 4V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16z"/></svg>
+                   </button>
+                     </div>
                 <div class="product-overlay">
                     <div class="overlay-text"><strong>${product.category}</strong></div>
                     <div class="overlay-text">Premium quality crafted with attention to detail</div>
-                    <div class="overlay-text">⭐ ${product.rating} • Free shipping</div>
+                    <div class="overlay-text"> • ${Math.floor(Math.random() * 200 + 50)} purchases  </div>
                 </div>
             </div>
             <div class="product-details">
@@ -229,8 +230,7 @@ function renderProducts() {
                     ${product.originalPrice ? `<span class="original-price">₦${product.originalPrice.toLocaleString()}</span>` : ''}
                 </div>
                 <div class="product-rating">
-                    <span class="stars">${'⭐'.repeat(Math.floor(product.rating))}</span>
-                    <span>(${Math.floor(Math.random() * 200 + 50)} reviews)</span>
+                    <span>${Math.floor(Math.random() * 200 + 50)} purchases</span>
                 </div>
                 <button class="add-to-cart-btn" onclick="addToCart(${product.id})">Add to Cart</button>
             </div>

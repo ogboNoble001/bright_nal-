@@ -244,6 +244,7 @@
   }
 
   .collections {
+    max-width: 100%;
     order: 3;
   }
 

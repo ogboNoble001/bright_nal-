@@ -381,6 +381,7 @@ main {
   padding-top: 1em;
   flex: 1;
   height: 400px;
+  max-height: 400px;
   overflow: hidden;
   position: relative;
   display: flex;
@@ -586,8 +587,8 @@ main {
   width: fit-content;
 }
 
-.badge.new { background: #4CAF50; }
-.badge.sale { background: #f44336; }
+.badge.new{ background: #4CAF50; }
+.badge.NEW{ background: #f44336; }
 
 .product-actions {
   position: absolute;
@@ -606,13 +607,21 @@ main {
   opacity: 1;
   transform: translateX(0);
 }
+.action-btn {
+  background: #3A3546;
+}
+.action-btn:hover {
+  background: #4B435A;
+}
 
 .action-btn {
   width: 40px;
   height: 40px;
   border-radius: 50%;
   border: none;
-  background: #fff;
+  background: #000000;
+  fill: #F9F9F9;
+  color: #A1A1A1;
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -626,11 +635,9 @@ main {
   height: 18px;
 }
 
-
-
-
 .action-btn:hover {
-  background: #111;
+  background: #ffffff;
+  color: #000000;
   transform: scale(1.1);
 }
 
