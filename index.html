@@ -8,12 +8,33 @@
     <meta http-equiv="X-UA-Compatible" content="IE=Edge">  
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Mona+Sans:ital,wght@0,200..900;1,200..900&family=Nata+Sans:wght@100..900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Mona+Sans:ital,wght@0,200..900;1,200..900&family=Nata+Sans:wght@100..900&family=Playfair+Display:wght@400;700;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="/frontend/CSS_SHEETS/style.css">
     <link rel="stylesheet" href="/frontend/CSS_SHEETS/animations.css">
     <link rel="stylesheet" href="/frontend/CSS_SHEETS/responsive_mobile.css">
 </head>
 <body class="flex-col">
+    <!-- Cart Overlay -->
+    <div class="cart-overlay" onclick="toggleCart()"></div>
+
+    <!-- Cart Sidebar -->
+    <div class="cart-sidebar" id="cartSidebar">
+        <div class="cart-header">
+            <h3>Shopping Cart <span class="cart-badge" id="cartItemCount">0</span></h3>
+            <button class="close-cart" onclick="toggleCart()">✕</button>
+        </div>
+        <div class="cart-items" id="cartItems">
+            <p style="text-align: center; color: #999; padding: 2rem;">Your cart is empty</p>
+        </div>
+        <div class="cart-footer">
+            <div class="cart-total">
+                <span>Total:</span>
+                <span id="cartTotal">$0.00</span>
+            </div>
+            <button class="checkout-btn" onclick="checkout()">Proceed to Checkout</button>
+        </div>
+    </div>
+
     <!-- Sidebar Overlay -->
     <div class="sidebar-overlay"></div>
 
@@ -26,7 +47,6 @@
         </div>
 
         <div class="mobile-nav-section">
-            <h4>Navigation</h4>
             
             <div class="mobile-nav-item">
                 <span>Explore</span>
@@ -109,6 +129,11 @@
             </div>
         </nav>
         
+                <span onclick="toggleCart()" style="cursor: pointer; position: relative; display: flex; align-items: center; margin-right: 1rem;">
+            <div data-lucide="shopping-cart" style="width: 20px; height: 20px;"></div>
+            <span class="cart-badge" id="headerCartCount" style="position: absolute; top: -8px; right: -8px;">0</span>
+        </span>
+        
         <span class="ai-c otherIcn">
             <u>Login</u> 
         </span>
@@ -150,11 +175,11 @@
             
             <div class="imageSlider">
                 <div class="slider-track">
-                    <img src="https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?w=500&h=400&fit=crop" alt="Diamond Ring" class="imageCarousel">
-                    <img src="https://images.unsplash.com/photo-1605100804763-247f67b3557e?w=500&h=400&fit=crop" alt="Gold Necklace" class="imageCarousel">
-                    <img src="https://images.unsplash.com/photo-1611591437281-460bfbe1220a?w=500&h=400&fit=crop" alt="Pearl Earrings" class="imageCarousel">
-                    <img src="https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?w=500&h=400&fit=crop" alt="Luxury Bracelet" class="imageCarousel">
-                    <img src="https://images.unsplash.com/photo-1573408301185-9146fe634ad0?w=500&h=400&fit=crop" alt="Silver Watch" class="imageCarousel">
+                    <img src="https://images.unsplash.com/photo-1490481651871-ab68de25d43d?w=500&h=400&fit=crop" alt="Fashion Dress" class="imageCarousel">
+                    <img src="https://images.unsplash.com/photo-1529374255404-311a2a4f1fd9?w=500&h=400&fit=crop" alt="Casual Outfit" class="imageCarousel">
+                    <img src="https://images.unsplash.com/photo-1509631179647-0177331693ae?w=500&h=400&fit=crop" alt="Designer Jacket" class="imageCarousel">
+                    <img src="https://images.unsplash.com/photo-1523381210434-271e8be1f52b?w=500&h=400&fit=crop" alt="T-Shirt Collection" class="imageCarousel">
+                    <img src="https://images.unsplash.com/photo-1578681994506-b8f463449011?w=500&h=400&fit=crop" alt="Stylish Sweater" class="imageCarousel">
                 </div>
             </div>
         </div>
@@ -163,23 +188,107 @@
         <section class="collections">
             <!-- Popular Tags -->
             <div class="popular-tags">
-                <span class="tags-label">Popular:</span>
                 <div class="tags-list">
-                    <span class="tag">dashboard</span>
-                    <span class="tag">landing page</span>
-                    <span class="tag">e-commerce</span>
-                    <span class="tag">logo</span>
-                    <span class="tag">card</span>
-                    <span class="tag">icons</span>
+                    <span class="tag">Summer Dresses</span>
+                    <span class="tag">Designer Jackets</span>
+                    <span class="tag">Casual Wear</span>
+                    <span class="tag">Luxury Bags</span>
+                    <span class="tag">Footwear</span>
+                    <span class="tag">Accessories</span>
                 </div>
             </div>
 
-            <!-- Content Grid -->
-            <div class="content-grid">
-                <!-- Your content cards will go here -->
+            <!-- Product Grid -->
+            <div class="content-grid" id="productGrid" style="margin-top: 3rem; display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 2.5rem;">
+                <!-- Products will be inserted here by JavaScript -->
             </div>
         </section>
     </main>
+
+    <!-- Features Section -->
+    <section class="features">
+        <div class="features-grid">
+            <div class="feature-item">
+                <div class="feature-icon" data-lucide="truck"></div>
+                <h3 class="feature-title">Free Shipping</h3>
+                <p>On all orders over $100</p>
+            </div>
+            <div class="feature-item">
+                <div class="feature-icon" data-lucide="rotate-ccw"></div>
+                <h3 class="feature-title">Easy Returns</h3>
+                <p>30-day return policy</p>
+            </div>
+            <div class="feature-item">
+                <div class="feature-icon" data-lucide="lock"></div>
+                <h3 class="feature-title">Secure Payment</h3>
+                <p>100% secure transactions</p>
+            </div>
+            <div class="feature-item">
+                <div class="feature-icon" data-lucide="gem"></div>
+                <h3 class="feature-title">Premium Quality</h3>
+                <p>Handpicked designer pieces</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Newsletter Section -->
+    <section class="newsletter">
+        <h2>Stay In Style</h2>
+        <p>Subscribe to get special offers and fashion updates</p>
+        <form class="newsletter-form" onsubmit="subscribeNewsletter(event)">
+            <input type="email" class="newsletter-input" placeholder="Enter your email" required>
+            <button type="submit" class="newsletter-btn">Subscribe</button>
+        </form>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>About BrightNal's</h3>
+                <p style="color: #ccc; line-height: 1.8;">Your premier destination for luxury fashion and designer collections. We curate the finest pieces from around the world.</p>
+                <div class="social-icons">
+                    <div class="social-icon" data-lucide="facebook"></div>
+                    <div class="social-icon" data-lucide="instagram"></div>
+                    <div class="social-icon" data-lucide="twitter"></div>
+                    <div class="social-icon" data-lucide="linkedin"></div>
+                </div>
+            </div>
+            <div class="footer-section">
+                <h3>Shop</h3>
+                <ul class="footer-links">
+                    <li><a href="#new">New Arrivals</a></li>
+                    <li><a href="#women">Women's Fashion</a></li>
+                    <li><a href="#men">Men's Fashion</a></li>
+                    <li><a href="#accessories">Accessories</a></li>
+                    <li><a href="#sale">Sale</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>Customer Service</h3>
+                <ul class="footer-links">
+                    <li><a href="#contact">Contact Us</a></li>
+                    <li><a href="#shipping">Shipping Info</a></li>
+                    <li><a href="#returns">Returns & Exchanges</a></li>
+                    <li><a href="#faq">FAQ</a></li>
+                    <li><a href="#size">Size Guide</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>Company</h3>
+                <ul class="footer-links">
+                    <li><a href="#about">About Us</a></li>
+                    <li><a href="#careers">Careers</a></li>
+                    <li><a href="#press">Press</a></li>
+                    <li><a href="#privacy">Privacy Policy</a></li>
+                    <li><a href="#terms">Terms of Service</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2025 BrightNal's Fashion. All rights reserved. | Designed with love for fashion lovers</p>
+        </div>
+    </footer>
 
     <script src="https://unpkg.com/lucide@latest"></script>
     <script src="/frontend/JS_SCRIPTS/main.js"></script>
