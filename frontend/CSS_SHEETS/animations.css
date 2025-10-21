@@ -146,7 +146,7 @@
     transform: translateX(0); 
   }
   to { 
-    transform: translateX(calc(-100% / 4)); 
+    transform: translateX(calc(-100% / 2)); 
   }
 }
 
@@ -157,11 +157,7 @@
     scale-in-tl 0.5s cubic-bezier(0.250, 0.460, 0.450, 0.940) forwards;
 }
 
-/* === Slider Animation === */
-.imageSlider .slider-track .slide {
-  animation: tilt 12s ease-in-out infinite;
-}
 
 .slider-track {
-  animation: slideLeft 20s linear infinite;
+  animation: slideLeft 40s linear infinite;
 }

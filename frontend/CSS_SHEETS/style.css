@@ -393,7 +393,7 @@ main {
   padding-top: 1em;
   align-items: flex-end;
   position: relative;
-  animation: slideLeft 30s linear infinite;
+  animation: slideLeft 20s linear forwards infinite;
   will-change: transform;
 }
 
@@ -408,7 +408,7 @@ main {
   object-fit: cover;
   border-radius: 8px;
   flex-shrink: 0;
-  transition: all .2s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: all .6s cubic-bezier(0.4, 0, 0.2, 1);
   transform: scale(0.7) translateY(20px);
   opacity: 0.4;
   filter: brightness(0.6);
