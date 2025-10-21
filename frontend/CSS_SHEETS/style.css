@@ -56,6 +56,7 @@ body {
 .cursorPoint { cursor: pointer; }
 .offTheGrid { margin-top: .3em; }
 .noShaking { flex: 0 0 auto; }
+.smaller { font-size: 0.55em; }
 
 /* === HEADER (Glass Style) === */
 .header {
@@ -844,12 +845,14 @@ main {
   visibility: visible;
 }
 .cart-badge {
+  display: none;
+  padding-top: auto;
+  padding-bottom: auto;
   background: #ff4757;
   color: #fff;
   border-radius: 50%;
   font-size: 0.65rem;
   font-weight: 600;
-  display: inline-flex;
   align-items: center;
   justify-content: center;
   min-width: 16px;
@@ -1035,10 +1038,6 @@ footer {
   height: 18px;
   color: #fff;
 }
-
-
-
-
 .social-icon:hover {
   background: #444;
   transform: translateY(-3px);

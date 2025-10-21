@@ -20,7 +20,7 @@
     <!-- Cart Sidebar -->
     <div class="cart-sidebar" id="cartSidebar">
         <div class="cart-header">
-            <h3>Shopping Cart <span class="cart-badge" id="cartItemCount">0</span></h3>
+            <h3>Shopping Cart <span class="cart-badge" id="cartItemCount"></span></h3>
             <button class="close-cart" onclick="toggleCart()">✕</button>
         </div>
         <div class="cart-items" id="cartItems">
@@ -35,6 +35,16 @@
         </div>
     </div>
 
+      <!-- Modal Overlay -->
+    <div class="modal-overlay" id="modalOverlay"></div>
+    
+    <!-- Modal -->
+    <div class="modal" id="modal">
+        <div class="modal-content">
+            <div class="modal-icon" id="modalIcon"></div>
+            <h2 class="modal-title" id="modalTitle"></h2>
+            <p class="modal-message" id="modalMessage"></p> </div>
+    </div>
     <!-- Sidebar Overlay -->
     <div class="sidebar-overlay"></div>
 
@@ -288,7 +298,7 @@
         <div class="footer-bottom">
             <p>&copy; 2025 BrightNal's Concepts. All rights reserved.</div>
     </footer>
-
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
     <script src="/frontend/JS_SCRIPTS/main.js"></script>
 </body>

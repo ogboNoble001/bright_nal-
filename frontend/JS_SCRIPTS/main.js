@@ -191,19 +191,17 @@ window.addEventListener("load", () => {
 
 // Product data and cart functions (add these globally)
 const products = [
-    { id: 1, name: "Elegant Summer Dress", category: "Dresses", price: 89.99, originalPrice: 129.99, image: "https://images.unsplash.com/photo-1595777457583-95e059d581b8?w=400&h=500&fit=crop", badge: "sale", rating: 4.5 },
-    { id: 2, name: "Designer Leather Jacket", category: "Outerwear", price: 249.99, image: "https://images.unsplash.com/photo-1551028719-00167b16eac5?w=400&h=500&fit=crop", badge: "new", rating: 5 },
-    { id: 3, name: "Casual Cotton T-Shirt", category: "Tops", price: 29.99, image: "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=400&h=500&fit=crop", rating: 4 },
-    { id: 4, name: "Premium Wool Sweater", category: "Knitwear", price: 119.99, image: "https://images.unsplash.com/photo-1434389677669-e08b4cac3105?w=400&h=500&fit=crop", rating: 4.5 },
-    { id: 5, name: "Silk Blouse", category: "Tops", price: 79.99, originalPrice: 99.99, image: "https://images.unsplash.com/photo-1485968579580-b6d095142e6e?w=400&h=500&fit=crop", badge: "sale", rating: 4 },
-    { id: 6, name: "Tailored Blazer", category: "Outerwear", price: 189.99, image: "https://images.unsplash.com/photo-1591369822096-ffd140ec948f?w=400&h=500&fit=crop", badge: "new", rating: 5 },
-    { id: 7, name: "Denim Jeans", category: "Bottoms", price: 69.99, image: "https://images.unsplash.com/photo-1542272604-787c3835535d?w=400&h=500&fit=crop", rating: 4.5 },
-    { id: 8, name: "Evening Gown", category: "Dresses", price: 299.99, image: "https://images.unsplash.com/photo-1566174053879-31528523f8ae?w=400&h=500&fit=crop", badge: "new", rating: 5 },
+    { id: 1, name: "Elegant Summer Dress", category: "Dresses", price: 35999, originalPrice: 51999, image: "https://images.unsplash.com/photo-1595777457583-95e059d581b8?w=400&h=500&fit=crop", badge: "sale", rating: 4.5 },
+    { id: 2, name: "Designer Leather Jacket", category: "Outerwear", price: 99999, image: "https://images.unsplash.com/photo-1551028719-00167b16eac5?w=400&h=500&fit=crop", badge: "new", rating: 5 },
+    { id: 3, name: "Casual Cotton T-Shirt", category: "Tops", price: 11999, image: "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=400&h=500&fit=crop", rating: 4 },
+    { id: 4, name: "Premium Wool Sweater", category: "Knitwear", price: 47999, image: "https://images.unsplash.com/photo-1434389677669-e08b4cac3105?w=400&h=500&fit=crop", rating: 4.5 },
+    { id: 5, name: "Silk Blouse", category: "Tops", price: 31999, originalPrice: 39999, image: "https://images.unsplash.com/photo-1485968579580-b6d095142e6e?w=400&h=500&fit=crop", badge: "sale", rating: 4 },
+    { id: 6, name: "Tailored Blazer", category: "Outerwear", price: 75999, image: "https://images.unsplash.com/photo-1591369822096-ffd140ec948f?w=400&h=500&fit=crop", badge: "new", rating: 5 },
+    { id: 7, name: "Denim Jeans", category: "Bottoms", price: 27999, image: "https://images.unsplash.com/photo-1542272604-787c3835535d?w=400&h=500&fit=crop", rating: 4.5 },
+    { id: 8, name: "Evening Gown", category: "Dresses", price: 119999, image: "https://images.unsplash.com/photo-1566174053879-31528523f8ae?w=400&h=500&fit=crop", badge: "new", rating: 5 },
 ];
 
 let cart = [];
-let badgeCount = document.getElementById('headerCartCount');
-if (badgeCount) badgeCount.style.display = 'none';
 function renderProducts() {
     const grid = document.getElementById('productGrid');
     if (!grid) return;
@@ -226,9 +224,9 @@ function renderProducts() {
             <div class="product-details">
                 <div class="product-category">${product.category}</div>
                 <div class="product-name">${product.name}</div>
-                <div class="product-price">
-                    <span class="current-price">$${product.price}</span>
-                    ${product.originalPrice ? `<span class="original-price">$${product.originalPrice}</span>` : ''}
+                                <div class="product-price">
+                    <span class="current-price">₦${product.price.toLocaleString()}</span>
+                    ${product.originalPrice ? `<span class="original-price">₦${product.originalPrice.toLocaleString()}</span>` : ''}
                 </div>
                 <div class="product-rating">
                     <span class="stars">${'⭐'.repeat(Math.floor(product.rating))}</span>
@@ -262,9 +260,11 @@ function updateCart() {
     
     if (cart.length === 0) {
         cartItems.innerHTML = '<p style="text-align: center; color: #999; padding: 2rem;">Your cart is empty</p>';
-        cartTotal.textContent = '$0.00';
+        cartTotal.textContent = '₦0';
         cartItemCount.textContent = '0';
         headerCartCount.textContent = '0';
+        // Hide badge when cart is empty
+        headerCartCount.style.display = 'none';
         return;
     }
     
@@ -273,17 +273,21 @@ function updateCart() {
             <img src="${item.image}" alt="${item.name}" class="cart-item-image">
             <div class="cart-item-details">
                 <div class="cart-item-name">${item.name}</div>
-                <div class="cart-item-price">$${item.price} x ${item.quantity}</div>
+                <div class="cart-item-price flex-row diff1">₦${item.price.toLocaleString()}<sup class="smaller">${item.quantity}</sup></div>
+    
+                <div class="cart-item-subtotal"><u>₦${(item.price * item.quantity).toLocaleString()}</u></div>
                 <button class="remove-item" onclick="removeFromCart(${item.id})">Remove</button>
             </div>
         </div>
     `).join('');
     
     const total = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
-    cartTotal.textContent = `$${total.toFixed(2)}`;
+    cartTotal.textContent = `₦${total.toLocaleString()}`;
     const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
     cartItemCount.textContent = totalItems;
     headerCartCount.textContent = totalItems;
+    // Show badge when cart has items
+    headerCartCount.style.display = 'flex';
 }
 
 function removeFromCart(productId) {
@@ -315,7 +319,7 @@ function addToWishlist(productId) {
 
 function quickView(productId) {
     const product = products.find(p => p.id === productId);
-    alert(`Quick View: ${product.name}\nPrice: $${product.price}`);
+    alert(`Quick View: ${product.name}\nPrice: ₦${product.price.toLocaleString()}`);
 }
 
 function subscribeNewsletter(event) {
