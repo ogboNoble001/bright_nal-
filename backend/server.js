@@ -11,7 +11,7 @@ const app = express();
 // Detect environment and set CORS origin dynamically
 const allowedOrigins = [
   "http://127.0.0.1:3000",     // Local frontend
-  "http://localhost:7700",     // Optional for dev
+  "http://localhost:3000",     // Optional for dev
   "https://bright-nal-frontend.onrender.com", // Replace with your hosted frontend
 ];
 
