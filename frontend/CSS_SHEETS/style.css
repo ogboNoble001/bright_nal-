@@ -416,7 +416,7 @@ main {
 .imageCarousel.active {
   transform: scale(1.2) translateY(0);
   opacity: 1;  
-  transition: all .2s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: transform .2s cubic-bezier(0.4, 0, 0.2, 1);
   filter: brightness(1);
   border-radius: 80px 80px 0 0;
   z-index: 10;
@@ -426,7 +426,7 @@ main {
 
 .imageCarousel.prev,
 .imageCarousel.next {
-  transition: all .2s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: transform .2s cubic-bezier(0.4, 0, 0.2, 1);
   border-radius: 80px 80px 0 0;
   transform: scale(0.67) translateY(10px);
   opacity: 0.7;
