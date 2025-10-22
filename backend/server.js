@@ -13,22 +13,32 @@ app.use(express.json());
 
 const pool = new Pool({
   connectionString: process.env.DATABASE_URL,
-  ssl: { rejectUnauthorized: false }
+  ssl: { rejectUnauthorized: false },
 });
 
+// ✅ Root route – confirm backend works
 app.get("/", async (req, res) => {
   try {
     const result = await pool.query("SELECT NOW()");
     res.json({
       message: "✅ Connected to Neon PostgreSQL successfully",
-      time: result.rows[0].now
+      time: result.rows[0].now,
     });
   } catch (err) {
-    res.status(500).json({ error: "❌ Database connection failed", details: err.message });
+    res.status(500).json({
+      error: "❌ Database connection failed",
+      details: err.message,
+    });
   }
 });
 
-app.use("/api/upload", uploadRoute);
+// ✅ Upload route (main)
+app.use("/upload", uploadRoute);
+
+// ✅ Fallback route
+app.use((req, res) => {
+  res.status(404).json({ message: "Route not found" });
+});
 
 const PORT = process.env.PORT || 7700;
 app.listen(PORT, () => console.log(`🚀 Server running on port ${PORT}`));

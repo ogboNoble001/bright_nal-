@@ -1,19 +1,37 @@
 import express from "express";
 import multer from "multer";
-import cloudinary from "cloudinary";
+import { v2 as cloudinary } from "cloudinary";
 import dotenv from "dotenv";
 
 dotenv.config();
+
 const router = express.Router();
 const upload = multer({ dest: "uploads/" });
 
-cloudinary.v2.config({ secure: true });
+// Configure Cloudinary
+cloudinary.config({
+  cloud_name: process.env.CLOUD_NAME,
+  api_key: process.env.CLOUD_KEY,
+  api_secret: process.env.CLOUD_SECRET,
+  secure: true,
+});
 
+// Upload route
 router.post("/", upload.single("file"), async (req, res) => {
   try {
-    const result = await cloudinary.v2.uploader.upload(req.file.path);
-    res.json({ success: true, url: result.secure_url });
+    if (!req.file) {
+      return res.status(400).json({ success: false, message: "No file uploaded" });
+    }
+
+    const result = await cloudinary.uploader.upload(req.file.path);
+
+    res.json({
+      success: true,
+      url: result.secure_url,     // ✅ renamed to 'url' — easier for frontend
+      publicId: result.public_id,
+    });
   } catch (error) {
+    console.error("Upload error:", error);
     res.status(500).json({ success: false, message: error.message });
   }
 });
