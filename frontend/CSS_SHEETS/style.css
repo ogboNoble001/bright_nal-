@@ -376,7 +376,7 @@ main {
 
 /* === IMAGE SLIDER === */
 .imageSlider {
-  padding-top: 1em;
+ 
   flex: 1;
   height: 400px;
   max-height: 400px;
@@ -400,9 +400,9 @@ main {
 
 
 .imageCarousel {
-  transition: all .6s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: all .02s cubic-bezier(0.4, 0, 0.2, 1);
   will-change: border-radius;
-  padding: .4em;
+  
   object-fit: cover;
   border-radius: 80px 80px 0 0;
   flex-shrink: 0;
