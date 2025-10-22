@@ -188,7 +188,7 @@ body {
 /* === MAIN CONTENT === */  
 .main-content {  
   flex: 1;  
-  padding: 2em 2em;  
+  padding: -3em 2em;  
   overflow-y: auto;  
 }  
 
@@ -332,6 +332,8 @@ body {
 #uploadForm {
   background: linear-gradient(145deg, #1a1a1a, #0f0f0f);
   padding: 0;
+  margin-left: auto;
+  margin-right: auto;
   border-radius: 16px;
   border: 1px solid rgba(255, 255, 255, 0.08);
   box-shadow: 

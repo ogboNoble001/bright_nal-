@@ -42,7 +42,8 @@ window.addEventListener("DOMContentLoaded", () => {
       const formData = new FormData(uploadForm);
 
       try {
-        const response = await fetch("/upload", { method: "POST", body: formData });
+        const response = await fetch("/upload", { method: "POST",
+           body: formData });
         const data = await response.json();
 
         if (data.success) {
