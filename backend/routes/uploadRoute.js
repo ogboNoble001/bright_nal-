@@ -9,7 +9,6 @@ const router = express.Router();
 const storage = multer.memoryStorage();
 const upload = multer({ storage });
 
-// Cloudinary configuration
 cloudinary.config({
   cloud_name: process.env.CLOUD_NAME,
   api_key: process.env.CLOUD_KEY,
@@ -17,17 +16,13 @@ cloudinary.config({
   secure: true,
 });
 
-// POST: Upload single/multiple files
 router.post("/", upload.array("images"), async (req, res) => {
   try {
-    if (!req.files || req.files.length === 0) {
-      return res.status(400).json({ success: false, message: "No files uploaded" });
-    }
-
+    if (!req.files || req.files.length === 0) return res.status(400).json({ success: false, message: "No files uploaded" });
+    
     const { productName, category, brand, price, stock, sku, productClass, sizes, colors, description } = req.body;
-
     const uploadedFiles = [];
-
+    
     for (const file of req.files) {
       const result = await new Promise((resolve, reject) => {
         const stream = cloudinary.uploader.upload_stream(
@@ -47,14 +42,11 @@ router.post("/", upload.array("images"), async (req, res) => {
               description: description || "N/A",
             },
           },
-          (error, result) => {
-            if (error) reject(error);
-            else resolve(result);
-          }
+          (error, result) => error ? reject(error) : resolve(result)
         );
         stream.end(file.buffer);
       });
-
+      
       uploadedFiles.push({
         url: result.secure_url,
         publicId: result.public_id,
@@ -70,7 +62,7 @@ router.post("/", upload.array("images"), async (req, res) => {
         description: result.context?.description || "N/A",
       });
     }
-
+    
     res.json({ success: true, files: uploadedFiles });
   } catch (error) {
     console.error("Upload error:", error);
@@ -78,11 +70,9 @@ router.post("/", upload.array("images"), async (req, res) => {
   }
 });
 
-// GET: Fetch all uploads
 router.get("/files", async (req, res) => {
   try {
     const result = await cloudinary.api.resources_by_tag("myApp", { max_results: 100, context: true });
-
     const files = result.resources.map(file => ({
       url: file.secure_url,
       publicId: file.public_id,
@@ -97,7 +87,6 @@ router.get("/files", async (req, res) => {
       colors: file.context?.colors || "N/A",
       description: file.context?.description || "N/A",
     }));
-
     res.json(files);
   } catch (error) {
     console.error("Fetch uploads error:", error);
