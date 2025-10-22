@@ -8,21 +8,9 @@
   box-sizing: border-box;
 }
 *::-webkit-scrollbar {
-  width: 8px;
+  display: none;
 }
 
-*::-webkit-scrollbar-track {
-  background: #f1f1f1;
-}
-
-*::-webkit-scrollbar-thumb {
-  background: #888;
-  border-radius: 4px;
-}
-
-*::-webkit-scrollbar-thumb:hover {
-  background: #555;
-}
 /* === MOBILE MENU TOGGLE === */
 .menu-toggle {
   display: none !important;
@@ -348,8 +336,8 @@
 .imageCarousel {
   width: 100px;
   height: 100px;
+  overflow-y: hidden;
   object-fit: cover;
-  border-radius: 8px;
   flex-shrink: 0;
   transition: all .2s cubic-bezier(0.4, 0, 0.2, 1);
   transform: scale(0.7) translateY(20px);
