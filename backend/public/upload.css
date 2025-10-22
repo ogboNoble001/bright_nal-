@@ -1,15 +1,13 @@
-
-    /* === GLOBAL RESET === */  
+ /* === GLOBAL RESET === */  
     *, *::before, *::after {  
       margin: 0;  
       padding: 0;  
       outline: none;  
-      font-family: system-ui, -apple-system, sans-serif;  
+      font-family: "Mona sans", system-ui, -apple-system, sans-serif;
       box-sizing: border-box;  
     } 
      *::-webkit-scrollbar {  
-  width: 7px;  
-  height: 2px;  
+ display: none;
 }  
 *::-webkit-scrollbar:hover {  
     cursor: pointer;
@@ -101,7 +99,7 @@ body {
 .admin-badge {  
   background: transparent;  
   color: #edededed;  
-  letter-spacing: 1px;  
+  letter-spacing: 2.5px;  
   padding: 0.2em 0.9em;
   border-radius: 20px;  
   font-size: 0.4em;  
@@ -166,69 +164,8 @@ body {
 .dashboard-container {  
   display: flex;  
   flex: 1;  
+  padding: auto;
   height: 100%;
-}  
-
-/* === SIDEBAR === */  
-.sidebar {  
-  width: 260px;  
-  position: fixed;
-  height: auto;
-  background: #0f0f0f;  
-  border-right: 1px solid rgba(255,255,255,0.1);  
-  padding: 2em 0;  
-  overflow-y: scroll;  
-}  
-
-.sidebar-section {  
-  margin-bottom: 2em;  
-  padding: 0 1.5em;  
-}  
-
-.sidebar-title {  
-  font-size: 0.75em;  
-  color: #666;  
-  text-transform: uppercase;  
-  letter-spacing: 1px;  
-  margin-bottom: 1em;  
-  font-weight: 600;  
-}  
-
-.sidebar-menu {  
-  list-style: none;  
-}  
-
-.sidebar-menu li {  
-  margin-bottom: 0.5em;  
-}  
-
-.sidebar-link {  
-  display: flex;  
-  align-items: center;  
-  gap: 0.8em;  
-  padding: 0.8em 1em;  
-  border-radius: 8px;  
-  color: #999;  
-  text-decoration: none;  
-  font-size: 0.95em;  
-  transition: all 0.2s;  
-  cursor: pointer;  
-}  
-
-.sidebar-link:hover {  
-  background: #1a1a1a;  
-  color: #fff;  
-}  
-
-.sidebar-link.active {  
-  background: #1a1a1a;  
-  color: #fff;  
-  font-weight: 600;  
-}  
-
-.sidebar-link [data-lucide] {  
-  width: 18px;  
-  height: 18px;  
 }  
 
 /* === MAIN CONTENT === */  
@@ -378,25 +315,28 @@ body {
 .uploadFormPrnt{
   background-color: transparent;
   padding: 1em;
+}.uploadFormPrnt {
+  background: transparent;
+  padding: 2rem 1rem;
 }
+
 #uploadForm {
-  margin-left: auto;
-  margin-right: auto;
+  margin: 0 auto;
   background: linear-gradient(145deg, #1a1a1a, #0f0f0f);
-  padding: 2.5rem;
-  border-radius: 16px;
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  padding: 3rem;
+  border-radius: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
   box-shadow: 
-    0 20px 60px rgba(0, 0, 0, 0.4),
-    inset 0 1px 0 rgba(255, 255, 255, 0.05);
-  display: flex;
-  flex-direction: column;
-  gap: 1.5rem;
+    0 30px 80px rgba(0, 0, 0, 0.6),
+    inset 0 1px 0 rgba(255, 255, 255, 0.08);
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.8rem;
   width: 100%;
-  max-width: 820px;
+  max-width: 950px;
   position: relative;
   overflow: hidden;
-  backdrop-filter: blur(10px);
+  backdrop-filter: blur(15px);
 }
 
 #uploadForm::before {
@@ -405,73 +345,88 @@ body {
   top: 0;
   left: 0;
   right: 0;
-  height: 1px;
+  height: 2px;
   background: linear-gradient(90deg, 
     transparent, 
-    rgba(255, 255, 255, 0.1), 
+    rgba(255, 255, 255, 0.2), 
     transparent
   );
 }
 
-#uploadForm input[type="file"] {
-  padding: 1rem 1.25rem;
-  background: rgba(255, 255, 255, 0.03);
-  border: 1.5px solid rgba(255, 255, 255, 0.1);
-  border-radius: 10px;
-  color: #e5e5e5;
+#uploadForm input[type="file"],
+#uploadForm input[type="text"],
+#uploadForm input[type="number"] {
+  padding: 1.2rem 1.5rem;
+  background: rgba(255, 255, 255, 0.05);
+  border: 2px solid rgba(255, 255, 255, 0.12);
+  border-radius: 12px;
+  color: #f0f0f0;
   font-size: 0.95rem;
-  cursor: pointer;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   outline: none;
+  font-family: inherit;
+}
+
+#uploadForm input::placeholder {
+  color: #666;
+}
+
+#uploadForm input[type="file"] {
+  cursor: pointer;
+  grid-column: 1 / -1;
 }
 
 #uploadForm input[type="file"]::file-selector-button {
-  padding: 0.5rem 1rem;
-  background: rgba(255, 255, 255, 0.08);
-  border: 1px solid rgba(255, 255, 255, 0.15);
-  border-radius: 6px;
+  padding: 0.7rem 1.3rem;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 8px;
   color: #fff;
-  font-weight: 500;
+  font-weight: 600;
   font-size: 0.9rem;
   cursor: pointer;
-  margin-right: 1rem;
-  transition: all 0.2s ease;
+  margin-right: 1.2rem;
+  transition: all 0.3s ease;
 }
 
 #uploadForm input[type="file"]::file-selector-button:hover {
-  background: rgba(255, 255, 255, 0.12);
-  border-color: rgba(255, 255, 255, 0.2);
-}
-
-#uploadForm input[type="file"]:hover {
-  background: rgba(255, 255, 255, 0.05);
-  border-color: rgba(255, 255, 255, 0.2);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-}
-
-#uploadForm input[type="file"]:focus {
+  background: rgba(255, 255, 255, 0.15);
   border-color: rgba(255, 255, 255, 0.3);
+  transform: translateY(-1px);
+}
+
+#uploadForm input:hover {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.25);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+}
+
+#uploadForm input:focus {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.4);
   box-shadow: 
-    0 0 0 3px rgba(255, 255, 255, 0.05),
-    0 4px 12px rgba(0, 0, 0, 0.2);
+    0 0 0 4px rgba(255, 255, 255, 0.08),
+    0 6px 20px rgba(0, 0, 0, 0.3);
 }
 
 #uploadForm button {
-  padding: 0.95rem 2rem;
-  background: linear-gradient(135deg, #fff 0%, #e5e5e5 100%);
+  grid-column: 1 / -1;
+  padding: 1.2rem 2.5rem;
+  background: linear-gradient(135deg, #fff 0%, #e8e8e8 100%);
   color: #0a0a0a;
-  font-weight: 600;
-  font-size: 1rem;
-  letter-spacing: 0.3px;
+  font-weight: 700;
+  font-size: 1.05rem;
+  letter-spacing: 0.5px;
   border: none;
-  border-radius: 10px;
+  border-radius: 12px;
   cursor: pointer;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   position: relative;
   overflow: hidden;
   box-shadow: 
-    0 4px 15px rgba(0, 0, 0, 0.3),
-    inset 0 1px 0 rgba(255, 255, 255, 0.3);
+    0 6px 20px rgba(0, 0, 0, 0.4),
+    inset 0 1px 0 rgba(255, 255, 255, 0.4);
+  margin-top: 1rem;
 }
 
 #uploadForm button::before {
@@ -484,10 +439,10 @@ body {
   background: linear-gradient(
     90deg,
     transparent,
-    rgba(255, 255, 255, 0.3),
+    rgba(255, 255, 255, 0.4),
     transparent
   );
-  transition: left 0.5s ease;
+  transition: left 0.6s ease;
 }
 
 #uploadForm button:hover::before {
@@ -495,26 +450,32 @@ body {
 }
 
 #uploadForm button:hover {
-  background: linear-gradient(135deg, #f5f5f5 0%, #d5d5d5 100%);
-  transform: translateY(-2px);
+  background: linear-gradient(135deg, #ffffff 0%, #d8d8d8 100%);
+  transform: translateY(-3px);
   box-shadow: 
-    0 8px 20px rgba(0, 0, 0, 0.4),
-    inset 0 1px 0 rgba(255, 255, 255, 0.3);
+    0 12px 30px rgba(0, 0, 0, 0.5),
+    inset 0 1px 0 rgba(255, 255, 255, 0.4);
 }
 
 #uploadForm button:active {
-  transform: translateY(0);
+  transform: translateY(-1px);
   box-shadow: 
-    0 2px 8px rgba(0, 0, 0, 0.3),
-    inset 0 1px 0 rgba(255, 255, 255, 0.3);
+    0 4px 12px rgba(0, 0, 0, 0.4),
+    inset 0 1px 0 rgba(255, 255, 255, 0.4);
 }
 
 #uploadForm button:disabled {
-  opacity: 0.5;
+  opacity: 0.4;
   cursor: not-allowed;
   transform: none;
 }
 
+@media (max-width: 768px) {
+  #uploadForm {
+    grid-template-columns: 1fr;
+    padding: 2rem;
+  }
+}
 #result {
   margin-top: 1.5rem;
   padding: 1.25rem;
@@ -543,6 +504,8 @@ body {
 
 #result img {
   width: 30px;
+  max-width: 100%;
+  height: auto;
   border-radius: 10px;
   margin-bottom: 1rem;
   box-shadow: 
@@ -612,13 +575,16 @@ body {
 }  
 
 .files-filters {  
-  display: flex;  
+  display: flex;
+  flex-direction: row;
+  overflow-x: scroll;
+  width: 100%;  
   gap: 0.8em;  
   margin-bottom: 1.5em;  
-  flex-wrap: wrap;  
 }  
 
 .filter-btn {  
+  flex: 0 0 auto;
   padding: 0.6em 1.2em;  
   background: transparent;  
   border: 1px solid #333;  
@@ -788,15 +754,11 @@ footer {
   color: #666;  
   font-size: 0.9em;  
 }  
-
-/* === RESPONSIVE === */  
 /* === RESPONSIVE IMPROVEMENTS === */
 
 /* Tablet adjustments */
 @media (max-width: 1024px) {
-  .sidebar {
-    width: 220px;
-  }
+  
   .main-content {
     padding: 1.5em;
   }

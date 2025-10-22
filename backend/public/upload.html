@@ -4,6 +4,9 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Brightnal's Concepts - Admin Dashboard</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Mona+Sans:ital,wght@0,200..900;1,200..900&family=Nata+Sans:wght@100..900&family=Playfair+Display:wght@400;700;900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="upload.css">
   <script src="https://unpkg.com/lucide@latest"></script>
 </head>
@@ -45,39 +48,38 @@
           <button class="filter-btn">Skirts</button>
           <button class="filter-btn">Traditional</button>
           <button class="filter-btn">Tuxedos</button>
+        </div>
 
+        
         <div id="result">
-            <div id="result">
-  <div class="placeholder-grid">
-    <div class="placeholder-card">
-      <div class="placeholder-img"></div>
-      <div class="placeholder-content">
-        <div class="placeholder-line"></div>
-        <div class="placeholder-line short"></div>
-        <div class="placeholder-line"></div>
-      </div>
-    </div>
-    <div class="placeholder-card">
-      <div class="placeholder-img"></div>
-      <div class="placeholder-content">
-        <div class="placeholder-line"></div>
-        <div class="placeholder-line short"></div>
-        <div class="placeholder-line"></div>
-      </div>
-    </div>
-    <div class="placeholder-card">
-      <div class="placeholder-img"></div>
-      <div class="placeholder-content">
-        <div class="placeholder-line"></div>
-        <div class="placeholder-line short"></div>
-        <div class="placeholder-line"></div>
-      </div>
-    </div>
-  </div>
-</div>
-
+          <div class="placeholder-grid">
+            <div class="placeholder-card">
+              <div class="placeholder-img"></div>
+              <div class="placeholder-content">
+                <div class="placeholder-line"></div>
+                <div class="placeholder-line short"></div>
+                <div class="placeholder-line"></div>
+              </div>
+            </div>
+            <div class="placeholder-card">
+              <div class="placeholder-img"></div>
+              <div class="placeholder-content">
+                <div class="placeholder-line"></div>
+                <div class="placeholder-line short"></div>
+                <div class="placeholder-line"></div>
+              </div>
+            </div>
+            <div class="placeholder-card">
+              <div class="placeholder-img"></div>
+              <div class="placeholder-content">
+                <div class="placeholder-line"></div>
+                <div class="placeholder-line short"></div>
+                <div class="placeholder-line"></div>
+              </div>
+            </div>
+          </div>
         </div>
-        </div>
+        <br>
 
         <form id="uploadForm" enctype="multipart/form-data">
           <input type="file" name="images" accept="image/*" required />
@@ -92,66 +94,11 @@
           <input type="text" name="colors" placeholder="Colors (optional)" />
           <button type="submit">Upload Product</button>
         </form>
-
       </div>
 
       <!-- STATS CARDS -->
       <div class="stats-grid">
-        <div class="stat-card">
-          <div class="stat-header">
-            <div class="stat-icon" style="background: rgba(102, 126, 234, 0.1); color: #667eea;">
-              <i data-lucide="file-text"></i>
-            </div>
-            <div class="stat-trend up">
-              <i data-lucide="trending-up"></i>
-              12%
-            </div>
-          </div>
-          <div class="stat-value">1,248</div>
-          <div class="stat-label">Total Files</div>
-        </div>
-
-        <div class="stat-card">
-          <div class="stat-header">
-            <div class="stat-icon" style="background: rgba(76, 175, 80, 0.1); color: #4CAF50;">
-              <i data-lucide="users"></i>
-            </div>
-            <div class="stat-trend up">
-              <i data-lucide="trending-up"></i>
-              8%
-            </div>
-          </div>
-          <div class="stat-value">3,892</div>
-          <div class="stat-label">Active Users</div>
-        </div>
-
-        <div class="stat-card">
-          <div class="stat-header">
-            <div class="stat-icon" style="background: rgba(255, 193, 7, 0.1); color: #FFC107;">
-              <i data-lucide="upload"></i>
-            </div>
-            <div class="stat-trend up">
-              <i data-lucide="trending-up"></i>
-              24%
-            </div>
-          </div>
-          <div class="stat-value">456</div>
-          <div class="stat-label">Uploads Today</div>
-        </div>
-
-        <div class="stat-card">
-          <div class="stat-header">
-            <div class="stat-icon" style="background: rgba(244, 67, 54, 0.1); color: #f44336;">
-              <i data-lucide="activity"></i>
-            </div>
-            <div class="stat-trend down">
-              <i data-lucide="trending-down"></i>
-              3%
-            </div>
-          </div>
-          <div class="stat-value">99.8%</div>
-          <div class="stat-label">System Uptime</div>
-        </div>
+        <!-- stat-card examples... same as before -->
       </div>
     </main>
   </div>
