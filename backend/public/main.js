@@ -1,8 +1,6 @@
-const uploadForm = document.getElementById("uploadForm");
-
-uploadForm.addEventListener("submit", async (e) => {
+document.getElementById("uploadForm").addEventListener("submit", async (e) => {
   e.preventDefault();
-  const formData = new FormData(uploadForm);
+  const formData = new FormData(e.target);
 
   const response = await fetch("/upload", { method: "POST", body: formData });
   const data = await response.json();
