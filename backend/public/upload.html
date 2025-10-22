@@ -1,241 +1,516 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8"/>
-<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
-<title>Brightnal's Upload</title>
-<style>
-*{margin:0;padding:0;box-sizing:border-box;font-family:"Nata sans",sans-serif}
-body{background:#f8f8f8;min-height:100vh;padding:2em}
-.container{max-width:900px;margin:0 auto;background:#fff;border-radius:15px;box-shadow:0 5px 15px rgba(0,0,0,.08);overflow:hidden}
-.header{background:#0f1419;color:#fff;padding:2em;text-align:center}
-.header h1{font-size:2em;margin-bottom:.5em}
-.header p{opacity:.9;font-size:.95em}
-.upload-zone{padding:3em 2em;border-bottom:1px solid #e5e5e5}
-.drop-area{border:3px dashed #e5e5e5;border-radius:15px;padding:3em 2em;text-align:center;cursor:pointer;transition:all .3s;background:#f9f9f9}
-.drop-area:hover,.drop-area.drag{border-color:#0f1419;background:#fff}
-.drop-icon{font-size:3em;margin-bottom:.5em}
-.drop-area h3{color:#111;margin-bottom:.5em}
-.drop-area p{color:#666;font-size:.9em;margin-bottom:1em}
-.file-input{display:none}
-.btn{background:#0f1419;color:#fff;border:none;padding:.8em 2em;border-radius:8px;font-weight:600;cursor:pointer;transition:all .3s;font-size:.95em}
-.btn:hover{background:#000;transform:translateY(-2px)}
-.btn:disabled{opacity:.5;cursor:not-allowed;transform:none}
-.btn-sec{background:#6c757d}
-.preview{display:none;padding:2em;background:#f8f8f8}
-.preview.show{display:block}
-.img-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:1em;margin-bottom:2em}
-.img-item{position:relative;border-radius:10px;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,.1)}
-.img-item img{width:100%;height:150px;object-fit:cover}
-.img-remove{position:absolute;top:.5em;right:.5em;background:#f44336;color:#fff;border:none;width:25px;height:25px;border-radius:50%;cursor:pointer;font-size:.8em}
-.form-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:1em;margin-bottom:2em}
-.form-group{display:flex;flex-direction:column;gap:.5em}
-.form-group label{font-weight:600;color:#111;font-size:.9em}
-.form-group input,.form-group select{padding:.8em;border:1px solid #e5e5e5;border-radius:8px;font-size:.9em}
-.form-group input:focus,.form-group select:focus{outline:none;border-color:#0f1419}
-.actions{display:flex;gap:1em}
-.actions button{flex:1}
-.progress{display:none;padding:0 2em 2em}
-.progress.show{display:block}
-.bar-bg{background:#e5e5e5;height:8px;border-radius:10px;overflow:hidden;margin-bottom:1em}
-.bar{background:#0f1419;height:100%;width:0;transition:width .3s;border-radius:10px}
-.progress-txt{text-align:center;color:#666;font-weight:600;font-size:.9em}
-.result{display:none;padding:0 2em 2em}
-.result.show{display:block}
-.msg{padding:1em;border-radius:8px;text-align:center;font-weight:600}
-.msg.success{background:#d4edda;color:#155724;border:2px solid #c3e6cb}
-.msg.error{background:#f8d7da;color:#721c24;border:2px solid #f5c6cb}
-.url-box{background:#f8f8f8;padding:1em;border-radius:8px;margin-top:1em;word-break:break-all;font-family:monospace;font-size:.85em;color:#0f1419;border:1px solid #e5e5e5}
-@media(max-width:768px){
-.form-grid{grid-template-columns:1fr}
-.img-grid{grid-template-columns:repeat(auto-fill,minmax(120px,1fr))}
-}
-</style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Brightnal's Concepts - Image Upload</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .container {
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(10px);
+      border-radius: 24px;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+      padding: 40px;
+      max-width: 600px;
+      width: 100%;
+      animation: slideUp 0.5s ease-out;
+    }
+
+    @keyframes slideUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .header {
+      text-align: center;
+      margin-bottom: 40px;
+    }
+
+    .header h1 {
+      color: #667eea;
+      font-size: 28px;
+      margin-bottom: 8px;
+      font-weight: 700;
+    }
+
+    .header p {
+      color: #666;
+      font-size: 14px;
+    }
+
+    .upload-area {
+      border: 3px dashed #667eea;
+      border-radius: 16px;
+      padding: 60px 20px;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      background: linear-gradient(135deg, rgba(102, 126, 234, 0.05) 0%, rgba(118, 75, 162, 0.05) 100%);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .upload-area:hover {
+      border-color: #764ba2;
+      background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
+      transform: scale(1.02);
+    }
+
+    .upload-area.dragover {
+      border-color: #764ba2;
+      background: linear-gradient(135deg, rgba(102, 126, 234, 0.15) 0%, rgba(118, 75, 162, 0.15) 100%);
+      transform: scale(1.02);
+    }
+
+    .upload-icon {
+      font-size: 64px;
+      margin-bottom: 20px;
+      animation: float 3s ease-in-out infinite;
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
+    }
+
+    .upload-area h3 {
+      color: #333;
+      font-size: 20px;
+      margin-bottom: 8px;
+    }
+
+    .upload-area p {
+      color: #666;
+      font-size: 14px;
+      margin-bottom: 20px;
+    }
+
+    .file-input {
+      display: none;
+    }
+
+    .btn {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      border: none;
+      padding: 12px 32px;
+      border-radius: 8px;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+    }
+
+    .btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(102, 126, 234, 0.6);
+    }
+
+    .btn:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .preview-section {
+      display: none;
+      margin-top: 30px;
+      animation: fadeIn 0.5s ease-out;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    .preview-section.active {
+      display: block;
+    }
+
+    .image-preview {
+      position: relative;
+      border-radius: 12px;
+      overflow: hidden;
+      margin-bottom: 20px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+    }
+
+    .image-preview img {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+
+    .file-info {
+      background: #f8f9fa;
+      padding: 20px;
+      border-radius: 12px;
+      margin-bottom: 20px;
+    }
+
+    .file-info-row {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 8px;
+      font-size: 14px;
+    }
+
+    .file-info-row:last-child {
+      margin-bottom: 0;
+    }
+
+    .file-info-label {
+      color: #666;
+      font-weight: 500;
+    }
+
+    .file-info-value {
+      color: #333;
+      font-weight: 600;
+    }
+
+    .progress-container {
+      display: none;
+      margin-top: 20px;
+    }
+
+    .progress-container.active {
+      display: block;
+    }
+
+    .progress-bar-bg {
+      background: #e0e0e0;
+      height: 8px;
+      border-radius: 10px;
+      overflow: hidden;
+      margin-bottom: 12px;
+    }
+
+    .progress-bar {
+      background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+      height: 100%;
+      width: 0%;
+      transition: width 0.3s ease;
+      border-radius: 10px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .progress-bar::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+      animation: shimmer 1.5s infinite;
+    }
+
+    @keyframes shimmer {
+      0% { transform: translateX(-100%); }
+      100% { transform: translateX(100%); }
+    }
+
+    .progress-text {
+      text-align: center;
+      color: #666;
+      font-size: 14px;
+      font-weight: 600;
+    }
+
+    .result-message {
+      display: none;
+      margin-top: 20px;
+      padding: 16px;
+      border-radius: 12px;
+      text-align: center;
+      font-weight: 600;
+      animation: fadeIn 0.5s ease-out;
+    }
+
+    .result-message.active {
+      display: block;
+    }
+
+    .result-message.success {
+      background: #d4edda;
+      color: #155724;
+      border: 2px solid #c3e6cb;
+    }
+
+    .result-message.error {
+      background: #f8d7da;
+      color: #721c24;
+      border: 2px solid #f5c6cb;
+    }
+
+    .action-buttons {
+      display: flex;
+      gap: 12px;
+      margin-top: 20px;
+    }
+
+    .action-buttons button {
+      flex: 1;
+    }
+
+    .btn-secondary {
+      background: #6c757d;
+      box-shadow: 0 4px 15px rgba(108, 117, 125, 0.4);
+    }
+
+    .btn-secondary:hover {
+      box-shadow: 0 6px 20px rgba(108, 117, 125, 0.6);
+    }
+
+    .uploaded-url {
+      background: #f8f9fa;
+      padding: 12px;
+      border-radius: 8px;
+      margin-top: 12px;
+      word-break: break-all;
+      font-family: 'Courier New', monospace;
+      font-size: 13px;
+      color: #667eea;
+      border: 1px solid #e0e0e0;
+    }
+
+    @media (max-width: 640px) {
+      .container {
+        padding: 24px;
+      }
+
+      .header h1 {
+        font-size: 24px;
+      }
+
+      .upload-area {
+        padding: 40px 20px;
+      }
+
+      .upload-icon {
+        font-size: 48px;
+      }
+    }
+  </style>
 </head>
 <body>
-<div class="container">
-<div class="header">
-<h1>📸 BRIGHTNAL'S CONCEPTS</h1>
-<p>Upload Product Images</p>
-</div>
+  <div class="container">
+    <div class="header">
+      <h1>📸 Brightnal's Concepts</h1>
+      <p>Admin Image Upload Portal</p>
+    </div>
 
-<form id="uploadForm" enctype="multipart/form-data">
-<div class="upload-zone">
-<div class="drop-area" id="dropArea">
-<div class="drop-icon">☁️</div>
-<h3>Drop images here</h3>
-<p>or click to browse</p>
-<input type="file" id="fileInput" class="file-input" name="files" accept="image/*" multiple/>
-<button type="button" class="btn" onclick="document.getElementById('fileInput').click()">Select Images</button>
-</div>
-</div>
+    <form id="uploadForm" enctype="multipart/form-data">
+      <div class="upload-area" id="uploadArea">
+        <div class="upload-icon">☁️</div>
+        <h3>Drag & Drop your image here</h3>
+        <p>or click to browse from your device</p>
+        <input type="file" id="fileInput" class="file-input" name="file" accept="image/*" required />
+        <button type="button" class="btn" onclick="document.getElementById('fileInput').click()">
+          Select Image
+        </button>
+      </div>
 
-<div class="preview" id="preview">
-<div class="img-grid" id="imgGrid"></div>
-<div class="form-grid">
-<div class="form-group">
-<label>Size (Optional)</label>
-<select id="size">
-<option value="">Select size</option>
-<option>XS</option>
-<option>S</option>
-<option>M</option>
-<option>L</option>
-<option>XL</option>
-<option>XXL</option>
-</select>
-</div>
-<div class="form-group">
-<label>Gender (Optional)</label>
-<select id="gender">
-<option value="">Select gender</option>
-<option>Unisex</option>
-<option>Men</option>
-<option>Women</option>
-<option>Kids</option>
-</select>
-</div>
-<div class="form-group">
-<label>Category (Optional)</label>
-<input type="text" id="category" placeholder="e.g., T-Shirt, Jeans"/>
-</div>
-<div class="form-group">
-<label>Price (Optional)</label>
-<input type="number" id="price" placeholder="0.00" step="0.01"/>
-</div>
-</div>
-<div class="actions">
-<button type="button" class="btn btn-sec" id="cancelBtn">Cancel</button>
-<button type="submit" class="btn" id="uploadBtn">Upload All</button>
-</div>
-</div>
+      <div class="preview-section" id="previewSection">
+        <div class="image-preview" id="imagePreview"></div>
+        
+        <div class="file-info" id="fileInfo"></div>
 
-<div class="progress" id="progress">
-<div class="bar-bg"><div class="bar" id="bar"></div></div>
-<div class="progress-txt" id="progressTxt">Uploading... 0%</div>
-</div>
+        <div class="action-buttons">
+          <button type="button" class="btn btn-secondary" id="cancelBtn">Cancel</button>
+          <button type="submit" class="btn" id="uploadBtn">Upload Image</button>
+        </div>
+      </div>
 
-<div class="result" id="result"></div>
-</form>
-</div>
+      <div class="progress-container" id="progressContainer">
+        <div class="progress-bar-bg">
+          <div class="progress-bar" id="progressBar"></div>
+        </div>
+        <div class="progress-text" id="progressText">Uploading... 0%</div>
+      </div>
 
-<script>
-const dropArea=document.getElementById('dropArea');
-const fileInput=document.getElementById('fileInput');
-const preview=document.getElementById('preview');
-const imgGrid=document.getElementById('imgGrid');
-const progress=document.getElementById('progress');
-const bar=document.getElementById('bar');
-const progressTxt=document.getElementById('progressTxt');
-const result=document.getElementById('result');
-const cancelBtn=document.getElementById('cancelBtn');
-const uploadBtn=document.getElementById('uploadBtn');
+      <div class="result-message" id="resultMessage"></div>
+    </form>
+  </div>
 
-let files=[];
+  <script>
+    const uploadArea = document.getElementById('uploadArea');
+    const fileInput = document.getElementById('fileInput');
+    const previewSection = document.getElementById('previewSection');
+    const imagePreview = document.getElementById('imagePreview');
+    const fileInfo = document.getElementById('fileInfo');
+    const uploadForm = document.getElementById('uploadForm');
+    const progressContainer = document.getElementById('progressContainer');
+    const progressBar = document.getElementById('progressBar');
+    const progressText = document.getElementById('progressText');
+    const resultMessage = document.getElementById('resultMessage');
+    const cancelBtn = document.getElementById('cancelBtn');
+    const uploadBtn = document.getElementById('uploadBtn');
 
-dropArea.onclick=()=>fileInput.click();
+    let selectedFile = null;
 
-dropArea.ondragover=(e)=>{e.preventDefault();dropArea.classList.add('drag')};
-dropArea.ondragleave=()=>dropArea.classList.remove('drag');
-dropArea.ondrop=(e)=>{
-e.preventDefault();
-dropArea.classList.remove('drag');
-if(e.dataTransfer.files.length){
-fileInput.files=e.dataTransfer.files;
-handleFiles(e.dataTransfer.files);
-}
-};
+    // Drag and drop handlers
+    uploadArea.addEventListener('click', () => fileInput.click());
+    
+    uploadArea.addEventListener('dragover', (e) => {
+      e.preventDefault();
+      uploadArea.classList.add('dragover');
+    });
 
-fileInput.onchange=(e)=>handleFiles(e.target.files);
+    uploadArea.addEventListener('dragleave', () => {
+      uploadArea.classList.remove('dragover');
+    });
 
-function handleFiles(newFiles){
-files=Array.from(newFiles);
-imgGrid.innerHTML='';
-files.forEach((f,i)=>{
-const reader=new FileReader();
-reader.onload=(e)=>{
-const div=document.createElement('div');
-div.className='img-item';
-div.innerHTML=`<img src="${e.target.result}"/><button class="img-remove" onclick="removeFile(${i})">×</button>`;
-imgGrid.appendChild(div);
-};
-reader.readAsDataURL(f);
-});
-preview.classList.add('show');
-result.classList.remove('show');
-}
+    uploadArea.addEventListener('drop', (e) => {
+      e.preventDefault();
+      uploadArea.classList.remove('dragover');
+      
+      const files = e.dataTransfer.files;
+      if (files.length > 0 && files[0].type.startsWith('image/')) {
+        fileInput.files = files;
+        handleFileSelect(files[0]);
+      }
+    });
 
-function removeFile(i){
-files.splice(i,1);
-if(files.length===0){
-preview.classList.remove('show');
-fileInput.value='';
-}else{
-handleFiles(files);
-}
-}
+    fileInput.addEventListener('change', (e) => {
+      if (e.target.files.length > 0) {
+        handleFileSelect(e.target.files[0]);
+      }
+    });
 
-cancelBtn.onclick=()=>{
-fileInput.value='';
-files=[];
-preview.classList.remove('show');
-progress.classList.remove('show');
-result.classList.remove('show');
-uploadBtn.disabled=false;
-};
+    function handleFileSelect(file) {
+      selectedFile = file;
+      
+      // Show preview
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        imagePreview.innerHTML = `<img src="${e.target.result}" alt="Preview" />`;
+        previewSection.classList.add('active');
+        
+        // Display file info
+        const fileSizeKB = (file.size / 1024).toFixed(2);
+        const fileSizeMB = (file.size / (1024 * 1024)).toFixed(2);
+        const displaySize = fileSizeMB >= 1 ? `${fileSizeMB} MB` : `${fileSizeKB} KB`;
+        
+        fileInfo.innerHTML = `
+          <div class="file-info-row">
+            <span class="file-info-label">File Name:</span>
+            <span class="file-info-value">${file.name}</span>
+          </div>
+          <div class="file-info-row">
+            <span class="file-info-label">File Size:</span>
+            <span class="file-info-value">${displaySize}</span>
+          </div>
+          <div class="file-info-row">
+            <span class="file-info-label">File Type:</span>
+            <span class="file-info-value">${file.type}</span>
+          </div>
+        `;
+      };
+      reader.readAsDataURL(file);
+    }
 
-document.getElementById('uploadForm').onsubmit=async(e)=>{
-e.preventDefault();
-if(!files.length)return;
+    cancelBtn.addEventListener('click', () => {
+      resetForm();
+    });
 
-const formData=new FormData();
-files.forEach(f=>formData.append('files',f));
+    function resetForm() {
+      fileInput.value = '';
+      selectedFile = null;
+      previewSection.classList.remove('active');
+      progressContainer.classList.remove('active');
+      resultMessage.classList.remove('active');
+      imagePreview.innerHTML = '';
+      fileInfo.innerHTML = '';
+      progressBar.style.width = '0%';
+      uploadBtn.disabled = false;
+    }
 
-const size=document.getElementById('size').value;
-const gender=document.getElementById('gender').value;
-const category=document.getElementById('category').value;
-const price=document.getElementById('price').value;
+    uploadForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      
+      if (!selectedFile) return;
 
-if(size)formData.append('size',size);
-if(gender)formData.append('gender',gender);
-if(category)formData.append('category',category);
-if(price)formData.append('price',price);
+      const formData = new FormData();
+      formData.append('file', selectedFile);
 
-progress.classList.add('show');
-result.classList.remove('show');
-uploadBtn.disabled=true;
+      // Show progress
+      progressContainer.classList.add('active');
+      resultMessage.classList.remove('active');
+      uploadBtn.disabled = true;
+      cancelBtn.disabled = true;
 
-let p=0;
-const interval=setInterval(()=>{
-p+=Math.random()*15;
-if(p>90)p=90;
-bar.style.width=p+'%';
-progressTxt.textContent=`Uploading... ${Math.round(p)}%`;
-},200);
+      // Simulate upload progress
+      let progress = 0;
+      const progressInterval = setInterval(() => {
+        progress += Math.random() * 15;
+        if (progress > 90) progress = 90;
+        
+        progressBar.style.width = progress + '%';
+        progressText.textContent = `Uploading... ${Math.round(progress)}%`;
+      }, 200);
 
-try{
-const res=await fetch('/upload',{method:'POST',body:formData});
-clearInterval(interval);
-bar.style.width='100%';
-progressTxt.textContent='Complete! 100%';
+      try {
+        const response = await fetch('/upload', { 
+          method: 'POST', 
+          body: formData 
+        });
+        
+        clearInterval(progressInterval);
+        progressBar.style.width = '100%';
+        progressText.textContent = 'Upload Complete! 100%';
 
-const data=await res.json();
-setTimeout(()=>{
-result.classList.add('show');
-if(data.success){
-result.innerHTML=`<div class="msg success">✅ Uploaded successfully!<div class="url-box">${data.url||'Multiple files uploaded'}</div></div>`;
-}else{
-result.innerHTML=`<div class="msg error">❌ Error: ${data.message}</div>`;
-}
-uploadBtn.disabled=false;
-},500);
-}catch(err){
-clearInterval(interval);
-result.classList.add('show');
-result.innerHTML=`<div class="msg error">❌ Upload failed: ${err.message}</div>`;
-uploadBtn.disabled=false;
-}
-};
-</script>
+        const data = await response.json();
+
+        setTimeout(() => {
+          if (data.success) {
+            resultMessage.className = 'result-message active success';
+            resultMessage.innerHTML = `
+              ✅ Image uploaded successfully!
+              <div class="uploaded-url">${data.url}</div>
+            `;
+          } else {
+            resultMessage.className = 'result-message active error';
+            resultMessage.innerHTML = `❌ Error: ${data.message}`;
+          }
+          
+          uploadBtn.disabled = false;
+          cancelBtn.disabled = false;
+        }, 500);
+
+      } catch (error) {
+        clearInterval(progressInterval);
+        resultMessage.className = 'result-message active error';
+        resultMessage.innerHTML = `❌ Upload failed: ${error.message}`;
+        uploadBtn.disabled = false;
+        cancelBtn.disabled = false;
+      }
+    });
+  </script>
 </body>
 </html>
