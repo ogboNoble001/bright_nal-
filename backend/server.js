@@ -17,7 +17,6 @@ const pool = new Pool({
   ssl: { rejectUnauthorized: false },
 });
 
-// ✅ Root route – confirm backend works
 app.get("/", async (req, res) => {
   try {
     const result = await pool.query("SELECT NOW()");
@@ -33,10 +32,8 @@ app.get("/", async (req, res) => {
   }
 });
 
-// ✅ Upload route (main)
 app.use("/upload", uploadRoute);
 
-// ✅ Fallback route
 app.use((req, res) => {
   res.status(404).json({ message: "Route not found" });
 });
