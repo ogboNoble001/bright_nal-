@@ -1,12 +1,14 @@
 const uploadForm = document.getElementById("uploadForm");
 const result = document.getElementById("result");
+const imagePreview = document.getElementById("imagePreview");
 
+// --- Fetch all uploaded products ---
 async function fetchAllUploads() {
   try {
     const res = await fetch("/upload/files");
     const files = await res.json();
 
-    if (files.length === 0) {
+    if (!files || files.length === 0) {
       result.innerHTML = "<p>No uploads yet.</p>";
       return;
     }
@@ -15,7 +17,7 @@ async function fetchAllUploads() {
     files.forEach(file => {
       html += `
         <div class="upload-card">
-          <img src="${file.url}" alt="${file.productName}"/>
+          <img src="${file.url}" alt="${file.productName}" class="upload-img"/>
           <div class="upload-info">
             <h3>${file.productName}</h3>
             <p><strong>Category:</strong> ${file.category}</p>
@@ -37,7 +39,7 @@ async function fetchAllUploads() {
   }
 }
 
-// --- Show loader with progress bar ---
+// --- Show loader with progress ---
 function showLoader() {
   result.innerHTML = `
     <div class="loader-container">
@@ -49,15 +51,22 @@ function showLoader() {
   `;
 }
 
+// --- Handle form submission ---
 uploadForm.addEventListener("submit", (e) => {
   e.preventDefault();
   const formData = new FormData(uploadForm);
+
+  if (!formData.has("images")) {
+    alert("Please select at least one image.");
+    return;
+  }
 
   showLoader();
 
   const xhr = new XMLHttpRequest();
   xhr.open("POST", "/upload", true);
 
+  // Upload progress
   xhr.upload.addEventListener("progress", (e) => {
     if (e.lengthComputable) {
       const percent = Math.round((e.loaded / e.total) * 100);
@@ -66,15 +75,16 @@ uploadForm.addEventListener("submit", (e) => {
     }
   });
 
+  // Response handling
   xhr.onreadystatechange = () => {
     if (xhr.readyState === 4) {
       try {
         const data = JSON.parse(xhr.responseText);
 
         if (data.success) {
-          result.innerHTML = '<p class="success">Product uploaded successfully!</p>';
+          result.innerHTML = `<p class="success">Upload successful! (${data.files.length} file${data.files.length > 1 ? "s" : ""})</p>`;
           uploadForm.reset();
-          document.getElementById("imagePreview").innerHTML = '';
+          imagePreview.innerHTML = "";
           fetchAllUploads();
         } else {
           result.innerHTML = `<p class="error">Error: ${data.message}</p>`;
@@ -88,4 +98,25 @@ uploadForm.addEventListener("submit", (e) => {
   xhr.send(formData);
 });
 
+// --- Image preview before upload ---
+document.getElementById("productImages")?.addEventListener("change", (e) => {
+  imagePreview.innerHTML = "";
+  Array.from(e.target.files).forEach((file, index) => {
+    const reader = new FileReader();
+    reader.onload = (ev) => {
+      const div = document.createElement("div");
+      div.className = "preview-item";
+      div.innerHTML = `
+        <img src="${ev.target.result}" alt="Preview ${index + 1}" class="preview-img"/>
+        <button type="button" class="preview-remove">&times;</button>
+      `;
+      imagePreview.appendChild(div);
+
+      div.querySelector(".preview-remove")?.addEventListener("click", () => div.remove());
+    };
+    reader.readAsDataURL(file);
+  });
+});
+
+// --- Initial load ---
 fetchAllUploads();
