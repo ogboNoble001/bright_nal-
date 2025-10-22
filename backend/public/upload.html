@@ -1,516 +1,1006 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Brightnal's Concepts - Image Upload</title>
-  <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
+<!DOCTYPE html>  <html lang="en">  
+<head>  
+  <meta charset="UTF-8">  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">  
+  <title>Brightnal's Concepts - Admin Dashboard</title>  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/lucide/0.263.1/umd/lucide.min.js"></script>  
+  <style>  
+    /* === GLOBAL RESET === */  
+    *, *::before, *::after {  
+      margin: 0;  
+      padding: 0;  
+      outline: none;  
+      font-family: system-ui, -apple-system, sans-serif;  
+      box-sizing: border-box;  
+    }  *::-webkit-scrollbar {  
+  width: 8px;  
+  height: 8px;  
+}  
 
-    body {
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-      min-height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 20px;
-    }
+*::-webkit-scrollbar-track {  
+  background: #1a1a1a;  
+}  
 
-    .container {
-      background: rgba(255, 255, 255, 0.95);
-      backdrop-filter: blur(10px);
-      border-radius: 24px;
-      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-      padding: 40px;
-      max-width: 600px;
-      width: 100%;
-      animation: slideUp 0.5s ease-out;
-    }
+*::-webkit-scrollbar-thumb {  
+  background: #444;  
+  border-radius: 4px;  
+}  
 
-    @keyframes slideUp {
-      from {
-        opacity: 0;
-        transform: translateY(30px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
+*::-webkit-scrollbar-thumb:hover {  
+  background: #555;  
+}  
 
-    .header {
-      text-align: center;
-      margin-bottom: 40px;
-    }
+body {  
+  background-color: #0a0a0a;  
+  color: #e5e5e5;  
+  min-height: 100vh;  
+  font-family: system-ui, -apple-system, sans-serif;  
+  display: flex;  
+  flex-direction: column;  
+}  
 
-    .header h1 {
-      color: #667eea;
-      font-size: 28px;
-      margin-bottom: 8px;
-      font-weight: 700;
-    }
+/* === HEADER === */  
+.header {  
+  position: sticky;  
+  top: 0;  
+  z-index: 1000;  
+  background-color: rgba(15, 15, 15, 0.95);  
+  backdrop-filter: blur(10px);  
+  padding: 1.2em 2.2em;  
+  display: flex;  
+  justify-content: space-between;  
+  align-items: center;  
+  border-bottom: 1px solid rgba(255,255,255,0.1);  
+  gap: 1.5rem;  
+}  
 
-    .header p {
-      color: #666;
-      font-size: 14px;
-    }
+.logo {  
+  display: flex;  
+  gap: 0.5em;  
+  align-items: center;  
+  font-weight: 700;  
+  font-size: 1.1em;  
+  color: #fff;  
+  cursor: pointer;  
+}  
 
-    .upload-area {
-      border: 3px dashed #667eea;
-      border-radius: 16px;
-      padding: 60px 20px;
-      text-align: center;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      background: linear-gradient(135deg, rgba(102, 126, 234, 0.05) 0%, rgba(118, 75, 162, 0.05) 100%);
-      position: relative;
-      overflow: hidden;
-    }
+.logo::before {  
+  content: "BRIGHTNAL'S CONCEPTS";  
+  font-size: 1.2em;  
+  letter-spacing: 0.5px;  
+}  
 
-    .upload-area:hover {
-      border-color: #764ba2;
-      background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
-      transform: scale(1.02);
-    }
+.admin-badge {  
+  background: #f44336;  
+  color: #fff;  
+  padding: 0.3em 0.8em;  
+  border-radius: 20px;  
+  font-size: 0.7em;  
+  font-weight: 600;  
+  margin-left: 0.5em;  
+}  
 
-    .upload-area.dragover {
-      border-color: #764ba2;
-      background: linear-gradient(135deg, rgba(102, 126, 234, 0.15) 0%, rgba(118, 75, 162, 0.15) 100%);
-      transform: scale(1.02);
-    }
+.header-right {  
+  display: flex;  
+  align-items: center;  
+  gap: 1.5em;  
+}  
 
-    .upload-icon {
-      font-size: 64px;
-      margin-bottom: 20px;
-      animation: float 3s ease-in-out infinite;
-    }
+.searchBar {  
+  padding: .6em .9em;  
+  display: flex;  
+  align-items: center;  
+  gap: 0.5em;  
+  border-radius: 30px;  
+  background-color: #1a1a1a;  
+  flex: 0 1 300px;  
+  border: 1px solid #333;  
+}  
 
-    @keyframes float {
-      0%, 100% { transform: translateY(0); }
-      50% { transform: translateY(-10px); }
-    }
+.searchBar input {  
+  border: none;  
+  width: 100%;  
+  background-color: transparent;  
+  font-size: 0.95em;  
+  color: #e5e5e5;  
+}  
 
-    .upload-area h3 {
-      color: #333;
-      font-size: 20px;
-      margin-bottom: 8px;
-    }
+.searchBar [data-lucide] {  
+  color: #888;  
+  width: 18px;  
+  height: 18px;  
+}  
 
-    .upload-area p {
-      color: #666;
-      font-size: 14px;
-      margin-bottom: 20px;
-    }
+.user-profile {  
+  display: flex;  
+  align-items: center;  
+  gap: 0.8em;  
+  cursor: pointer;  
+  padding: 0.5em 1em;  
+  border-radius: 30px;  
+  background: #1a1a1a;  
+  border: 1px solid #333;  
+  transition: all 0.3s;  
+}  
 
-    .file-input {
-      display: none;
-    }
+.user-profile:hover {  
+  background: #222;  
+  border-color: #444;  
+}  
 
-    .btn {
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-      color: white;
-      border: none;
-      padding: 12px 32px;
-      border-radius: 8px;
-      font-size: 16px;
-      font-weight: 600;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
-    }
+.user-avatar {  
+  width: 35px;  
+  height: 35px;  
+  border-radius: 50%;  
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);  
+  display: flex;  
+  align-items: center;  
+  justify-content: center;  
+  color: #fff;  
+  font-weight: 600;  
+}  
 
-    .btn:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 6px 20px rgba(102, 126, 234, 0.6);
-    }
+.user-info {  
+  display: flex;  
+  flex-direction: column;  
+}  
 
-    .btn:disabled {
-      opacity: 0.6;
-      cursor: not-allowed;
-      transform: none;
-    }
+.user-name {  
+  font-size: 0.9em;  
+  font-weight: 600;  
+  color: #fff;  
+}  
 
-    .preview-section {
-      display: none;
-      margin-top: 30px;
-      animation: fadeIn 0.5s ease-out;
-    }
+.user-role {  
+  font-size: 0.75em;  
+  color: #888;  
+}  
 
-    @keyframes fadeIn {
-      from { opacity: 0; }
-      to { opacity: 1; }
-    }
+/* === LAYOUT === */  
+.dashboard-container {  
+  display: flex;  
+  flex: 1;  
+}  
 
-    .preview-section.active {
-      display: block;
-    }
+/* === SIDEBAR === */  
+.sidebar {  
+  width: 260px;  
+  background: #0f0f0f;  
+  border-right: 1px solid rgba(255,255,255,0.1);  
+  padding: 2em 0;  
+  overflow-y: auto;  
+}  
 
-    .image-preview {
-      position: relative;
-      border-radius: 12px;
-      overflow: hidden;
-      margin-bottom: 20px;
-      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
-    }
+.sidebar-section {  
+  margin-bottom: 2em;  
+  padding: 0 1.5em;  
+}  
 
-    .image-preview img {
-      width: 100%;
-      height: auto;
-      display: block;
-    }
+.sidebar-title {  
+  font-size: 0.75em;  
+  color: #666;  
+  text-transform: uppercase;  
+  letter-spacing: 1px;  
+  margin-bottom: 1em;  
+  font-weight: 600;  
+}  
 
-    .file-info {
-      background: #f8f9fa;
-      padding: 20px;
-      border-radius: 12px;
-      margin-bottom: 20px;
-    }
+.sidebar-menu {  
+  list-style: none;  
+}  
 
-    .file-info-row {
-      display: flex;
-      justify-content: space-between;
-      margin-bottom: 8px;
-      font-size: 14px;
-    }
+.sidebar-menu li {  
+  margin-bottom: 0.5em;  
+}  
 
-    .file-info-row:last-child {
-      margin-bottom: 0;
-    }
+.sidebar-link {  
+  display: flex;  
+  align-items: center;  
+  gap: 0.8em;  
+  padding: 0.8em 1em;  
+  border-radius: 8px;  
+  color: #999;  
+  text-decoration: none;  
+  font-size: 0.95em;  
+  transition: all 0.2s;  
+  cursor: pointer;  
+}  
 
-    .file-info-label {
-      color: #666;
-      font-weight: 500;
-    }
+.sidebar-link:hover {  
+  background: #1a1a1a;  
+  color: #fff;  
+}  
 
-    .file-info-value {
-      color: #333;
-      font-weight: 600;
-    }
+.sidebar-link.active {  
+  background: #1a1a1a;  
+  color: #fff;  
+  font-weight: 600;  
+}  
 
-    .progress-container {
-      display: none;
-      margin-top: 20px;
-    }
+.sidebar-link [data-lucide] {  
+  width: 18px;  
+  height: 18px;  
+}  
 
-    .progress-container.active {
-      display: block;
-    }
+/* === MAIN CONTENT === */  
+.main-content {  
+  flex: 1;  
+  padding: 2em 2.2em;  
+  overflow-y: auto;  
+}  
 
-    .progress-bar-bg {
-      background: #e0e0e0;
-      height: 8px;
-      border-radius: 10px;
-      overflow: hidden;
-      margin-bottom: 12px;
-    }
+.page-header {  
+  margin-bottom: 2em;  
+}  
 
-    .progress-bar {
-      background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
-      height: 100%;
-      width: 0%;
-      transition: width 0.3s ease;
-      border-radius: 10px;
-      position: relative;
-      overflow: hidden;
-    }
+.page-title {  
+  font-size: 2em;  
+  font-weight: 700;  
+  color: #fff;  
+  margin-bottom: 0.5em;  
+}  
 
-    .progress-bar::after {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
-      animation: shimmer 1.5s infinite;
-    }
+.page-subtitle {  
+  color: #888;  
+  font-size: 0.95em;  
+}  
 
-    @keyframes shimmer {
-      0% { transform: translateX(-100%); }
-      100% { transform: translateX(100%); }
-    }
+/* === STATS CARDS === */  
+.stats-grid {  
+  display: grid;  
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));  
+  gap: 1.5em;  
+  margin-bottom: 2em;  
+}  
 
-    .progress-text {
-      text-align: center;
-      color: #666;
-      font-size: 14px;
-      font-weight: 600;
-    }
+.stat-card {  
+  background: #0f0f0f;  
+  border: 1px solid rgba(255,255,255,0.1);  
+  border-radius: 12px;  
+  padding: 1.5em;  
+  transition: all 0.3s;  
+}  
 
-    .result-message {
-      display: none;
-      margin-top: 20px;
-      padding: 16px;
-      border-radius: 12px;
-      text-align: center;
-      font-weight: 600;
-      animation: fadeIn 0.5s ease-out;
-    }
+.stat-card:hover {  
+  transform: translateY(-5px);  
+  border-color: rgba(255,255,255,0.2);  
+  box-shadow: 0 10px 30px rgba(0,0,0,0.3);  
+}  
 
-    .result-message.active {
-      display: block;
-    }
+.stat-header {  
+  display: flex;  
+  justify-content: space-between;  
+  align-items: center;  
+  margin-bottom: 1em;  
+}  
 
-    .result-message.success {
-      background: #d4edda;
-      color: #155724;
-      border: 2px solid #c3e6cb;
-    }
+.stat-icon {  
+  width: 45px;  
+  height: 45px;  
+  border-radius: 10px;  
+  display: flex;  
+  align-items: center;  
+  justify-content: center;  
+  background: rgba(255,255,255,0.05);  
+}  
 
-    .result-message.error {
-      background: #f8d7da;
-      color: #721c24;
-      border: 2px solid #f5c6cb;
-    }
+.stat-icon [data-lucide] {  
+  width: 22px;  
+  height: 22px;  
+}  
 
-    .action-buttons {
-      display: flex;
-      gap: 12px;
-      margin-top: 20px;
-    }
+.stat-trend {  
+  display: flex;  
+  align-items: center;  
+  gap: 0.3em;  
+  font-size: 0.85em;  
+  padding: 0.3em 0.6em;  
+  border-radius: 20px;  
+}  
 
-    .action-buttons button {
-      flex: 1;
-    }
+.stat-trend.up {  
+  color: #4CAF50;  
+  background: rgba(76, 175, 80, 0.1);  
+}  
 
-    .btn-secondary {
-      background: #6c757d;
-      box-shadow: 0 4px 15px rgba(108, 117, 125, 0.4);
-    }
+.stat-trend.down {  
+  color: #f44336;  
+  background: rgba(244, 67, 54, 0.1);  
+}  
 
-    .btn-secondary:hover {
-      box-shadow: 0 6px 20px rgba(108, 117, 125, 0.6);
-    }
+.stat-trend [data-lucide] {  
+  width: 14px;  
+  height: 14px;  
+}  
 
-    .uploaded-url {
-      background: #f8f9fa;
-      padding: 12px;
-      border-radius: 8px;
-      margin-top: 12px;
-      word-break: break-all;
-      font-family: 'Courier New', monospace;
-      font-size: 13px;
-      color: #667eea;
-      border: 1px solid #e0e0e0;
-    }
+.stat-value {  
+  font-size: 2em;  
+  font-weight: 700;  
+  color: #fff;  
+  margin-bottom: 0.2em;  
+}  
 
-    @media (max-width: 640px) {
-      .container {
-        padding: 24px;
-      }
+.stat-label {  
+  color: #888;  
+  font-size: 0.9em;  
+}  
 
-      .header h1 {
-        font-size: 24px;
-      }
+.stat-percentage {  
+  margin-top: 1em;  
+  padding-top: 1em;  
+  border-top: 1px solid rgba(255,255,255,0.1);  
+}  
 
-      .upload-area {
-        padding: 40px 20px;
-      }
+.percentage-bar {  
+  height: 6px;  
+  background: rgba(255,255,255,0.1);  
+  border-radius: 3px;  
+  overflow: hidden;  
+  margin-top: 0.5em;  
+}  
 
-      .upload-icon {
-        font-size: 48px;
-      }
-    }
-  </style>
-</head>
-<body>
-  <div class="container">
-    <div class="header">
-      <h1>📸 Brightnal's Concepts</h1>
-      <p>Admin Image Upload Portal</p>
-    </div>
+.percentage-fill {  
+  height: 100%;  
+  background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);  
+  border-radius: 3px;  
+  transition: width 1s ease;  
+}  
 
-    <form id="uploadForm" enctype="multipart/form-data">
-      <div class="upload-area" id="uploadArea">
-        <div class="upload-icon">☁️</div>
-        <h3>Drag & Drop your image here</h3>
-        <p>or click to browse from your device</p>
-        <input type="file" id="fileInput" class="file-input" name="file" accept="image/*" required />
-        <button type="button" class="btn" onclick="document.getElementById('fileInput').click()">
-          Select Image
-        </button>
+/* === FILES SECTION === */  
+.files-section {  
+  background: #0f0f0f;  
+  border: 1px solid rgba(255,255,255,0.1);  
+  border-radius: 12px;  
+  padding: 1.5em;  
+}  
+
+.section-header {  
+  display: flex;  
+  justify-content: space-between;  
+  align-items: center;  
+  margin-bottom: 1.5em;  
+}  
+
+.section-title {  
+  font-size: 1.3em;  
+  font-weight: 600;  
+  color: #fff;  
+}  
+
+.upload-btn {  
+  display: flex;  
+  align-items: center;  
+  gap: 0.5em;  
+  padding: 0.7em 1.5em;  
+  background: #fff;  
+  color: #0a0a0a;  
+  border: none;  
+  border-radius: 8px;  
+  font-weight: 600;  
+  cursor: pointer;  
+  transition: all 0.3s;  
+}  
+
+.upload-btn:hover {  
+  background: #e5e5e5;  
+  transform: translateY(-2px);  
+}  
+
+.upload-btn [data-lucide] {  
+  width: 16px;  
+  height: 16px;  
+}  
+
+.files-filters {  
+  display: flex;  
+  gap: 0.8em;  
+  margin-bottom: 1.5em;  
+  flex-wrap: wrap;  
+}  
+
+.filter-btn {  
+  padding: 0.6em 1.2em;  
+  background: transparent;  
+  border: 1px solid #333;  
+  border-radius: 20px;  
+  color: #888;  
+  font-size: 0.9em;  
+  cursor: pointer;  
+  transition: all 0.2s;  
+}  
+
+.filter-btn:hover, .filter-btn.active {  
+  background: #1a1a1a;  
+  border-color: #555;  
+  color: #fff;  
+}  
+
+.files-table {  
+  width: 100%;  
+  border-collapse: collapse;  
+}  
+
+.files-table thead {  
+  border-bottom: 1px solid rgba(255,255,255,0.1);  
+}  
+
+.files-table th {  
+  text-align: left;  
+  padding: 1em;  
+  color: #888;  
+  font-weight: 600;  
+  font-size: 0.85em;  
+  text-transform: uppercase;  
+  letter-spacing: 0.5px;  
+}  
+
+.files-table td {  
+  padding: 1em;  
+  border-bottom: 1px solid rgba(255,255,255,0.05);  
+}  
+
+.files-table tr:hover {  
+  background: rgba(255,255,255,0.02);  
+}  
+
+.file-info {  
+  display: flex;  
+  align-items: center;  
+  gap: 1em;  
+}  
+
+.file-icon {  
+  width: 40px;  
+  height: 40px;  
+  border-radius: 8px;  
+  display: flex;  
+  align-items: center;  
+  justify-content: center;  
+  background: rgba(255,255,255,0.05);  
+}  
+
+.file-icon [data-lucide] {  
+  width: 20px;  
+  height: 20px;  
+  color: #888;  
+}  
+
+.file-details {  
+  display: flex;  
+  flex-direction: column;  
+}  
+
+.file-name {  
+  color: #fff;  
+  font-weight: 500;  
+  margin-bottom: 0.2em;  
+}  
+
+.file-meta {  
+  color: #666;  
+  font-size: 0.85em;  
+}  
+
+.file-status {  
+  padding: 0.4em 0.8em;  
+  border-radius: 20px;  
+  font-size: 0.85em;  
+  font-weight: 500;  
+}  
+
+.status-active {  
+  background: rgba(76, 175, 80, 0.1);  
+  color: #4CAF50;  
+}  
+
+.status-pending {  
+  background: rgba(255, 193, 7, 0.1);  
+  color: #FFC107;  
+}  
+
+.status-archived {  
+  background: rgba(158, 158, 158, 0.1);  
+  color: #9E9E9E;  
+}  
+
+.file-actions {  
+  display: flex;  
+  gap: 0.5em;  
+}  
+
+.action-icon-btn {  
+  width: 32px;  
+  height: 32px;  
+  border-radius: 6px;  
+  border: none;  
+  background: transparent;  
+  color: #888;  
+  cursor: pointer;  
+  display: flex;  
+  align-items: center;  
+  justify-content: center;  
+  transition: all 0.2s;  
+}  
+
+.action-icon-btn:hover {  
+  background: rgba(255,255,255,0.05);  
+  color: #fff;  
+}  
+
+.action-icon-btn [data-lucide] {  
+  width: 16px;  
+  height: 16px;  
+}  
+
+/* === FOOTER === */  
+footer {  
+  background: #0f0f0f;  
+  border-top: 1px solid rgba(255,255,255,0.1);  
+  padding: 2em 2.2em;  
+}  
+
+.footer-content {  
+  display: flex;  
+  justify-content: space-between;  
+  align-items: center;  
+  flex-wrap: wrap;  
+  gap: 1em;  
+}  
+
+.footer-links {  
+  display: flex;  
+  gap: 2em;  
+  list-style: none;  
+}  
+
+.footer-links a {  
+  color: #888;  
+  text-decoration: none;  
+  font-size: 0.9em;  
+  transition: color 0.2s;  
+}  
+
+.footer-links a:hover {  
+  color: #fff;  
+}  
+
+.footer-copyright {  
+  color: #666;  
+  font-size: 0.9em;  
+}  
+
+/* === RESPONSIVE === */  
+/* === RESPONSIVE IMPROVEMENTS === */
+
+/* Tablet adjustments */
+@media (max-width: 1024px) {
+  .sidebar {
+    width: 220px;
+  }
+
+  .searchBar {
+    flex: 1;
+    max-width: 220px;
+  }
+
+  .main-content {
+    padding: 1.5em;
+  }
+}
+
+/* Mobile adjustments */
+@media (max-width: 768px) {
+  body {
+    flex-direction: column;
+  }
+
+  .header {
+    flex-wrap: wrap;
+    padding: 1em;
+    gap: 1em;
+  }
+
+  .logo::before {
+    font-size: 1em;
+  }
+
+  .searchBar {
+    flex: 1;
+    width: 100%;
+    order: 3;
+  }
+
+  .user-profile {
+    padding: 0.4em 0.8em;
+  }
+
+  .dashboard-container {
+    flex-direction: column;
+  }
+
+  .sidebar {
+    width: 100%;
+    position: relative;
+    border-right: none;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+    display: none; /* hidden by default on mobile */
+  }
+
+  .sidebar.active {
+    display: block; /* shown when toggled */
+  }
+
+  .main-content {
+    padding: 1.5em 1em;
+  }
+
+  .stats-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .files-table {
+    display: block;
+    overflow-x: auto;
+    white-space: nowrap;
+  }
+
+  .footer-content {
+    flex-direction: column;
+    text-align: center;
+    gap: 1em;
+  }
+
+  .footer-links {
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 1em;
+  }
+}
+
+/* Extra small screens */
+@media (max-width: 480px) {
+  .user-profile .user-info {
+    display: none;
+  }
+
+  .stat-value {
+    font-size: 1.5em;
+  }
+
+  .page-title {
+    font-size: 1.5em;
+  }
+
+  .upload-btn {
+    padding: 0.6em 1em;
+  }
+
+  .filter-btn {
+    padding: 0.5em 1em;
+    font-size: 0.85em;
+  }
+}
+  </style>  
+</head>  
+<body>  
+  <!-- HEADER -->  
+  <header class="header">  
+    <div class="logo">  
+      <span class="admin-badge">ADMIN</span>  
+    </div>  <div class="header-right">  
+  <div class="searchBar">  
+    <i data-lucide="search"></i>  
+    <input type="text" placeholder="Search files, users, settings...">  
+  </div>  
+    
+  <div class="user-profile">  
+    <div class="user-avatar">BC</div>  
+    <div class="user-info">  
+      <div class="user-name">Admin User</div>  
+      <div class="user-role">Administrator</div>  
+    </div>  
+    <i data-lucide="chevron-down"></i>  
+  </div>  
+</div>
+
+  </header>    <div class="dashboard-container">  
+    <!-- SIDEBAR -->  
+    <aside class="sidebar">  
+      <div class="sidebar-section">  
+        <div class="sidebar-title">Main Menu</div>  
+        <ul class="sidebar-menu">  
+          <li><a href="#" class="sidebar-link active"><i data-lucide="layout-dashboard"></i> Dashboard</a></li>  
+          <li><a href="#" class="sidebar-link"><i data-lucide="file-text"></i> Files</a></li>  
+          <li><a href="#" class="sidebar-link"><i data-lucide="users"></i> Users</a></li>  
+          <li><a href="#" class="sidebar-link"><i data-lucide="shopping-bag"></i> Products</a></li>  
+          <li><a href="#" class="sidebar-link"><i data-lucide="bar-chart-3"></i> Analytics</a></li>  
+        </ul>  
+      </div>  <div class="sidebar-section">  
+    <div class="sidebar-title">Management</div>  
+    <ul class="sidebar-menu">  
+      <li><a href="#" class="sidebar-link"><i data-lucide="settings"></i> Settings</a></li>  
+      <li><a href="#" class="sidebar-link"><i data-lucide="database"></i> Database</a></li>  
+      <li><a href="#" class="sidebar-link"><i data-lucide="shield"></i> Security</a></li>  
+      <li><a href="#" class="sidebar-link"><i data-lucide="bell"></i> Notifications</a></li>  
+    </ul>  
+  </div>  
+
+  <div class="sidebar-section">  
+    <div class="sidebar-title">System</div>  
+    <ul class="sidebar-menu">  
+      <li><a href="#" class="sidebar-link"><i data-lucide="activity"></i> System Health</a></li>  
+      <li><a href="#" class="sidebar-link"><i data-lucide="archive"></i> Backups</a></li>  
+      <li><a href="#" class="sidebar-link"><i data-lucide="terminal"></i> Logs</a></li>  
+      <li><a href="#" class="sidebar-link"><i data-lucide="help-circle"></i> Help & Support</a></li>  
+    </ul>  
+  </div>  
+</aside>  
+
+<!-- MAIN CONTENT -->  
+<main class="main-content">  
+  <div class="page-header">  
+    <h1 class="page-title">Dashboard Overview</h1>  
+    <p class="page-subtitle">Welcome back! Here's what's happening with your platform today.</p>  
+  </div>  
+
+  <!-- STATS CARDS -->  
+  <div class="stats-grid">  
+    <div class="stat-card">  
+      <div class="stat-header">  
+        <div class="stat-icon" style="background: rgba(102, 126, 234, 0.1); color: #667eea;">  
+          <i data-lucide="file-text"></i>  
+        </div>  
+        <div class="stat-trend up">  
+          <i data-lucide="trending-up"></i>  
+          12%  
+        </div>  
+      </div>  
+      <div class="stat-value">1,248</div>  
+      <div class="stat-label">Total Files</div>  
+      <div class="stat-percentage">  
+        <div style="display: flex; justify-content: space-between; margin-bottom: 0.5em;">  
+          <span style="color: #888; font-size: 0.85em;">Storage Used</span>  
+          <span style="color: #fff; font-size: 0.85em; font-weight: 600;">68%</span>  
+        </div>  
+        <div class="percentage-bar">  
+          <div class="percentage-fill" style="width: 68%;"></div>  
+        </div>  
+      </div>  
+    </div>  
+
+    <div class="stat-card">  
+      <div class="stat-header">  
+        <div class="stat-icon" style="background: rgba(76, 175, 80, 0.1); color: #4CAF50;">  
+          <i data-lucide="users"></i>  
+        </div>  
+        <div class="stat-trend up">  
+          <i data-lucide="trending-up"></i>  
+          8%  
+        </div>  
+      </div>  
+      <div class="stat-value">3,892</div>  
+      <div class="stat-label">Active Users</div>  
+      <div class="stat-percentage">  
+        <div style="display: flex; justify-content: space-between; margin-bottom: 0.5em;">  
+          <span style="color: #888; font-size: 0.85em;">Engagement Rate</span>  
+          <span style="color: #fff; font-size: 0.85em; font-weight: 600;">82%</span>  
+        </div>  
+        <div class="percentage-bar">  
+          <div class="percentage-fill" style="width: 82%;"></div>  
+        </div>  
+      </div>  
+    </div>  
+
+    <div class="stat-card">  
+      <div class="stat-header">  
+        <div class="stat-icon" style="background: rgba(255, 193, 7, 0.1); color: #FFC107;">  
+          <i data-lucide="upload"></i>  
+        </div>  
+        <div class="stat-trend up">  
+          <i data-lucide="trending-up"></i>  
+          24%  
+        </div>  
+      </div>  
+      <div class="stat-value">456</div>  
+      <div class="stat-label">Uploads Today</div>  
+      <div class="stat-percentage">  
+        <div style="display: flex; justify-content: space-between; margin-bottom: 0.5em;">  
+          <span style="color: #888; font-size: 0.85em;">Success Rate</span>  
+          <span style="color: #fff; font-size: 0.85em; font-weight: 600;">95%</span>  
+        </div>  
+        <div class="percentage-bar">  
+          <div class="percentage-fill" style="width: 95%;"></div>  
+        </div>  
+      </div>  
+    </div>  
+
+    <div class="stat-card">  
+      <div class="stat-header">  
+        <div class="stat-icon" style="background: rgba(244, 67, 54, 0.1); color: #f44336;">  
+          <i data-lucide="activity"></i>  
+        </div>  
+        <div class="stat-trend down">  
+          <i data-lucide="trending-down"></i>  
+          3%  
+        </div>  
+      </div>  
+      <div class="stat-value">99.8%</div>  
+      <div class="stat-label">System Uptime</div>  
+      <div class="stat-percentage">  
+        <div style="display: flex; justify-content: space-between; margin-bottom: 0.5em;">  
+          <span style="color: #888; font-size: 0.85em;">Server Health</span>  
+          <span style="color: #fff; font-size: 0.85em; font-weight: 600;">98%</span>  
+        </div>  
+        <div class="percentage-bar">  
+          <div class="percentage-fill" style="width: 98%;"></div>  
+        </div>  
+      </div>  
+    </div>  
+  </div>  
+
+  <!-- FILES SECTION -->  
+  <div class="files-section">  
+    <div class="section-header">  
+      <h2 class="section-title">Uploaded Files</h2>  
+      <button class="upload-btn">  
+        <i data-lucide="upload"></i>  
+        Upload New File  
+      </button>  
+    </div>  
+
+    <div class="files-filters">  
+      <button class="filter-btn active">All Files</button>  
+      <button class="filter-btn">Documents</button>  
+      <button class="filter-btn">Images</button>  
+      <button class="filter-btn">Videos</button>  
+      <button class="filter-btn">Archives</button>  
+    </div>  
+
+    <table class="files-table">  
+      <thead>  
+        <tr>  
+          <th>File Name</th>  
+          <th>Size</th>  
+          <th>Type</th>  
+          <th>Uploaded</th>  
+          <th>Status</th>  
+          <th>Actions</th>  
+        </tr>  
+      </thead>  
+      <tbody>  
+        <tr>  
+          <td>  
+            <div class="file-info">  
+              <div class="file-icon">  
+                <i data-lucide="file-text"></i>  
+              </div>  
+              <div class="file-details">  
+                <div class="file-name">Annual_Report_2024.pdf</div>  
+                <div class="file-meta">PDF Document</div>  
+              </div>  
+            </div>  
+          </td>  
+          <td style="color: #888;">2.4 MB</td>  
+          <td style="color: #888;">Document</td>  
+          <td style="color: #888;">2 hours ago</td>  
+          <td><span class="file-status status-active">Active</span></td>  
+          <td>  
+            <div class="file-actions">  
+              <button class="action-icon-btn"><i data-lucide="download"></i></button>  
+              <button class="action-icon-btn"><i data-lucide="share-2"></i></button>  
+              <button class="action-icon-btn"><i data-lucide="trash-2"></i></button>  
+            </div>  
+          </td>  
+        </tr>  
+        <tr>  
+    <td>
+                <div class="file-info">
+                  <div class="file-icon">
+                    <i data-lucide="image"></i>
+                  </div>
+                  <div class="file-details">
+                    <div class="file-name">banner_design.png</div>
+                    <div class="file-meta">PNG Image</div>
+                  </div>
+                </div>
+              </td>
+              <td style="color: #888;">1.1 MB</td>
+              <td style="color: #888;">Image</td>
+              <td style="color: #888;">Yesterday</td>
+              <td><span class="file-status status-active">Active</span></td>
+              <td>
+                <div class="file-actions">
+                  <button class="action-icon-btn"><i data-lucide="download"></i></button>
+                  <button class="action-icon-btn"><i data-lucide="share-2"></i></button>
+                  <button class="action-icon-btn"><i data-lucide="trash-2"></i></button>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <div class="file-info">
+                  <div class="file-icon">
+                    <i data-lucide="video"></i>
+                  </div>
+                  <div class="file-details">
+                    <div class="file-name">promo_clip.mp4</div>
+                    <div class="file-meta">Video File</div>
+                  </div>
+                </div>
+              </td>
+              <td style="color: #888;">25 MB</td>
+              <td style="color: #888;">Video</td>
+              <td style="color: #888;">3 days ago</td>
+              <td><span class="file-status status-pending">Pending</span></td>
+              <td>
+                <div class="file-actions">
+                  <button class="action-icon-btn"><i data-lucide="download"></i></button>
+                  <button class="action-icon-btn"><i data-lucide="share-2"></i></button>
+                  <button class="action-icon-btn"><i data-lucide="trash-2"></i></button>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <div class="file-info">
+                  <div class="file-icon">
+                    <i data-lucide="archive"></i>
+                  </div>
+                  <div class="file-details">
+                    <div class="file-name">resources_backup.zip</div>
+                    <div class="file-meta">ZIP Archive</div>
+                  </div>
+                </div>
+              </td>
+              <td style="color: #888;">120 MB</td>
+              <td style="color: #888;">Archive</td>
+              <td style="color: #888;">1 week ago</td>
+              <td><span class="file-status status-archived">Archived</span></td>
+              <td>
+                <div class="file-actions">
+                  <button class="action-icon-btn"><i data-lucide="download"></i></button>
+                  <button class="action-icon-btn"><i data-lucide="share-2"></i></button>
+                  <button class="action-icon-btn"><i data-lucide="trash-2"></i></button>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
       </div>
-
-      <div class="preview-section" id="previewSection">
-        <div class="image-preview" id="imagePreview"></div>
-        
-        <div class="file-info" id="fileInfo"></div>
-
-        <div class="action-buttons">
-          <button type="button" class="btn btn-secondary" id="cancelBtn">Cancel</button>
-          <button type="submit" class="btn" id="uploadBtn">Upload Image</button>
-        </div>
-      </div>
-
-      <div class="progress-container" id="progressContainer">
-        <div class="progress-bar-bg">
-          <div class="progress-bar" id="progressBar"></div>
-        </div>
-        <div class="progress-text" id="progressText">Uploading... 0%</div>
-      </div>
-
-      <div class="result-message" id="resultMessage"></div>
-    </form>
+    </main>
   </div>
 
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-content">
+      <ul class="footer-links">
+        <li><a href="#">Privacy Policy</a></li>
+        <li><a href="#">Terms of Service</a></li>
+        <li><a href="#">Contact Support</a></li>
+      </ul>
+      <p class="footer-copyright">
+        &copy; <span id="year"></span> Brightnal's Concepts. All rights reserved.
+      </p>
+    </div>
+  </footer>
+
   <script>
-    const uploadArea = document.getElementById('uploadArea');
-    const fileInput = document.getElementById('fileInput');
-    const previewSection = document.getElementById('previewSection');
-    const imagePreview = document.getElementById('imagePreview');
-    const fileInfo = document.getElementById('fileInfo');
-    const uploadForm = document.getElementById('uploadForm');
-    const progressContainer = document.getElementById('progressContainer');
-    const progressBar = document.getElementById('progressBar');
-    const progressText = document.getElementById('progressText');
-    const resultMessage = document.getElementById('resultMessage');
-    const cancelBtn = document.getElementById('cancelBtn');
-    const uploadBtn = document.getElementById('uploadBtn');
+    lucide.createIcons()
+    document.getElementById('year').textContent = new Date().getFullYear()
 
-    let selectedFile = null;
+    document.querySelectorAll('.filter-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'))
+        btn.classList.add('active')
+      })
+    })
 
-    // Drag and drop handlers
-    uploadArea.addEventListener('click', () => fileInput.click());
-    
-    uploadArea.addEventListener('dragover', (e) => {
-      e.preventDefault();
-      uploadArea.classList.add('dragover');
-    });
-
-    uploadArea.addEventListener('dragleave', () => {
-      uploadArea.classList.remove('dragover');
-    });
-
-    uploadArea.addEventListener('drop', (e) => {
-      e.preventDefault();
-      uploadArea.classList.remove('dragover');
-      
-      const files = e.dataTransfer.files;
-      if (files.length > 0 && files[0].type.startsWith('image/')) {
-        fileInput.files = files;
-        handleFileSelect(files[0]);
-      }
-    });
-
-    fileInput.addEventListener('change', (e) => {
-      if (e.target.files.length > 0) {
-        handleFileSelect(e.target.files[0]);
-      }
-    });
-
-    function handleFileSelect(file) {
-      selectedFile = file;
-      
-      // Show preview
-      const reader = new FileReader();
-      reader.onload = (e) => {
-        imagePreview.innerHTML = `<img src="${e.target.result}" alt="Preview" />`;
-        previewSection.classList.add('active');
-        
-        // Display file info
-        const fileSizeKB = (file.size / 1024).toFixed(2);
-        const fileSizeMB = (file.size / (1024 * 1024)).toFixed(2);
-        const displaySize = fileSizeMB >= 1 ? `${fileSizeMB} MB` : `${fileSizeKB} KB`;
-        
-        fileInfo.innerHTML = `
-          <div class="file-info-row">
-            <span class="file-info-label">File Name:</span>
-            <span class="file-info-value">${file.name}</span>
-          </div>
-          <div class="file-info-row">
-            <span class="file-info-label">File Size:</span>
-            <span class="file-info-value">${displaySize}</span>
-          </div>
-          <div class="file-info-row">
-            <span class="file-info-label">File Type:</span>
-            <span class="file-info-value">${file.type}</span>
-          </div>
-        `;
-      };
-      reader.readAsDataURL(file);
-    }
-
-    cancelBtn.addEventListener('click', () => {
-      resetForm();
-    });
-
-    function resetForm() {
-      fileInput.value = '';
-      selectedFile = null;
-      previewSection.classList.remove('active');
-      progressContainer.classList.remove('active');
-      resultMessage.classList.remove('active');
-      imagePreview.innerHTML = '';
-      fileInfo.innerHTML = '';
-      progressBar.style.width = '0%';
-      uploadBtn.disabled = false;
-    }
-
-    uploadForm.addEventListener('submit', async (e) => {
-      e.preventDefault();
-      
-      if (!selectedFile) return;
-
-      const formData = new FormData();
-      formData.append('file', selectedFile);
-
-      // Show progress
-      progressContainer.classList.add('active');
-      resultMessage.classList.remove('active');
-      uploadBtn.disabled = true;
-      cancelBtn.disabled = true;
-
-      // Simulate upload progress
-      let progress = 0;
-      const progressInterval = setInterval(() => {
-        progress += Math.random() * 15;
-        if (progress > 90) progress = 90;
-        
-        progressBar.style.width = progress + '%';
-        progressText.textContent = `Uploading... ${Math.round(progress)}%`;
-      }, 200);
-
-      try {
-        const response = await fetch('/upload', { 
-          method: 'POST', 
-          body: formData 
-        });
-        
-        clearInterval(progressInterval);
-        progressBar.style.width = '100%';
-        progressText.textContent = 'Upload Complete! 100%';
-
-        const data = await response.json();
-
-        setTimeout(() => {
-          if (data.success) {
-            resultMessage.className = 'result-message active success';
-            resultMessage.innerHTML = `
-              ✅ Image uploaded successfully!
-              <div class="uploaded-url">${data.url}</div>
-            `;
-          } else {
-            resultMessage.className = 'result-message active error';
-            resultMessage.innerHTML = `❌ Error: ${data.message}`;
-          }
-          
-          uploadBtn.disabled = false;
-          cancelBtn.disabled = false;
-        }, 500);
-
-      } catch (error) {
-        clearInterval(progressInterval);
-        resultMessage.className = 'result-message active error';
-        resultMessage.innerHTML = `❌ Upload failed: ${error.message}`;
-        uploadBtn.disabled = false;
-        cancelBtn.disabled = false;
-      }
-    });
+    document.querySelectorAll('.sidebar-link').forEach(link => {
+      link.addEventListener('click', e => {
+        document.querySelectorAll('.sidebar-link').forEach(l => l.classList.remove('active'))
+        e.currentTarget.classList.add('active')
+      })
+    })
   </script>
 </body>
 </html>
