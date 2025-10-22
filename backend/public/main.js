@@ -37,25 +37,55 @@ async function fetchAllUploads() {
   }
 }
 
-uploadForm.addEventListener("submit", async (e) => {
+// --- Show loader with progress bar ---
+function showLoader() {
+  result.innerHTML = `
+    <div class="loader-container">
+      <div class="progress-bar">
+        <div class="progress-fill" style="width: 0%;"></div>
+      </div>
+      <p>Uploading... <span class="progress-text">0%</span></p>
+    </div>
+  `;
+}
+
+uploadForm.addEventListener("submit", (e) => {
   e.preventDefault();
   const formData = new FormData(uploadForm);
 
-  try {
-    const response = await fetch("/upload", { method: "POST", body: formData });
-    const data = await response.json();
+  showLoader();
 
-    if (data.success) {
-      result.innerHTML = '<p class="success">Product uploaded successfully!</p>';
-      uploadForm.reset();
-      document.getElementById("imagePreview").innerHTML = '';
-      fetchAllUploads();
-    } else {
-      result.innerHTML = `<p class="error">Error: ${data.message}</p>`;
+  const xhr = new XMLHttpRequest();
+  xhr.open("POST", "/upload", true);
+
+  xhr.upload.addEventListener("progress", (e) => {
+    if (e.lengthComputable) {
+      const percent = Math.round((e.loaded / e.total) * 100);
+      document.querySelector(".progress-fill").style.width = percent + "%";
+      document.querySelector(".progress-text").textContent = percent + "%";
     }
-  } catch (err) {
-    result.innerHTML = `<p class="error">Error: ${err.message}</p>`;
-  }
+  });
+
+  xhr.onreadystatechange = () => {
+    if (xhr.readyState === 4) {
+      try {
+        const data = JSON.parse(xhr.responseText);
+
+        if (data.success) {
+          result.innerHTML = '<p class="success">Product uploaded successfully!</p>';
+          uploadForm.reset();
+          document.getElementById("imagePreview").innerHTML = '';
+          fetchAllUploads();
+        } else {
+          result.innerHTML = `<p class="error">Error: ${data.message}</p>`;
+        }
+      } catch (err) {
+        result.innerHTML = `<p class="error">Error parsing server response</p>`;
+      }
+    }
+  };
+
+  xhr.send(formData);
 });
 
 fetchAllUploads();

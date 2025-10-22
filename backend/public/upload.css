@@ -311,11 +311,8 @@ body {
   font-size: 1.3em;  
   font-weight: 600;  
   color: #fff;  
-}  
-.uploadFormPrnt{
-  background-color: transparent;
-  padding: 1em;
-}.uploadFormPrnt {
+} 
+.uploadFormPrnt {
   background: transparent;
   padding: 2rem 1rem;
 }
@@ -362,6 +359,7 @@ body {
   border-radius: 12px;
   color: #f0f0f0;
   font-size: 0.95rem;
+  width: 100%;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   outline: none;
   font-family: inherit;
@@ -550,29 +548,6 @@ body {
   color: #f44336;
   font-weight: 500;
 }
-.upload-btn {  
-  display: flex;  
-  align-items: center;  
-  gap: 0.5em;  
-  padding: 0.7em 1.5em;  
-  background: #fff;  
-  color: #0a0a0a;  
-  border: none;  
-  border-radius: 8px;  
-  font-weight: 600;  
-  cursor: pointer;  
-  transition: all 0.3s;  
-}  
-
-.upload-btn:hover {  
-  background: #e5e5e5;  
-  transform: translateY(-2px);  
-}  
-
-.upload-btn [data-lucide] {  
-  width: 16px;  
-  height: 16px;  
-}  
 
 .files-filters {  
   display: flex;
@@ -584,6 +559,7 @@ body {
 }  
 
 .filter-btn {  
+  flex: 0 0 auto;
   padding: 0.6em 1.2em;  
   background: transparent;  
   border: 1px solid #333;  
@@ -823,9 +799,6 @@ footer {
     font-size: 1.5em;
   }
 
-  .upload-btn {
-    padding: 0.6em 1em;
-  }
 
   .filter-btn {
     padding: 0.5em 1em;
@@ -854,8 +827,9 @@ footer {
 }
 
 .upload-card img {
-  width: 100%;
-  height: 250px;
+  width: 700px;
+  border-radius: 12px;
+  height: 750px;
   object-fit: cover;
   transition: transform 0.4s ease;
 }
@@ -948,4 +922,35 @@ footer {
 @keyframes shimmer {
   0% { background-position: 200% 0; }
   100% { background-position: -200% 0; }
+}
+
+.loader-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+.progress-bar {
+  width: 100%;
+  max-width: 400px;
+  height: 20px;
+  background: #f0f0f0;
+  border-radius: 10px;
+  overflow: hidden;
+  margin-bottom: 10px;
+}
+
+.progress-fill {
+  height: 100%;
+  width: 0%;
+  background: #667eea;
+  border-radius: 10px 0 0 10px;
+  transition: width 0.2s ease;
+}
+
+.loader-container p {
+  font-weight: 500;
+  color: #333;
 }

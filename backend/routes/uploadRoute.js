@@ -14,7 +14,9 @@ cloudinary.config({
   api_key: process.env.CLOUD_KEY,
   api_secret: process.env.CLOUD_SECRET,
   secure: true,
-});router.post("/", upload.single("images"), async (req, res) => {
+});
+
+router.post("/", upload.single("images"), async (req, res) => {
   try {
     if (!req.file) {
       return res.status(400).json({ success: false, message: "No file uploaded" });
