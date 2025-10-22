@@ -23,7 +23,10 @@ router.post("/", upload.single("file"), async (req, res) => {
       return res.status(400).json({ success: false, message: "No file uploaded" });
     }
     
-    const result = await cloudinary.uploader.upload(req.file.path);
+    const result = await cloudinary.uploader.upload(req.file.path, {
+      folder: "myAppUploads", // optional, keeps your app's files in a folder
+      tags: ["myApp"] // THIS is the tag
+    });
     
     res.json({
       success: true,
@@ -39,7 +42,8 @@ router.post("/", upload.single("file"), async (req, res) => {
 // Get all uploads
 router.get("/files", async (req, res) => {
   try {
-    const result = await cloudinary.api.resources({ type: "upload", max_results: 100 });
+    // Fetch only files tagged "myApp"
+    const result = await cloudinary.api.resources_by_tag("myApp", { max_results: 100 });
     
     const files = result.resources.map(file => ({
       url: file.secure_url,
