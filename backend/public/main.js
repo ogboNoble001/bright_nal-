@@ -1,18 +1,14 @@
- window.addEventListener('DOMContentLoaded', () => {
- lucide.createIcons()
-    document.getElementById('year').textContent = new Date().getFullYear()
+const uploadForm = document.getElementById("uploadForm");
 
-    document.querySelectorAll('.filter-btn').forEach(btn => {
-      btn.addEventListener('click', () => {
-        document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'))
-        btn.classList.add('active')
-      })
-    })
+uploadForm.addEventListener("submit", async (e) => {
+  e.preventDefault();
+  const formData = new FormData(uploadForm);
 
-    document.querySelectorAll('.sidebar-link').forEach(link => {
-      link.addEventListener('click', e => {
-        document.querySelectorAll('.sidebar-link').forEach(l => l.classList.remove('active'))
-        e.currentTarget.classList.add('active')
-      })
-    })
- })
+  const response = await fetch("/upload", { method: "POST", body: formData });
+  const data = await response.json();
+
+  document.getElementById("result").innerHTML = data.success
+    ? `<img src="${data.url}" width="200"/><br>Uploaded successfully!<br>
+       URL: <a href="${data.url}" target="_blank">${data.url}</a>`
+    : `Error: ${data.message}`;
+});
