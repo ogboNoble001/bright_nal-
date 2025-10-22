@@ -383,7 +383,7 @@ main {
   overflow: hidden;
   position: relative;
   display: flex;
-  padding: 1em 0;
+  padding: 0 0;
   align-items: center;
   justify-content: center;
 }
@@ -391,7 +391,7 @@ main {
 .slider-track {
   will-change: transform;
   display: flex;
-  gap: 1.5em;
+  gap: .5em;
   transition: all .6s cubic-bezier(0.86, 0, 0.07, 1);
   
   align-items: flex-end;
@@ -414,9 +414,9 @@ main {
 }
 
 .imageCarousel.active {
-  transform: scale(1.2) translateY(0);
+  transform: scale(1.0) translateY(0);
   opacity: 1;  
-  transition: transform .2s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: transform .3s linear;
   filter: brightness(1);
   border-radius: 80px 80px 0 0;
   z-index: 10;
@@ -426,9 +426,9 @@ main {
 
 .imageCarousel.prev,
 .imageCarousel.next {
-  transition: transform .2s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: all .2s linear;
   border-radius: 80px 80px 0 0;
-  transform: scale(0.67) translateY(10px);
+  transform: scale(0.47) translateY(10px);
   opacity: 0.7;
   filter: brightness(0.8);
  height: 180px;
@@ -437,7 +437,7 @@ main {
 }
 
 .imageCarousel.gen1 {
-  transform: scale(0.43) translateY(18px);
+  transform: scale(0.17) translateY(10px);
   opacity: 0.5;
   filter: brightness(0.65);
  height: 180px;
@@ -446,7 +446,7 @@ main {
 }
 
 .imageCarousel.gen2 {
-  transform: scale(0.2) translateY(25px);
+  transform: scale(0.1) translateY(25px);
   opacity: 0.35;
   filter: brightness(0.5);
  height: 180px;
@@ -455,7 +455,7 @@ main {
 }
 
 .imageCarousel.gen3 {
-  transform: scale(0.1) translateY(30px);
+  transform: scale(0.01) translateY(30px);
   opacity: 0.25;
   filter: brightness(0.4);
  height: 180px;
