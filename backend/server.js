@@ -2,6 +2,7 @@ import express from "express";
 import dotenv from "dotenv";
 import cors from "cors";
 import pkg from "pg";
+import uploadRoute from "./routes/uploadRoute.js";
 
 dotenv.config();
 const { Pool } = pkg;
@@ -10,13 +11,11 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-// Neon database connection
 const pool = new Pool({
   connectionString: process.env.DATABASE_URL,
   ssl: { rejectUnauthorized: false }
 });
 
-// Test route
 app.get("/", async (req, res) => {
   try {
     const result = await pool.query("SELECT NOW()");
@@ -29,5 +28,7 @@ app.get("/", async (req, res) => {
   }
 });
 
-const PORT = process.env.PORT || 5000;
+app.use("/api/upload", uploadRoute);
+
+const PORT = process.env.PORT || 7700;
 app.listen(PORT, () => console.log(`🚀 Server running on port ${PORT}`));
