@@ -252,7 +252,7 @@ function addToCart(productId) {
     }
     
     updateCart();
-    alert('✅ Item added to cart!');
+    console.log('✅ Item added to cart!');
 }
 
 function updateCart() {
@@ -307,26 +307,26 @@ function toggleCart() {
 
 function checkout() {
     if (cart.length === 0) {
-        alert('Your cart is empty!');
+        console.log('Your cart is empty!');
         return;
     }
-    alert('🎉 Thank you for your purchase! Total: ' + document.getElementById('cartTotal').textContent);
+    console.log('🎉 Thank you for your purchase! Total: ' + document.getElementById('cartTotal').textContent);
     cart = [];
     updateCart();
     toggleCart();
 }
 
 function addToWishlist(productId) {
-    alert('❤️ Added to wishlist!');
+    console.log('❤️ Added to wishlist!');
 }
 
 function quickView(productId) {
     const product = products.find(p => p.id === productId);
-    alert(`Quick View: ${product.name}\nPrice: ₦${product.price.toLocaleString()}`);
+    console.log(`Quick View: ${product.name}\nPrice: ₦${product.price.toLocaleString()}`);
 }
 
 function subscribeNewsletter(event) {
     event.preventDefault();
-    alert('✅ Thank you for subscribing!');
+    console.log('✅ Thank you for subscribing!');
     event.target.reset();
 }
