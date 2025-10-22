@@ -7,13 +7,32 @@ dotenv.config();
 const { Pool } = pkg;
 
 const app = express();
-app.use(cors());
+
+// Detect environment and set CORS origin dynamically
+const allowedOrigins = [
+  "http://127.0.0.1:3000",     // Local frontend
+  "http://localhost:7700",     // Optional for dev
+  "https://bright-nal-frontend.onrender.com", // Replace with your hosted frontend
+];
+
+app.use(
+  cors({
+    origin: (origin, callback) => {
+      if (!origin || allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error("CORS blocked for origin: " + origin));
+      }
+    },
+  })
+);
+
 app.use(express.json());
 
-// Neon database connection
+// Connect to Neon PostgreSQL
 const pool = new Pool({
   connectionString: process.env.DATABASE_URL,
-  ssl: { rejectUnauthorized: false }
+  ssl: { rejectUnauthorized: false },
 });
 
 // Test route
@@ -22,12 +41,22 @@ app.get("/", async (req, res) => {
     const result = await pool.query("SELECT NOW()");
     res.json({
       message: "✅ Connected to Neon PostgreSQL successfully",
-      time: result.rows[0].now
+      backendPort: PORT,
+      frontendHint: "http://127.0.0.1:3000 or your hosted frontend",
+      time: result.rows[0].now,
     });
   } catch (err) {
-    res.status(500).json({ error: "❌ Database connection failed", details: err.message });
+    res.status(500).json({
+      error: "❌ Database connection failed",
+      details: err.message,
+    });
   }
 });
 
-const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => console.log(`🚀 Server running on port ${PORT}`));
+// Detect render/local ports
+const PORT = process.env.PORT || 7700;
+
+app.listen(PORT, () => {
+  const mode = process.env.PORT ? "Render (Hosted)" : "Local Development";
+  console.log(`🚀 Server running on port ${PORT} [${mode}]`);
+});
