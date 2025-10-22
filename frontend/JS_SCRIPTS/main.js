@@ -128,7 +128,7 @@ window.addEventListener("load", () => {
             
             allImages.forEach((img, index) => {
                 const imgRect = img.getBoundingClientRect();
-                const imgCenter = imgRect.left + imgRect.width / 2;
+                const imgCenter = imgRect.left + imgRect.width / 2 * 1.5;
                 const distanceFromCenter = Math.abs(imgCenter - sliderCenter);
                 
                 if (distanceFromCenter < minDistance) {
