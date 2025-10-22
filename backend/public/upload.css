@@ -375,6 +375,10 @@ body {
   font-weight: 600;  
   color: #fff;  
 }  
+.uploadFormPrnt{
+  background-color: transparent;
+  padding: 1em;
+}
 #uploadForm {
   margin-left: auto;
   margin-right: auto;
@@ -538,8 +542,7 @@ body {
 }
 
 #result img {
-  max-width: 100%;
-  height: auto;
+  width: 30px;
   border-radius: 10px;
   margin-bottom: 1rem;
   box-shadow: 
@@ -818,18 +821,6 @@ footer {
     flex-direction: column;
   }
 
-  .sidebar {
-    width: 100%;
-    position: relative;
-    border-right: none;
-    border-bottom: 1px solid rgba(255,255,255,0.1);
-    display: none; /* hidden by default on mobile */
-  }
-
-  .sidebar.active {
-    display: block; /* shown when toggled */
-  }
-
   .main-content {
     padding: 1.5em 1em;
   }
@@ -879,4 +870,96 @@ footer {
     padding: 0.5em 1em;
     font-size: 0.85em;
   }
+}
+.uploads-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1.5rem;
+  margin-top: 2rem;
+}
+
+.upload-card {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  overflow: hidden;
+  transition: all 0.3s;
+}
+
+.upload-card:hover {
+  transform: translateY(-5px);
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+.upload-card img {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+}
+
+.upload-info {
+  padding: 1rem;
+}
+
+.upload-info h3 {
+  color: #fff;
+  margin-bottom: 0.8rem;
+  font-size: 1.1rem;
+}
+
+.upload-info p {
+  color: #888;
+  font-size: 0.9rem;
+  margin-bottom: 0.4rem;
+}
+
+.upload-info strong {
+  color: #fff;
+}
+
+
+.placeholder-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1.5rem;
+  margin-top: 2rem;
+}
+
+.placeholder-card {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.placeholder-img {
+  width: 100%;
+  height: 200px;
+  background: linear-gradient(90deg, rgba(255,255,255,0.05) 25%, rgba(255,255,255,0.1) 50%, rgba(255,255,255,0.05) 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+}
+
+.placeholder-content {
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.placeholder-line {
+  height: 12px;
+  background: linear-gradient(90deg, rgba(255,255,255,0.05) 25%, rgba(255,255,255,0.1) 50%, rgba(255,255,255,0.05) 75%);
+  background-size: 200% 100%;
+  border-radius: 4px;
+  animation: shimmer 1.5s infinite;
+}
+
+.placeholder-line.short {
+  width: 60%;
+}
+
+@keyframes shimmer {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
 }

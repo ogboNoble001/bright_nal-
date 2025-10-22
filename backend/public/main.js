@@ -3,7 +3,7 @@ const result = document.getElementById("result");
 
 async function fetchAllUploads() {
   try {
-    const res = await fetch("/upload/files"); // backend should return JSON array of {url, name}
+    const res = await fetch("/upload/files");
     const files = await res.json();
 
     if (files.length === 0) {
@@ -11,22 +11,32 @@ async function fetchAllUploads() {
       return;
     }
 
-    let html = "";
+    let html = '<div class="uploads-grid">';
     files.forEach(file => {
       html += `
-        <div style="margin-bottom:20px; text-align:center;">
-          <img src="${file.url}" width="200" style="border-radius:8px; box-shadow:0 4px 12px rgba(0,0,0,0.3);"/><br>
-          URL: <a href="${file.url}" target="_blank">${file.url}</a>
+        <div class="upload-card">
+          <img src="${file.url}" alt="${file.productName}"/>
+          <div class="upload-info">
+            <h3>${file.productName}</h3>
+            <p><strong>Category:</strong> ${file.category}</p>
+            <p><strong>Brand:</strong> ${file.brand}</p>
+            <p><strong>Price:</strong> ₦${file.price}</p>
+            <p><strong>Stock:</strong> ${file.stock}</p>
+            <p><strong>Class:</strong> ${file.productClass}</p>
+            <p><strong>SKU:</strong> ${file.sku}</p>
+            <p><strong>Sizes:</strong> ${file.sizes}</p>
+            <p><strong>Colors:</strong> ${file.colors}</p>
+          </div>
         </div>
       `;
     });
+    html += '</div>';
     result.innerHTML = html;
   } catch (err) {
-    result.innerHTML = `Error fetching uploads: ${err.message}`;
+    result.innerHTML = `<p class="error">Error: ${err.message}</p>`;
   }
 }
 
-// Handle new uploads
 uploadForm.addEventListener("submit", async (e) => {
   e.preventDefault();
   const formData = new FormData(uploadForm);
@@ -36,23 +46,16 @@ uploadForm.addEventListener("submit", async (e) => {
     const data = await response.json();
 
     if (data.success) {
-      // Optionally, show a message for the latest upload
-      result.innerHTML = `
-        <div style="margin-bottom:20px; text-align:center;">
-          <img src="${data.url}" width="200" style="border-radius:8px; box-shadow:0 4px 12px rgba(0,0,0,0.3);"/><br>
-          URL: <a href="${data.url}" target="_blank">${data.url}</a><br>
-          Uploaded successfully!
-        </div>
-      `;
-      // Refresh all uploads below the new one
+      result.innerHTML = '<p class="success">Product uploaded successfully!</p>';
+      uploadForm.reset();
+      document.getElementById("imagePreview").innerHTML = '';
       fetchAllUploads();
     } else {
-      result.innerHTML = `Error: ${data.message}`;
+      result.innerHTML = `<p class="error">Error: ${data.message}</p>`;
     }
   } catch (err) {
-    result.innerHTML = `Error uploading: ${err.message}`;
+    result.innerHTML = `<p class="error">Error: ${err.message}</p>`;
   }
 });
 
-// Initial load of all uploads
 fetchAllUploads();

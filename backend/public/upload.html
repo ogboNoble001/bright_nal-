@@ -1,163 +1,158 @@
-
-
-<!DOCTYPE html>  <html lang="en">  
-<head>  
-  <meta charset="UTF-8">  
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">  
-  <title>Brightnal's Concepts - Admin Dashboard</title>  
-  <link rel="stylesheet" href="/backend/public/upload.css">
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Brightnal's Concepts - Admin Dashboard</title>
   <link rel="stylesheet" href="upload.css">
-</head>  
-<body>  
-  <!-- HEADER -->  
-  <header class="header">  
-    <div class="logo">  
-      <super class="admin-badge">ADMIN</super>  
-    </div>  <div class="header-right">  
-    
-  <div class="user-profile">  
-    <div class="user-avatar">BC</div>  
-    <div class="user-info">  
-      <div class="user-name">Admin User</div>  
-      <div class="user-role">Administrator</div>  
-    </div>  
-    <i data-lucide="chevron-down"></i>  
-  </div>  
+  <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body>
+  <!-- HEADER -->
+  <header class="header">
+    <div class="logo">
+      <span class="admin-badge">ADMIN</span>
+    </div>
+    <div class="header-right">
+      <div class="user-profile">
+        <div class="user-avatar">BC</div>
+        <div class="user-info">
+          <div class="user-name">Admin User</div>
+          <div class="user-role">Administrator</div>
+        </div>
+        <i data-lucide="chevron-down"></i>
+      </div>
+    </div>
+  </header>
+
+  <div class="dashboard-container">
+    <!-- MAIN CONTENT -->
+    <main class="main-content">
+      <div class="page-header">
+        <h1 class="page-title">Dashboard Overview</h1>
+        <p class="page-subtitle">Welcome back! Here's what's happening with your platform today.</p>
+      </div>
+
+      <!-- FILES SECTION -->
+      <div class="files-section">
+        <div class="section-header">
+          <h2 class="section-title">Uploaded Products</h2>
+        </div>
+
+        <div class="files-filters">
+          <button class="filter-btn active">All Files</button>
+          <button class="filter-btn">Shirts</button>
+          <button class="filter-btn">Skirts</button>
+          <button class="filter-btn">Traditional</button>
+          <button class="filter-btn">Tuxedos</button>
+
+        <div id="result">
+            <div id="result">
+  <div class="placeholder-grid">
+    <div class="placeholder-card">
+      <div class="placeholder-img"></div>
+      <div class="placeholder-content">
+        <div class="placeholder-line"></div>
+        <div class="placeholder-line short"></div>
+        <div class="placeholder-line"></div>
+      </div>
+    </div>
+    <div class="placeholder-card">
+      <div class="placeholder-img"></div>
+      <div class="placeholder-content">
+        <div class="placeholder-line"></div>
+        <div class="placeholder-line short"></div>
+        <div class="placeholder-line"></div>
+      </div>
+    </div>
+    <div class="placeholder-card">
+      <div class="placeholder-img"></div>
+      <div class="placeholder-content">
+        <div class="placeholder-line"></div>
+        <div class="placeholder-line short"></div>
+        <div class="placeholder-line"></div>
+      </div>
+    </div>
+  </div>
 </div>
 
-  </header>    
-  <div class="dashboard-container" style="display: flex; width: 100%; flex-direction: row; gap: 1em;">  
-    <!-- SIDEBAR -->  
+        </div>
+        </div>
 
-<!-- MAIN CONTENT -->  
-<main class="main-content">  
-  <div class="page-header">  
-    <br>
-    <h1 class="page-title">Dashboard Overview</h1>  
+        <form id="uploadForm" enctype="multipart/form-data">
+          <input type="file" name="images" accept="image/*" required />
+          <input type="text" name="productName" placeholder="Product Name (optional)" />
+          <input type="text" name="category" placeholder="Category (optional)" />
+          <input type="text" name="brand" placeholder="Brand (optional)" />
+          <input type="number" name="price" placeholder="Price (optional)" />
+          <input type="number" name="stock" placeholder="Stock (optional)" />
+          <input type="text" name="sku" placeholder="SKU (optional)" />
+          <input type="text" name="productClass" placeholder="Class (optional)" />
+          <input type="text" name="sizes" placeholder="Sizes (optional)" />
+          <input type="text" name="colors" placeholder="Colors (optional)" />
+          <button type="submit">Upload Product</button>
+        </form>
 
-    <p class="page-subtitle">Welcome back! Here's what's happening with your platform today.</p>  
-  </div>  
-   
-  
-
-  <!-- FILES SECTION -->  
-  <div class="files-section">  
-    <div class="section-header">  
-      <h2 class="section-title">Uploaded Files</h2>  
-      <button class="upload-btn">  
-        <i data-lucide="upload"></i>  
-        Upload New File  
-      </button>  
-  <p id="result"></p>
-    </div>  
-
-    <div class="files-filters">  
-      <button class="filter-btn active">All Files</button>  
-      <button class="filter-btn">Documents</button>  
-      <button class="filter-btn">Images</button>  
-      <button class="filter-btn">Videos</button>  
-      <button class="filter-btn">Archives</button>  
-    </div>  
- <form id="uploadForm" enctype="multipart/form-data">
-    <input type="file" name="file" accept="image/*" required />
-    <button type="submit">Upload</button>
-  </form>
       </div>
-      <br>
-  <!-- STATS CARDS -->  
-  <div class="stats-grid">  
-    <div class="stat-card">  
-      <div class="stat-header">  
-        <div class="stat-icon" style="background: rgba(102, 126, 234, 0.1); color: #667eea;">  
-          <i data-lucide="file-text"></i>  
-        </div>  
-        <div class="stat-trend up">  
-          <i data-lucide="trending-up"></i>  
-          12%  
-        </div>  
-      </div>  
-      <div class="stat-value">1,248</div>  
-      <div class="stat-label">Total Files</div>  
-      <div class="stat-percentage">  
-        <div style="display: flex; justify-content: space-between; margin-bottom: 0.5em;">  
-          <span style="color: #888; font-size: 0.85em;">Storage Used</span>  
-          <span style="color: #fff; font-size: 0.85em; font-weight: 600;">68%</span>  
-        </div>  
-        <div class="percentage-bar">  
-          <div class="percentage-fill" style="width: 68%;"></div>  
-        </div>  
-      </div>  
-    </div>  
 
-    <div class="stat-card">  
-      <div class="stat-header">  
-        <div class="stat-icon" style="background: rgba(76, 175, 80, 0.1); color: #4CAF50;">  
-          <i data-lucide="users"></i>  
-        </div>  
-        <div class="stat-trend up">  
-          <i data-lucide="trending-up"></i>  
-          8%  
-        </div>  
-      </div>  
-      <div class="stat-value">3,892</div>  
-      <div class="stat-label">Active Users</div>  
-      <div class="stat-percentage">  
-        <div style="display: flex; justify-content: space-between; margin-bottom: 0.5em;">  
-          <span style="color: #888; font-size: 0.85em;">Engagement Rate</span>  
-          <span style="color: #fff; font-size: 0.85em; font-weight: 600;">82%</span>  
-        </div>  
-        <div class="percentage-bar">  
-          <div class="percentage-fill" style="width: 82%;"></div>  
-        </div>  
-      </div>  
-    </div>  
+      <!-- STATS CARDS -->
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-header">
+            <div class="stat-icon" style="background: rgba(102, 126, 234, 0.1); color: #667eea;">
+              <i data-lucide="file-text"></i>
+            </div>
+            <div class="stat-trend up">
+              <i data-lucide="trending-up"></i>
+              12%
+            </div>
+          </div>
+          <div class="stat-value">1,248</div>
+          <div class="stat-label">Total Files</div>
+        </div>
 
-    <div class="stat-card">  
-      <div class="stat-header">  
-        <div class="stat-icon" style="background: rgba(255, 193, 7, 0.1); color: #FFC107;">  
-          <i data-lucide="upload"></i>  
-        </div>  
-        <div class="stat-trend up">  
-          <i data-lucide="trending-up"></i>  
-          24%  
-        </div>  
-      </div>  
-      <div class="stat-value">456</div>  
-      <div class="stat-label">Uploads Today</div>  
-      <div class="stat-percentage">  
-        <div style="display: flex; justify-content: space-between; margin-bottom: 0.5em;">  
-          <span style="color: #888; font-size: 0.85em;">Success Rate</span>  
-          <span style="color: #fff; font-size: 0.85em; font-weight: 600;">95%</span>  
-        </div>  
-        <div class="percentage-bar">  
-          <div class="percentage-fill" style="width: 95%;"></div>  
-        </div>  
-      </div>  
-    </div>  
+        <div class="stat-card">
+          <div class="stat-header">
+            <div class="stat-icon" style="background: rgba(76, 175, 80, 0.1); color: #4CAF50;">
+              <i data-lucide="users"></i>
+            </div>
+            <div class="stat-trend up">
+              <i data-lucide="trending-up"></i>
+              8%
+            </div>
+          </div>
+          <div class="stat-value">3,892</div>
+          <div class="stat-label">Active Users</div>
+        </div>
 
-    <div class="stat-card">  
-      <div class="stat-header">  
-        <div class="stat-icon" style="background: rgba(244, 67, 54, 0.1); color: #f44336;">  
-          <i data-lucide="activity"></i>  
-        </div>  
-        <div class="stat-trend down">  
-          <i data-lucide="trending-down"></i>  
-          3%  
-        </div>  
-      </div>  
-      <div class="stat-value">99.8%</div>  
-      <div class="stat-label">System Uptime</div>  
-      <div class="stat-percentage">  
-        <div style="display: flex; justify-content: space-between; margin-bottom: 0.5em;">  
-          <span style="color: #888; font-size: 0.85em;">Server Health</span>  
-          <span style="color: #fff; font-size: 0.85em; font-weight: 600;">98%</span>  
-        </div>  
-        <div class="percentage-bar">  
-          <div class="percentage-fill" style="width: 98%;"></div>  
-        </div>  
-      </div>  
-    </div>  
-  </div>  
+        <div class="stat-card">
+          <div class="stat-header">
+            <div class="stat-icon" style="background: rgba(255, 193, 7, 0.1); color: #FFC107;">
+              <i data-lucide="upload"></i>
+            </div>
+            <div class="stat-trend up">
+              <i data-lucide="trending-up"></i>
+              24%
+            </div>
+          </div>
+          <div class="stat-value">456</div>
+          <div class="stat-label">Uploads Today</div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-header">
+            <div class="stat-icon" style="background: rgba(244, 67, 54, 0.1); color: #f44336;">
+              <i data-lucide="activity"></i>
+            </div>
+            <div class="stat-trend down">
+              <i data-lucide="trending-down"></i>
+              3%
+            </div>
+          </div>
+          <div class="stat-value">99.8%</div>
+          <div class="stat-label">System Uptime</div>
+        </div>
+      </div>
     </main>
   </div>
 
@@ -170,12 +165,12 @@
         <li><a href="#">Contact Support</a></li>
       </ul>
       <p class="footer-copyright">
-        &copy; <span id="year"></span> Brightnal's Concepts. All rights reserved.
+        &copy; 2025 Brightnal's Concepts. All rights reserved.
       </p>
     </div>
   </footer>
+
   <script src="main.js"></script>
-  <script src="/backend/public/main.js"></script>
-    <script src="https://unpkg.com/lucide@latest"></script> 
+  <script>lucide.createIcons();</script>
 </body>
 </html>
