@@ -4,22 +4,17 @@
 <head>  
   <meta charset="UTF-8">  
   <meta name="viewport" content="width=device-width, initial-scale=1.0">  
-  <title>Brightnal's Concepts - Admin Dashboard</title> 
-   <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Mona+Sans:ital,wght@0,200..900;1,200..900&family=Nata+Sans:wght@100..900&family=Playfair+Display:wght@400;700;900&display=swap" rel="stylesheet"> 
+  <title>Brightnal's Concepts - Admin Dashboard</title>  
+  <link rel="stylesheet" href="/backend/public/upload.css">
   <link rel="stylesheet" href="upload.css">
 </head>  
 <body>  
-  
   <!-- HEADER -->  
   <header class="header">  
-
     <div class="logo">  
       <super class="admin-badge">ADMIN</super>  
-    </div> 
+    </div>  <div class="header-right">  
     
-     <div class="header-right"> 
   <div class="user-profile">  
     <div class="user-avatar">BC</div>  
     <div class="user-info">  
@@ -31,14 +26,13 @@
 </div>
 
   </header>    
-  <div class="dashboard-container"
-   style="display: flex; width: 100%; flex-direction: row;
-    gap: 1em;">  
+  <div class="dashboard-container" style="display: flex; width: 100%; flex-direction: row; gap: 1em;">  
+    <!-- SIDEBAR -->  
 
 <!-- MAIN CONTENT -->  
 <main class="main-content">  
   <div class="page-header">  
-    
+    <br>
     <h1 class="page-title">Dashboard Overview</h1>  
 
     <p class="page-subtitle">Welcome back! Here's what's happening with your platform today.</p>  
@@ -50,245 +44,24 @@
   <div class="files-section">  
     <div class="section-header">  
       <h2 class="section-title">Uploaded Files</h2>  
+      <button class="upload-btn">  
+        <i data-lucide="upload"></i>  
+        Upload New File  
+      </button>  
+  <p id="result"></p>
     </div>  
 
     <div class="files-filters">  
       <button class="filter-btn active">All Files</button>  
-      <button class="filter-btn">Shirts</button>  
-      <button class="filter-btn">Skirts</button>  
-      <button class="filter-btn">Traditional</button>  
-      <button class="filter-btn">Tuxedos ( Suit )</button>  
+      <button class="filter-btn">Documents</button>  
+      <button class="filter-btn">Images</button>  
+      <button class="filter-btn">Videos</button>  
+      <button class="filter-btn">Archives</button>  
     </div>  
-    
-    <br>
-    <form id="uploadForm" enctype="multipart/form-data">
-  <div class="form-header">
-    <h2>Add New Product</h2>
-    <p class="form-subtitle">Upload product details and images to your inventory</p>
-  </div>
-
-  <div class="form-grid">
-    <!-- Product Images -->
-    <div class="form-section full-width">
-      <label class="section-label">
-        <i data-lucide="image"></i>
-        Product Images
-      </label>
-      <div class="image-upload-area">
-        <input type="file" id="productImages" name="images" accept="image/*" multiple required />
-        <label for="productImages" class="upload-zone">
-          <div class="upload-icon">
-            <i data-lucide="upload-cloud"></i>
-          </div>
-          <div class="upload-text">
-            <span class="upload-title">Drop images here or click to browse</span>
-            <span class="upload-subtitle">Supports: JPG, PNG, WEBP (Max 5MB each)</span>
-          </div>
-        </label>
-        <div id="imagePreview" class="image-preview-grid"></div>
-      </div>
-    </div>
-
-    <!-- Product Name -->
-    <div class="form-group full-width">
-      <label for="productName">
-        <i data-lucide="tag"></i>
-        Product Name
-      </label>
-      <input type="text" id="productName" name="productName" placeholder="e.g., Classic Cotton T-Shirt" required />
-    </div>
-
-    <!-- Category & Brand -->
-    <div class="form-group">
-      <label for="category">
-        <i data-lucide="grid-3x3"></i>
-        Category
-      </label>
-      <select id="category" name="category" required>
-        <option value="">Select Category</option>
-        <option value="tshirts">T-Shirts</option>
-        <option value="shirts">Shirts</option>
-        <option value="pants">Pants</option>
-        <option value="jeans">Jeans</option>
-        <option value="jackets">Jackets</option>
-        <option value="sweaters">Sweaters</option>
-        <option value="dresses">Dresses</option>
-        <option value="skirts">Skirts</option>
-        <option value="shoes">Shoes</option>
-        <option value="accessories">Accessories</option>
-      </select>
-    </div>
-
-    <div class="form-group">
-      <label for="brand">
-        <i data-lucide="award"></i>
-        Brand
-      </label>
-      <input type="text" id="brand" name="brand" placeholder="e.g., Nike, Adidas" required />
-    </div>
-
-    <!-- Price & Stock -->
-    <div class="form-group">
-      <label for="price">
-        <i data-lucide="dollar-sign"></i>
-        Price (₦)
-      </label>
-      <input type="number" id="price" name="price" placeholder="0.00" step="0.01" min="0" required />
-    </div>
-
-    <div class="form-group">
-      <label for="stock">
-        <i data-lucide="package"></i>
-        Stock Quantity
-      </label>
-      <input type="number" id="stock" name="stock" placeholder="0" min="0" required />
-    </div>
-
-    <!-- SKU & Product Class -->
-    <div class="form-group">
-      <label for="sku">
-        <i data-lucide="hash"></i>
-        SKU (Stock Keeping Unit)
-      </label>
-      <input type="text" id="sku" name="sku" placeholder="e.g., TSH-BLK-M-001" required />
-    </div>
-
-    <div class="form-group">
-      <label for="productClass">
-        <i data-lucide="star"></i>
-        Product Class
-      </label>
-      <select id="productClass" name="productClass" required>
-        <option value="">Select Class</option>
-        <option value="premium">Premium</option>
-        <option value="standard">Standard</option>
-        <option value="economy">Economy</option>
-        <option value="luxury">Luxury</option>
-      </select>
-    </div>
-
-    <!-- Sizes -->
-    <div class="form-group full-width">
-      <label>
-        <i data-lucide="ruler"></i>
-        Available Sizes
-      </label>
-      <div class="size-selector">
-        <label class="size-option">
-          <input type="checkbox" name="sizes" value="XS" />
-          <span>XS</span>
-        </label>
-        <label class="size-option">
-          <input type="checkbox" name="sizes" value="S" />
-          <span>S</span>
-        </label>
-        <label class="size-option">
-          <input type="checkbox" name="sizes" value="M" />
-          <span>M</span>
-        </label>
-        <label class="size-option">
-          <input type="checkbox" name="sizes" value="L" />
-          <span>L</span>
-        </label>
-        <label class="size-option">
-          <input type="checkbox" name="sizes" value="XL" />
-          <span>XL</span>
-        </label>
-        <label class="size-option">
-          <input type="checkbox" name="sizes" value="XXL" />
-          <span>XXL</span>
-        </label>
-      </div>
-    </div>
-
-    <!-- Colors -->
-    <div class="form-group full-width">
-      <label>
-        <i data-lucide="palette"></i>
-        Available Colors
-      </label>
-      <div class="color-selector">
-        <label class="color-option" style="--color: #000000">
-          <input type="checkbox" name="colors" value="black" />
-          <span class="color-swatch"></span>
-          <span class="color-name">Black</span>
-        </label>
-        <label class="color-option" style="--color: #ffffff">
-          <input type="checkbox" name="colors" value="white" />
-          <span class="color-swatch"></span>
-          <span class="color-name">White</span>
-        </label>
-        <label class="color-option" style="--color: #ef4444">
-          <input type="checkbox" name="colors" value="red" />
-          <span class="color-swatch"></span>
-          <span class="color-name">Red</span>
-        </label>
-        <label class="color-option" style="--color: #3b82f6">
-          <input type="checkbox" name="colors" value="blue" />
-          <span class="color-swatch"></span>
-          <span class="color-name">Blue</span>
-        </label>
-        <label class="color-option" style="--color: #22c55e">
-          <input type="checkbox" name="colors" value="green" />
-          <span class="color-swatch"></span>
-          <span class="color-name">Green</span>
-        </label>
-        <label class="color-option" style="--color: #fbbf24">
-          <input type="checkbox" name="colors" value="yellow" />
-          <span class="color-swatch"></span>
-          <span class="color-name">Yellow</span>
-        </label>
-      </div>
-    </div>
-
-    <!-- Description -->
-    <div class="form-group full-width">
-      <label for="description">
-        <i data-lucide="align-left"></i>
-        Product Description
-      </label>
-      <textarea id="description" name="description" rows="4" placeholder="Enter detailed product description, features, and care instructions..." required></textarea>
-    </div>
-
-    <!-- Additional Options -->
-    <div class="form-group full-width">
-      <label class="section-label">
-        <i data-lucide="settings"></i>
-        Additional Options
-      </label>
-      <div class="checkbox-group">
-        <label class="checkbox-option">
-          <input type="checkbox" name="featured" value="true" />
-          <span class="checkbox-custom"></span>
-          <span>Featured Product</span>
-        </label>
-        <label class="checkbox-option">
-          <input type="checkbox" name="onSale" value="true" />
-          <span class="checkbox-custom"></span>
-          <span>On Sale</span>
-        </label>
-        <label class="checkbox-option">
-          <input type="checkbox" name="newArrival" value="true" />
-          <span class="checkbox-custom"></span>
-          <span>New Arrival</span>
-        </label>
-      </div>
-    </div>
-  </div>
-
-  <div id="result"></div>
-
-  <div class="form-actions">
-    <button type="button" id="closeUPLOAD" class="btn-secondary">
-      <i data-lucide="x"></i>
-      Cancel
-    </button>
-    <button type="submit" class="btn-primary">
-      <i data-lucide="plus"></i>
-      Add Product
-    </button>
-  </div>
-</form>
+ <form id="uploadForm" enctype="multipart/form-data">
+    <input type="file" name="file" accept="image/*" required />
+    <button type="submit">Upload</button>
+  </form>
       </div>
       <br>
   <!-- STATS CARDS -->  
@@ -402,6 +175,7 @@
     </div>
   </footer>
   <script src="main.js"></script>
+  <script src="/backend/public/main.js"></script>
     <script src="https://unpkg.com/lucide@latest"></script> 
 </body>
 </html>
