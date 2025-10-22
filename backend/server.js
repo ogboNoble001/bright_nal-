@@ -1,103 +1,33 @@
 import express from "express";
-import mongoose from "mongoose";
 import dotenv from "dotenv";
-import { v2 as cloudinary } from "cloudinary";
-import multer from "multer";
-import { CloudinaryStorage } from "multer-storage-cloudinary";
-import path from "path";
-import { fileURLToPath } from "url";
+import cors from "cors";
+import pkg from "pg";
 
 dotenv.config();
+const { Pool } = pkg;
+
 const app = express();
-const PORT = process.env.PORT || 5000;
-
-// Fix __dirname in ES modules
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-
-// Middlewares
+app.use(cors());
 app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
 
-// Serve static frontend (optional, for Render full-stack)
-app.use(express.static(path.join(__dirname, "public")));
-
-// MongoDB connection
-mongoose
-  .connect(process.env.MONGO_URI, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true
-  })
-  .then(() => console.log("✅ Connected to MongoDB"))
-  .catch((err) => console.error("MongoDB error:", err));
-
-// Cloudinary config
-cloudinary.config({
-  cloud_name: process.env.CLOUD_NAME,
-  api_key: process.env.API_KEY,
-  api_secret: process.env.API_SECRET
+// Neon database connection
+const pool = new Pool({
+  connectionString: process.env.DATABASE_URL,
+  ssl: { rejectUnauthorized: false }
 });
 
-// Cloudinary storage setup
-const storage = new CloudinaryStorage({
-  cloudinary,
-  params: {
-    folder: "clothes_showcase",
-    allowed_formats: ["jpg", "jpeg", "png", "webp"]
-  }
-});
-
-const upload = multer({ storage });
-
-// Mongoose schema
-const clothesSchema = new mongoose.Schema({
-  name: String,
-  description: String,
-  price: Number,
-  imageUrl: String,
-  category: String,
-  createdAt: { type: Date, default: Date.now }
-});
-
-const Clothes = mongoose.model("Clothes", clothesSchema);
-
-// === Routes ===
-
-// Upload new clothing item
-app.post("/api/upload", upload.single("image"), async (req, res) => {
+// Test route
+app.get("/", async (req, res) => {
   try {
-    const { name, description, price, category } = req.body;
-    const imageUrl = req.file.path;
-    
-    const newItem = new Clothes({
-      name,
-      description,
-      price,
-      category,
-      imageUrl
+    const result = await pool.query("SELECT NOW()");
+    res.json({
+      message: "✅ Connected to Neon PostgreSQL successfully",
+      time: result.rows[0].now
     });
-    
-    await newItem.save();
-    res.status(201).json({ message: "Item uploaded successfully", item: newItem });
   } catch (err) {
-    res.status(500).json({ error: err.message });
+    res.status(500).json({ error: "❌ Database connection failed", details: err.message });
   }
 });
 
-// Get all clothes
-app.get("/api/clothes", async (req, res) => {
-  try {
-    const items = await Clothes.find().sort({ createdAt: -1 });
-    res.json(items);
-  } catch (err) {
-    res.status(500).json({ error: err.message });
-  }
-});
-
-// Root route
-app.get("/", (req, res) => {
-  res.sendFile(path.join(__dirname, "public", "index.html"));
-});
-
-// Start server
+const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`🚀 Server running on port ${PORT}`));
