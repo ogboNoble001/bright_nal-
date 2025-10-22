@@ -57,7 +57,7 @@
   }
 }
 
-@-webkit-keyframes tilt-in-fwd-tr {
+@keyframes tilt-in-fwd-tr {
   0% {
     -webkit-transform: rotateY(20deg) rotateX(35deg) translate(300px, -300px) skew(-35deg, 10deg);
             transform: rotateY(20deg) rotateX(35deg) translate(300px, -300px) skew(-35deg, 10deg);
