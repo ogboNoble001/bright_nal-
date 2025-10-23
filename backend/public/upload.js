@@ -3,13 +3,23 @@ window.addEventListener("DOMContentLoaded", () => {
   const uploadForm = document.getElementById("uploadForm");
   const toggleBtn = document.querySelector(".toggle-form-btn");
   const modalBox = document.getElementById("modalBox");
+  
+if (toggleBtn && modalBox) {
+  toggleBtn.addEventListener("click", () => {
+    modalBox.classList.add("active");
+  });
+}
 
-  if (toggleBtn && uploadForm) {
-    toggleBtn.addEventListener("click", () => {
-      modalBox.classList.toggle("active")
-      let modalTrue =  modalBox.classList.toggle("active")
-    });
+document.getElementById("closeModal")?.addEventListener("click", () => {
+  modalBox.classList.remove("active");
+});
+
+// Close on outside click
+modalBox?.addEventListener("click", (e) => {
+  if (e.target === modalBox) {
+    modalBox.classList.remove("active");
   }
+});
 
   
   const result = document.getElementById("result");

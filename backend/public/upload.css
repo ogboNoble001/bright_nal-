@@ -278,14 +278,60 @@ body {
   border-color: #fff;
 }
 
-/* === UPLOAD FORM === */
-.modal-box{
+/* === UPLOAD FORM === */.modal-box {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.85);
+  backdrop-filter: blur(10px);
+  z-index: 2000;
   display: none;
-}
-.modal-box.active{
-  display: block;
+  justify-content: center;
+  align-items: center;
+  padding: 2rem;
+  overflow-y: auto;
 }
 
+.modal-box.active {
+  display: flex;
+}
+
+.upload-section {
+  width: 100%;
+  max-width: 900px;
+  margin: auto;
+}
+
+.close-modal {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  width: 50px;
+  height: 50px;
+  background: rgba(255, 255, 255, 0.1);
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  border-radius: 50%;
+  color: #fff;
+  font-size: 2rem;
+  cursor: pointer;
+  transition: all 0.3s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.close-modal:hover {
+  background: #f44336;
+  border-color: #f44336;
+  transform: rotate(90deg);
+}
+
+.toggle-form-btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
+}
 #uploadForm {
   width: 100%;
   margin: 2.5em auto;
@@ -878,7 +924,7 @@ footer {
 .toggle-form-btn {
   position: fixed;
   right: 2rem;
-  bottom: 4rem;
+  bottom: 2rem;
   background: linear-gradient(135deg, #667eea, #764ba2);
   color: #fff;
   padding: 0.8rem 1.6rem;
