@@ -10,8 +10,9 @@ if (toggleBtn && modalBox) {
   });
 }
 
-document.getElementById("closeModal")?.addEventListener("click", () => {
+document.getElementById("closeModal").addEventListener("click", () => {
   modalBox.classList.remove("active");
+  uploadForm.reset()
 });
 
 // Close on outside click
