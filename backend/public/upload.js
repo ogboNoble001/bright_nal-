@@ -167,9 +167,6 @@ modalBox?.addEventListener("click", (e) => {
   // === EDIT & DELETE ===
   function startEdit(id, product) {
     modalBox.classList.add("active");
-document.getElementById("closeModal")?.addEventListener("click", () => {
-  modalBox.classList.remove("active");
-  })
     editingProductId = id;
     const fields = [
       "productName",
@@ -185,7 +182,6 @@ document.getElementById("closeModal")?.addEventListener("click", () => {
     fields.forEach(
       (f) => (document.querySelector(`input[name="${f}"]`).value = product[f] || "")
     );
-
     const btn = uploadForm.querySelector('button[type="submit"]');
     btn.innerHTML = '<i data-lucide="save"></i> Update Product';
     lucide.createIcons();
