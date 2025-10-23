@@ -501,9 +501,9 @@ body {
 }
 
 #result img {
-  width: 30px;
+  width: 240px;
   max-width: 100%;
-  height: auto;
+  height: 240px;
   border-radius: 10px;
   margin-bottom: 1rem;
   box-shadow: 
@@ -953,4 +953,37 @@ footer {
 .loader-container p {
   font-weight: 500;
   color: #333;
+}
+
+.upload-actions {
+  display: flex;
+  gap: 0.6rem;
+  padding: 0.75rem 1rem 1rem;
+}
+
+.upload-actions button {
+  flex: 1;
+  border: none;
+  border-radius: 6px;
+  padding: 0.5rem 0.75rem;
+  font-weight: 600;
+  cursor: pointer;
+  color: #fff;
+  transition: 0.25s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+
+.upload-actions .edit-btn {
+  background: #2196F3;
+}
+
+.upload-actions .delete-btn {
+  background: #f44336;
+}
+
+.upload-actions button:hover {
+  opacity: 0.85;
 }
