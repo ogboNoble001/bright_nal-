@@ -394,9 +394,9 @@ body {
   display: flex;
   flex-direction: column;
    width: 100%;
+   justify-content: center;
+   align-items: center;
    height: 200px;
-   margin: auto;
-  align-items: center;
   gap: 0.6rem;
   background: linear-gradient(135deg, #667eea, #764ba2);
   padding: 0.7rem 1.4rem;
@@ -414,8 +414,6 @@ body {
 }
 
 .custom-file-label i svg{
-  width: 180px;
-  height: 180px;
   stroke-width: 2.2px;
 }
 
@@ -424,8 +422,10 @@ body {
 }
 
 .file-format {
+  text-decoration: underline;
+  text-underline-offset: 1px;
   font-size: 0.85rem;
-  color: #777;
+  color: #e5e5e5;
   margin-left: auto;
   margin-right: auto;
 }
