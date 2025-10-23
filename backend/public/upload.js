@@ -13,16 +13,16 @@ if (closeModal) {
   closeModal.addEventListener("click", () => {
     modalBox.classList.remove("active");
     uploadForm.reset();
+    alert("Modal closed");
   });
 }
 
-// Close on outside click
+/* Close on outside click
 modalBox?.addEventListener("click", (e) => {
   if (e.target === modalBox) {
-    result.scrollIntoView({ behavior: "smooth" });
     modalBox.classList.remove("active");
   }
-});
+});*/
 
   
   const result = document.getElementById("result");
@@ -33,7 +33,6 @@ modalBox?.addEventListener("click", (e) => {
 
   // === UTILITIES ===
   const showPlaceholder = () => {
-    result.scrollIntoView({ behavior: "smooth" });
     result.innerHTML = `
       <div class="uploads-grid">
         ${Array(4)
@@ -59,7 +58,6 @@ modalBox?.addEventListener("click", (e) => {
       error: "#f44336",
       info: "#2196F3",
     };
-    result.scrollIntoView({ behavior: "smooth" });
     result.innerHTML = `
       <div style="color:${colors[type]}; text-align:center; padding:1rem;
         background:rgba(0,0,0,0.03); border:1px solid ${colors[type]}33;
@@ -90,14 +88,12 @@ modalBox?.addEventListener("click", (e) => {
 
       if (!allProducts.length) {
         result.innerHTML = `<p style="text-align:center;color:#888;padding:2rem;">No products yet!</p>`;
-        result.scrollIntoView({ behavior: "smooth" });
         return;
       }
 
       renderProducts(allProducts.slice(0, 6), true);
     } catch (err) {
       console.error(" Fetch error:", err);
-      result.scrollIntoView({ behavior: "smooth" });
       showMessage(` Failed to load products: ${err.message}`, "error");
     }
   }
@@ -173,6 +169,7 @@ modalBox?.addEventListener("click", (e) => {
 
   // === EDIT & DELETE ===
   function startEdit(id, product) {
+    modalBox.classList.add("active");
     editingProductId = id;
     const fields = [
       "productName",
@@ -188,7 +185,6 @@ modalBox?.addEventListener("click", (e) => {
     fields.forEach(
       (f) => (document.querySelector(`input[name="${f}"]`).value = product[f] || "")
     );
-    modalBox.classList.add("active");
     const btn = uploadForm.querySelector('button[type="submit"]');
     btn.innerHTML = '<i data-lucide="save"></i> Update Product';
     lucide.createIcons();
@@ -223,8 +219,7 @@ modalBox?.addEventListener("click", (e) => {
 fetchAllUploads()
 
     showLoader(editingProductId ? "Updating product..." : "Uploading product...");
-      
-fetchAllUploads()
+
     try {
       const formData = new FormData(uploadForm);
       const url = editingProductId ? `/upload/${editingProductId}` : "/upload";
@@ -236,20 +231,16 @@ fetchAllUploads()
       if (res.ok && data.success) {
         showMessage(`✓ Product ${editingProductId ? "updated" : "uploaded"} successfully!`, "success");
         uploadForm.reset();
-        
-fetchAllUploads()
         editingProductId = null;
         uploadForm.querySelector('button[type="submit"]').innerHTML =
           '<i data-lucide="plus"></i> Add Product';
         lucide.createIcons();
-        setTimeout(fetchAllUploads, 200);
+        setTimeout(fetchAllUploads, 800);
       } else showMessage(data.message || "Operation failed", "error");
-fetchAllUploads()
     } catch (err) {
       console.error("❌ Upload error:", err);
       showMessage(`Operation failed: ${err.message}`, "error");
     }
-
   });
 
   // === INIT ===
