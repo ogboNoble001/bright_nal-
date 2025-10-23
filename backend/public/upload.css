@@ -223,7 +223,7 @@ body {
   background: linear-gradient(145deg, #0f0f0f, #1a1a1a);
   border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 20px;
-  padding: 2em .1em;
+  padding: 2em .8em;
   margin-bottom: 3em;
   box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
 }
@@ -248,6 +248,7 @@ body {
 .files-filters {
   display: flex;
   gap: 1em;
+  padding: .4em;
   margin-bottom: 2.5em;
   overflow-x:scroll;
 }
