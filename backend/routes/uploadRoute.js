@@ -8,13 +8,41 @@ dotenv.config();
 const { Pool } = pkg;
 const router = express.Router();
 
-// Configure PostgreSQL
+// PostgreSQL Pool
 const pool = new Pool({
   connectionString: process.env.DATABASE_URL,
   ssl: { rejectUnauthorized: false },
 });
 
-// Configure Cloudinary
+// Create table
+const createProductsTable = async () => {
+  try {
+    await pool.query(`
+      CREATE TABLE IF NOT EXISTS products (
+        id SERIAL PRIMARY KEY,
+        product_name TEXT,
+        category TEXT,
+        brand TEXT,
+        price NUMERIC(12,2) DEFAULT 0,
+        stock INT DEFAULT 0,
+        sku TEXT,
+        product_class TEXT,
+        sizes TEXT,
+        colors TEXT,
+        description TEXT,
+        image_url TEXT NOT NULL,
+        cloudinary_id TEXT NOT NULL,
+        created_at TIMESTAMP DEFAULT NOW()
+      )
+    `);
+    console.log("✅ Products table ready");
+  } catch (err) {
+    console.error("❌ Table creation error:", err.message);
+  }
+};
+createProductsTable();
+
+// Cloudinary config
 cloudinary.config({
   cloud_name: process.env.CLOUD_NAME,
   api_key: process.env.CLOUD_KEY,
@@ -22,23 +50,40 @@ cloudinary.config({
   secure: true,
 });
 
-// Multer setup (memory storage)
-const storage = multer.memoryStorage();
-const upload = multer({ storage });
+// Multer config
+const upload = multer({
+  storage: multer.memoryStorage(),
+  limits: { fileSize: 5 * 1024 * 1024 }, // 5MB
+  fileFilter: (req, file, cb) => {
+    if (!file.mimetype.startsWith("image/")) {
+      return cb(new Error("Only image files allowed"));
+    }
+    cb(null, true);
+  },
+});
 
-// -----------------
 // POST: Upload product
-// -----------------
 router.post("/", upload.single("images"), async (req, res) => {
+  let cloudinaryId = null;
+
   try {
-    if (!req.file) return res.status(400).json({ success: false, message: "No file uploaded" });
+    if (!req.file) {
+      return res.status(400).json({ 
+        success: false, 
+        message: "No image file uploaded" 
+      });
+    }
 
     const { productName, category, brand, price, stock, sku, productClass, sizes, colors, description } = req.body;
 
-    // Upload image to Cloudinary
-    const result = await new Promise((resolve, reject) => {
+    // Upload to Cloudinary
+    const cloudinaryResult = await new Promise((resolve, reject) => {
       const stream = cloudinary.uploader.upload_stream(
-        { folder: "myAppUploads", tags: ["myApp"] },
+        { 
+          folder: "myAppUploads", 
+          tags: ["myApp"],
+          resource_type: "image"
+        },
         (error, result) => {
           if (error) reject(error);
           else resolve(result);
@@ -47,49 +92,110 @@ router.post("/", upload.single("images"), async (req, res) => {
       stream.end(req.file.buffer);
     });
 
-    // Save product info to PostgreSQL
+    cloudinaryId = cloudinaryResult.public_id;
+
+    // Insert into database
     const query = `
       INSERT INTO products 
         (product_name, category, brand, price, stock, sku, product_class, sizes, colors, description, image_url, cloudinary_id)
-      VALUES
-        ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12)
+      VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12)
       RETURNING *;
     `;
+    
     const values = [
-      productName || null,
-      category || null,
-      brand || null,
-      price ? Number(price) : null,
-      stock ? Number(stock) : null,
-      sku || null,
-      productClass || null,
-      sizes || null,
-      colors || null,
-      description || null,
-      result.secure_url,
-      result.public_id
+      productName || "Untitled Product",
+      category || "Uncategorized",
+      brand || "Unknown",
+      price ? parseFloat(price) : 0,
+      stock ? parseInt(stock) : 0,
+      sku || `SKU-${Date.now()}`,
+      productClass || "Standard",
+      sizes || "N/A",
+      colors || "N/A",
+      description || "No description",
+      cloudinaryResult.secure_url,
+      cloudinaryResult.public_id,
     ];
 
     const dbResult = await pool.query(query, values);
 
-    res.json({ success: true, product: dbResult.rows[0] });
+    res.status(201).json({ 
+      success: true, 
+      product: dbResult.rows[0],
+      message: "Product uploaded successfully"
+    });
 
   } catch (error) {
-    console.error("Upload error:", error);
-    res.status(500).json({ success: false, message: error.message });
+    console.error("❌ Upload error:", error.message);
+
+    // Rollback: Delete from Cloudinary if DB insert fails
+    if (cloudinaryId) {
+      try {
+        await cloudinary.uploader.destroy(cloudinaryId);
+        console.log("🗑️ Rolled back Cloudinary upload");
+      } catch (rollbackError) {
+        console.error("❌ Rollback failed:", rollbackError.message);
+      }
+    }
+
+    res.status(500).json({ 
+      success: false, 
+      message: error.message || "Upload failed" 
+    });
   }
 });
 
-// -----------------
 // GET: Fetch all products
-// -----------------
 router.get("/files", async (req, res) => {
   try {
-    const dbResult = await pool.query("SELECT * FROM products ORDER BY created_at DESC");
-    res.json(dbResult.rows);
+    const result = await pool.query(
+      "SELECT * FROM products ORDER BY created_at DESC"
+    );
+
+    res.json(result.rows);
+
   } catch (error) {
-    console.error("Fetch error:", error);
-    res.status(500).json({ success: false, message: error.message });
+    console.error("❌ Fetch error:", error.message);
+    res.status(500).json({ 
+      success: false, 
+      message: "Failed to fetch products",
+      error: error.message 
+    });
+  }
+});
+
+// DELETE: Remove product
+router.delete("/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    // Get product to find cloudinary_id
+    const product = await pool.query("SELECT cloudinary_id FROM products WHERE id = $1", [id]);
+    
+    if (product.rows.length === 0) {
+      return res.status(404).json({ 
+        success: false, 
+        message: "Product not found" 
+      });
+    }
+
+    // Delete from Cloudinary
+    await cloudinary.uploader.destroy(product.rows[0].cloudinary_id);
+
+    // Delete from database
+    await pool.query("DELETE FROM products WHERE id = $1", [id]);
+
+    res.json({ 
+      success: true, 
+      message: "Product deleted successfully" 
+    });
+
+  } catch (error) {
+    console.error("❌ Delete error:", error.message);
+    res.status(500).json({ 
+      success: false, 
+      message: "Failed to delete product" 
+    });
   }
 });
 
