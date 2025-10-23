@@ -875,7 +875,7 @@ footer {
   animation: fadeInUp 0.6s ease forwards;
 }
 
-.toggle-btn {
+.toggle-form-btn {
   position: fixed;
   right: 2rem;
   bottom: 4rem;

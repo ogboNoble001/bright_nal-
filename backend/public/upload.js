@@ -1,6 +1,6 @@
 window.addEventListener("DOMContentLoaded", () => {
   if (typeof lucide !== "undefined") lucide.createIcons();
-
+  const uploadForm = document.getElementById("uploadForm");
   const toggleBtn = document.querySelector(".toggle-form-btn");
   const modalBox = document.getElementById("modalBox");
 
@@ -16,7 +16,7 @@ window.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  const uploadForm = document.getElementById("uploadForm");
+  
   const result = document.getElementById("result");
   const fileInput = document.querySelector('input[name="images"]');
   let editingProductId = null;
