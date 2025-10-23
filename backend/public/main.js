@@ -38,30 +38,30 @@ window.addEventListener("DOMContentLoaded", () => {
       `;
 
       const res = await fetch("/upload/files");
-      if (!res.ok) throw new Error("Failed to fetch uploads");
+      if (!res.ok) throw new Error("Failed to fetch products");
       
-      const files = await res.json();
+      const products = await res.json();
 
-      if (!files || files.length === 0) {
+      if (!products || products.length === 0) {
         result.innerHTML = '<p style="color: #888; text-align: center; padding: 2rem;">No products uploaded yet.</p>';
         return;
       }
 
       let html = '<div class="uploads-grid">';
-      files.forEach(file => {
+      products.forEach(product => {
         html += `
           <div class="upload-card">
-            <img src="${file.url}" alt="${file.productName}" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22100%22 height=%22100%22%3E%3Crect fill=%22%23333%22 width=%22100%22 height=%22100%22/%3E%3C/svg%3E'"/>
+            <img src="${product.image_url}" alt="${product.product_name || 'Product'}" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22100%22 height=%22100%22%3E%3Crect fill=%22%23333%22 width=%22100%22 height=%22100%22/%3E%3C/svg%3E'"/>
             <div class="upload-info">
-              <h3>${file.productName}</h3>
-              <p><strong>Category:</strong> <span>${file.category}</span></p>
-              <p><strong>Brand:</strong> <span>${file.brand}</span></p>
-              <p><strong>Price:</strong> <span>₦${file.price}</span></p>
-              <p><strong>Stock:</strong> <span>${file.stock}</span></p>
-              <p><strong>Class:</strong> <span>${file.productClass}</span></p>
-              <p><strong>SKU:</strong> <span>${file.sku}</span></p>
-              <p><strong>Sizes:</strong> <span>${file.sizes}</span></p>
-              <p><strong>Colors:</strong> <span>${file.colors}</span></p>
+              <h3>${product.product_name || 'N/A'}</h3>
+              <p><strong>Category:</strong> <span>${product.category || 'N/A'}</span></p>
+              <p><strong>Brand:</strong> <span>${product.brand || 'N/A'}</span></p>
+              <p><strong>Price:</strong> <span>₦${product.price || '0'}</span></p>
+              <p><strong>Stock:</strong> <span>${product.stock || '0'}</span></p>
+              <p><strong>Class:</strong> <span>${product.product_class || 'N/A'}</span></p>
+              <p><strong>SKU:</strong> <span>${product.sku || 'N/A'}</span></p>
+              <p><strong>Sizes:</strong> <span>${product.sizes || 'N/A'}</span></p>
+              <p><strong>Colors:</strong> <span>${product.colors || 'N/A'}</span></p>
             </div>
           </div>
         `;
