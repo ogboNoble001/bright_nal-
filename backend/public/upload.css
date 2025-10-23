@@ -7,8 +7,7 @@
 }
 
 *::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
+  display: none;
 }
 
 *::-webkit-scrollbar-track {
@@ -250,10 +249,11 @@ body {
   display: flex;
   gap: 1em;
   margin-bottom: 2.5em;
-  flex-wrap: wrap;
+  overflow-x:scroll;
 }
 
 .filter-btn {
+  flex: 0 0 auto;
   padding: 0.75em 1.5em;
   background: rgba(255, 255, 255, 0.05);
   border: 1.5px solid rgba(255, 255, 255, 0.1);
@@ -774,10 +774,7 @@ footer {
 }
 
 @media (max-width: 480px) {
-  .header {
-    flex-wrap: wrap;
-  }
-
+ 
   .user-info {
     display: none;
   }
@@ -790,4 +787,80 @@ footer {
     padding: 0.6em 1em;
     font-size: 0.85em;
   }
+}
+
+/* ============================= */
+/* VIEW MORE BUTTON STYLING */
+/* ============================= */
+
+.view-more-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 2.5rem 0;
+}
+
+.view-more-btn {
+  background: linear-gradient(90deg, #667eea, #764ba2);
+  color: #fff;
+  font-family: "Mona Sans", sans-serif;
+  font-weight: 600;
+  font-size: 1rem;
+  padding: 0.9rem 2rem;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+  box-shadow: 0 8px 25px rgba(102, 126, 234, 0.25);
+}
+
+.view-more-btn i {
+  width: 18px;
+  height: 18px;
+  stroke-width: 2.3;
+  transition: transform 0.3s ease;
+}
+
+.view-more-btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 30px rgba(102, 126, 234, 0.35);
+  background: linear-gradient(90deg, #7289da, #8f6ed5);
+}
+
+.view-more-btn:hover i {
+  transform: translateX(4px);
+}
+
+.view-more-btn:active {
+  transform: translateY(1px);
+  box-shadow: 0 4px 10px rgba(102, 126, 234, 0.2);
+}
+
+/* Small Screen Optimization */
+@media (max-width: 500px) {
+  .view-more-btn {
+    width: 90%;
+    font-size: 0.95rem;
+    padding: 0.8rem 0;
+    border-radius: 10px;
+  }
+}
+
+@keyframes fadeInUp {
+  0% {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.view-more-container {
+  animation: fadeInUp 0.6s ease forwards;
 }

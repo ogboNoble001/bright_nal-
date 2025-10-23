@@ -37,7 +37,7 @@ const createProductsTable = async () => {
     `);
     console.log("✅ Products table ready");
   } catch (err) {
-    console.error("❌ Table creation error:", err.message);
+    console.error(" Table creation error:", err.message);
   }
 };
 createProductsTable();
@@ -120,7 +120,7 @@ router.post("/", upload.single("images"), async (req, res) => {
       message: "Product uploaded successfully",
     });
   } catch (error) {
-    console.error("❌ Upload error:", error.message);
+    console.error(" Upload error:", error.message);
 
     // Rollback: Delete Cloudinary image if DB insert fails
     if (cloudinaryId) {
@@ -128,7 +128,7 @@ router.post("/", upload.single("images"), async (req, res) => {
         await cloudinary.uploader.destroy(cloudinaryId);
         console.log("🗑️ Rolled back Cloudinary upload");
       } catch (rollbackError) {
-        console.error("❌ Rollback failed:", rollbackError.message);
+        console.error(" Rollback failed:", rollbackError.message);
       }
     }
 
@@ -145,7 +145,7 @@ router.get("/files", async (req, res) => {
     const result = await pool.query("SELECT * FROM products ORDER BY created_at DESC");
     res.json(result.rows);
   } catch (error) {
-    console.error("❌ Fetch error:", error.message);
+    console.error(" Fetch error:", error.message);
     res.status(500).json({
       success: false,
       message: "Failed to fetch products",
@@ -174,7 +174,7 @@ router.delete("/:id", async (req, res) => {
 
     res.json({ success: true, message: "Product deleted successfully" });
   } catch (error) {
-    console.error("❌ Delete error:", error.message);
+    console.error(" Delete error:", error.message);
     res.status(500).json({ success: false, message: "Failed to delete product" });
   }
 });
