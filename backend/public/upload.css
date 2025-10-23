@@ -384,13 +384,17 @@ body {
 .file-upload-wrap {
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
+  width: 100%;
+  gap: 0.9rem;
+  height: 200px;
   align-items: flex-start;
   margin-bottom: 1.5rem;
 }
 
 .custom-file-label {
   display: inline-flex;
+  margin-left: auto;
+  margin-right: auto;
   align-items: center;
   gap: 0.6rem;
   background: linear-gradient(135deg, #667eea, #764ba2);
@@ -421,7 +425,8 @@ body {
 .file-format {
   font-size: 0.85rem;
   color: #777;
-  margin-left: 0.2rem;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 #uploadForm button {

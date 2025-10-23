@@ -167,6 +167,9 @@ modalBox?.addEventListener("click", (e) => {
   // === EDIT & DELETE ===
   function startEdit(id, product) {
     modalBox.classList.add("active");
+document.getElementById("closeModal")?.addEventListener("click", () => {
+  modalBox.classList.remove("active");
+  })
     editingProductId = id;
     const fields = [
       "productName",
