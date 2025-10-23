@@ -3,18 +3,19 @@ window.addEventListener("DOMContentLoaded", () => {
   const uploadForm = document.getElementById("uploadForm");
   const toggleBtn = document.querySelector(".toggle-form-btn");
   const modalBox = document.getElementById("modalBoxForm");
-  const closeModal = document.getElementById("closeModal")
 if (toggleBtn && modalBox) {
   toggleBtn.addEventListener("click", () => {
     modalBox.classList.add("active");
   });
 }
-
-closeModal.addEventListener("click", () => {
-  modalBox.classList.remove("active");
-  alert("I was clicked nothing happened")
-  uploadForm.reset()
-});
+const closeModal = document.getElementById("closeModal");
+if (closeModal) {
+  closeModal.addEventListener("click", () => {
+    modalBox.classList.remove("active");
+    uploadForm.reset();
+    alert("Modal closed");
+  });
+}
 
 // Close on outside click
 modalBox?.addEventListener("click", (e) => {
