@@ -129,22 +129,6 @@ router.post("/", upload.single("images"), async (req, res) => {
     });
   }
 });
-
-// 🆕 GET: Fetch one product by ID (for editing)
-router.get("/:id", async (req, res) => {
-  try {
-    const { id } = req.params;
-    const result = await pool.query("SELECT * FROM products WHERE id = $1", [id]);
-    if (!result.rows.length) {
-      return res.status(404).json({ success: false, message: "Product not found" });
-    }
-    res.json({ success: true, product: result.rows[0] });
-  } catch (error) {
-    console.error("❌ Fetch single error:", error.message);
-    res.status(500).json({ success: false, message: "Failed to fetch product" });
-  }
-});
-
 // GET: Fetch all products
 router.get("/files", async (req, res) => {
   try {
@@ -201,6 +185,22 @@ router.put("/:id", upload.single("images"), async (req, res) => {
       cloudinaryId = cloudinaryResult.public_id;
       newCloudinaryId = cloudinaryResult.public_id;
     }
+     
+
+// 🆕 GET: Fetch one product by ID (for editing)
+router.get("/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+    const result = await pool.query("SELECT * FROM products WHERE id = $1", [id]);
+    if (!result.rows.length) {
+      return res.status(404).json({ success: false, message: "Product not found" });
+    }
+    res.json({ success: true, product: result.rows[0] });
+  } catch (error) {
+    console.error("❌ Fetch single error:", error.message);
+    res.status(500).json({ success: false, message: "Failed to fetch product" });
+  }
+});
 
     const query = `
       UPDATE products SET 
