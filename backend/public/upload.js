@@ -35,7 +35,7 @@ modalBox?.addEventListener("click", (e) => {
   const showPlaceholder = () => {
     result.innerHTML = `
       <div class="uploads-grid">
-        ${Array(4)
+        ${Array(5)
           .fill()
           .map(
             () => `
@@ -91,7 +91,7 @@ modalBox?.addEventListener("click", (e) => {
         return;
       }
 
-      renderProducts(allProducts.slice(0, 6), true);
+      renderProducts(allProducts.slice(0, 4), true);
     } catch (err) {
       console.error(" Fetch error:", err);
       showMessage(` Failed to load products: ${err.message}`, "error");
