@@ -209,8 +209,10 @@ modalBox?.addEventListener("click", (e) => {
   uploadForm?.addEventListener("submit", async (e) => {
   modalBox.classList.remove("active");
     e.preventDefault();
-    if (!editingProductId && (!fileInput.files || !fileInput.files.length))
+    if (!editingProductId && (!fileInput.files || !fileInput.files.length)) {
+      uploadForm.reset()
       return showMessage("Please select an image to upload", "error");
+    }
 
     if (
       fileInput.files.length &&

@@ -381,22 +381,47 @@ body {
   border-color: #667eea;
   box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.1);
 }
+.file-upload-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  align-items: flex-start;
+  margin-bottom: 1.5rem;
+}
 
-#uploadForm input[type="file"]::file-selector-button {
-  padding: 0.6rem 1.2rem;
+.custom-file-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
   background: linear-gradient(135deg, #667eea, #764ba2);
-  border: none;
-  border-radius: 8px;
+  padding: 0.7rem 1.4rem;
+  border-radius: 10px;
   color: #fff;
   font-weight: 600;
   cursor: pointer;
-  margin-right: 1rem;
-  transition: all 0.3s;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(118, 75, 162, 0.25);
 }
 
-#uploadForm input[type="file"]::file-selector-button:hover {
+.custom-file-label:hover {
   transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+  box-shadow: 0 6px 18px rgba(102, 126, 234, 0.4);
+}
+
+.custom-file-label i {
+  width: 20px;
+  height: 20px;
+  stroke-width: 2.2px;
+}
+
+.file-upload-wrap input[type="file"] {
+  display: none;
+}
+
+.file-format {
+  font-size: 0.85rem;
+  color: #777;
+  margin-left: 0.2rem;
 }
 
 #uploadForm button {

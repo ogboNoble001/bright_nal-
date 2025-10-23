@@ -88,7 +88,14 @@
   <button class="close-modal" id="closeModal">×</button>
   <div class="upload-section">
   <form id="uploadForm" enctype="multipart/form-data">
-    <input type="file" name="images" accept="image/*" />
+    <div class="file-upload-wrap">
+  <label for="imageUpload" class="custom-file-label">
+    <i data-lucide="cloud-upload"></i>
+    <span>Select Image</span>
+  </label>
+  <input id="imageUpload" type="file" name="images" accept="image/*" />
+  <small class="file-format">Allowed: JPG, PNG, WEBP</small>
+</div>
     <input type="text" name="productName" placeholder="Product Name (optional)" />
     <input type="text" name="category" placeholder="Category (optional)" />
     <input type="text" name="brand" placeholder="Brand (optional)" />
