@@ -32,7 +32,7 @@ modalBox?.addEventListener("click", (e) => {
   const showPlaceholder = () => {
     result.innerHTML = `
       <div class="uploads-grid">
-        ${Array(3)
+        ${Array(4)
           .fill()
           .map(
             () => `
