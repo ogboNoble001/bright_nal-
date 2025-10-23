@@ -6,11 +6,13 @@ window.addEventListener("DOMContentLoaded", () => {
 
   if (toggleBtn && uploadForm) {
     toggleBtn.addEventListener("click", () => {
-      const modalBoxActive = modalBox.classList.toggle("active");
+      modalBox.classList.toggle("active")
+      let modalTrue =  modalBox.classList.toggle("active")
       toggleBtn.classList.toggle("active");
-      toggleBtn.querySelector("span").textContent = modalBoxActive
+      toggleBtn.querySelector("span").textContent = modalTrue
         ? "Hide Upload Form"
         : "New Product Upload";
+     
     });
   }
 
