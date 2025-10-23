@@ -2,14 +2,26 @@ import express from "express";
 import multer from "multer";
 import { v2 as cloudinary } from "cloudinary";
 import dotenv from "dotenv";
+import fs from "fs";
 
 dotenv.config();
 
 const router = express.Router();
-const storage = multer.memoryStorage();
-const upload = multer({ storage });
+const upload = multer({ 
+  dest: "uploads/",
+  limits: { fileSize: 5 * 1024 * 1024 }, // 5MB limit
+  fileFilter: (req, file, cb) => {
+    const allowedTypes = /jpeg|jpg|png|webp/;
+    const extname = allowedTypes.test(file.originalname.toLowerCase());
+    const mimetype = allowedTypes.test(file.mimetype);
+    
+    if (mimetype && extname) {
+      return cb(null, true);
+    }
+    cb(new Error("Only images are allowed (jpeg, jpg, png, webp)"));
+  }
+});
 
-// Cloudinary configuration
 cloudinary.config({
   cloud_name: process.env.CLOUD_NAME,
   api_key: process.env.CLOUD_KEY,
@@ -17,71 +29,77 @@ cloudinary.config({
   secure: true,
 });
 
-// POST: Upload single/multiple files
-router.post("/", upload.array("images"), async (req, res) => {
+// POST: Upload file
+router.post("/", upload.single("images"), async (req, res) => {
   try {
-    if (!req.files || req.files.length === 0) {
-      return res.status(400).json({ success: false, message: "No files uploaded" });
+    if (!req.file) {
+      return res.status(400).json({ success: false, message: "No file uploaded" });
     }
 
     const { productName, category, brand, price, stock, sku, productClass, sizes, colors, description } = req.body;
 
-    const uploadedFiles = [];
+    const result = await cloudinary.uploader.upload(req.file.path, {
+      folder: "myAppUploads",
+      tags: ["myApp"],
+      context: {
+        productName: productName || "N/A",
+        category: category || "N/A",
+        brand: brand || "N/A",
+        price: price || "0",
+        stock: stock || "0",
+        sku: sku || "N/A",
+        productClass: productClass || "N/A",
+        sizes: sizes || "N/A",
+        colors: colors || "N/A",
+        description: description || "N/A",
+      },
+    });
 
-    for (const file of req.files) {
-      const result = await new Promise((resolve, reject) => {
-        const stream = cloudinary.uploader.upload_stream(
-          {
-            folder: "myAppUploads",
-            tags: ["myApp"],
-            context: {
-              productName: productName || "N/A",
-              category: category || "N/A",
-              brand: brand || "N/A",
-              price: price || "0",
-              stock: stock || "0",
-              sku: sku || "N/A",
-              productClass: productClass || "N/A",
-              sizes: sizes || "N/A",
-              colors: colors || "N/A",
-              description: description || "N/A",
-            },
-          },
-          (error, result) => {
-            if (error) reject(error);
-            else resolve(result);
-          }
-        );
-        stream.end(file.buffer);
-      });
+    // Delete temp file
+    fs.unlinkSync(req.file.path);
 
-      uploadedFiles.push({
+    res.json({
+      success: true,
+      file: {
         url: result.secure_url,
         publicId: result.public_id,
-        productName: result.context?.productName || "N/A",
-        category: result.context?.category || "N/A",
-        brand: result.context?.brand || "N/A",
-        price: result.context?.price || "0",
-        stock: result.context?.stock || "0",
-        sku: result.context?.sku || "N/A",
-        productClass: result.context?.productClass || "N/A",
-        sizes: result.context?.sizes || "N/A",
-        colors: result.context?.colors || "N/A",
-        description: result.context?.description || "N/A",
-      });
-    }
-
-    res.json({ success: true, files: uploadedFiles });
+        productName: productName || "N/A",
+        category: category || "N/A",
+        brand: brand || "N/A",
+        price: price || "0",
+        stock: stock || "0",
+        sku: sku || "N/A",
+        productClass: productClass || "N/A",
+        sizes: sizes || "N/A",
+        colors: colors || "N/A",
+        description: description || "N/A",
+      }
+    });
   } catch (error) {
+    // Cleanup temp file on error
+    if (req.file?.path) {
+      try {
+        fs.unlinkSync(req.file.path);
+      } catch (err) {
+        console.error("Error deleting temp file:", err);
+      }
+    }
+    
     console.error("Upload error:", error);
-    res.status(500).json({ success: false, message: error.message });
+    res.status(500).json({ 
+      success: false, 
+      message: error.message || "Upload failed" 
+    });
   }
 });
 
 // GET: Fetch all uploads
 router.get("/files", async (req, res) => {
   try {
-    const result = await cloudinary.api.resources_by_tag("myApp", { max_results: 100, context: true });
+    const result = await cloudinary.api.resources_by_tag("myApp", { 
+      max_results: 100, 
+      context: true 
+    });
 
     const files = result.resources.map(file => ({
       url: file.secure_url,
@@ -100,8 +118,11 @@ router.get("/files", async (req, res) => {
 
     res.json(files);
   } catch (error) {
-    console.error("Fetch uploads error:", error);
-    res.status(500).json({ success: false, message: error.message });
+    console.error("Fetch error:", error);
+    res.status(500).json({ 
+      success: false, 
+      message: error.message || "Failed to fetch files" 
+    });
   }
 });
 
