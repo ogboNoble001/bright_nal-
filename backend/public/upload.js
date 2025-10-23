@@ -2,7 +2,7 @@ window.addEventListener("DOMContentLoaded", () => {
   if (typeof lucide !== "undefined") lucide.createIcons();
   const uploadForm = document.getElementById("uploadForm");
   const toggleBtn = document.querySelector(".toggle-form-btn");
-  const modalBox = document.getElementById("modalBox");
+  const modalBox = document.getElementById("modalBoxForm");
   
 if (toggleBtn && modalBox) {
   toggleBtn.addEventListener("click", () => {
@@ -166,6 +166,7 @@ modalBox?.addEventListener("click", (e) => {
 
   // === EDIT & DELETE ===
   function startEdit(id, product) {
+    modalBox.classList.add("active");
     editingProductId = id;
     const fields = [
       "productName",
@@ -194,6 +195,7 @@ modalBox?.addEventListener("click", (e) => {
       const res = await fetch(`/upload/${id}`, { method: "DELETE" });
       const data = await res.json();
       if (data.success) {
+       modalBox.classList.remove("active");
         showMessage("✓ Product deleted successfully!", "success");
         setTimeout(fetchAllUploads, 1000);
       } else showMessage(data.message || "Delete failed", "error");
@@ -205,6 +207,7 @@ modalBox?.addEventListener("click", (e) => {
 
   // === FORM HANDLING ===
   uploadForm?.addEventListener("submit", async (e) => {
+  modalBox.classList.remove("active");
     e.preventDefault();
     if (!editingProductId && (!fileInput.files || !fileInput.files.length))
       return showMessage("Please select an image to upload", "error");
