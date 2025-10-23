@@ -281,6 +281,7 @@ body {
 
 /* === UPLOAD FORM === */
 #uploadForm {
+  width: 100%;
   margin: 2.5em auto;
   background: linear-gradient(145deg, #1a1a1a, #0f0f0f);
   padding: 3em;
