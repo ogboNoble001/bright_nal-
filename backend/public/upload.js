@@ -35,7 +35,7 @@ modalBox?.addEventListener("click", (e) => {
   const showPlaceholder = () => {
     result.innerHTML = `
       <div class="uploads-grid">
-        ${Array(5)
+        ${Array(4)
           .fill()
           .map(
             () => `
@@ -91,7 +91,7 @@ modalBox?.addEventListener("click", (e) => {
         return;
       }
 
-      renderProducts(allProducts.slice(0, 4), true);
+      renderProducts(allProducts.slice(0, 6), true);
     } catch (err) {
       console.error(" Fetch error:", err);
       showMessage(` Failed to load products: ${err.message}`, "error");
@@ -126,7 +126,7 @@ modalBox?.addEventListener("click", (e) => {
     }
     html += "</div>";
 
-    if (showViewMore && allProducts.length > 4 && !showingAll) {
+    if (showViewMore && allProducts.length > 6 && !showingAll) {
       html += `
         <div style="text-align:center; margin-top:1.5rem;">
           <button id="viewMoreBtn" style="padding:0.8rem 1.5rem; border:none; 
