@@ -2,17 +2,19 @@ window.addEventListener("DOMContentLoaded", () => {
   if (typeof lucide !== "undefined") lucide.createIcons();
 
   const toggleBtn = document.querySelector(".toggle-form-btn");
-  const uploadForm = document.getElementById("uploadForm");
+  const modalBox = document.getElementById("modalBox");
 
   if (toggleBtn && uploadForm) {
     toggleBtn.addEventListener("click", () => {
-      const expanded = uploadForm.classList.toggle("expanded");
+      const modalBoxActive = modalBox.classList.toggle("active");
       toggleBtn.classList.toggle("active");
-      toggleBtn.querySelector("span").textContent = expanded
+      toggleBtn.querySelector("span").textContent = modalBoxActive
         ? "Hide Upload Form"
         : "New Product Upload";
     });
   }
+
+  const uploadForm = document.getElementById("uploadForm");
   const result = document.getElementById("result");
   const fileInput = document.querySelector('input[name="images"]');
   let editingProductId = null;
