@@ -391,7 +391,7 @@ body {
 
 .custom-file-label {
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
    width: 100%;
    height: 200px;
   margin-left: auto;
