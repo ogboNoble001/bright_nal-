@@ -1,52 +1,34 @@
 window.addEventListener("DOMContentLoaded", () => {
-  if (typeof lucide !== 'undefined') lucide.createIcons();
+  if (typeof lucide !== "undefined") lucide.createIcons();
 
   const uploadForm = document.getElementById("uploadForm");
   const result = document.getElementById("result");
   const fileInput = document.querySelector('input[name="images"]');
 
-  // Fetch all uploads
+  // ---------------------------
+  // Fetch all uploaded products
+  // ---------------------------
   async function fetchAllUploads() {
     try {
+      // Show placeholders while loading
       result.innerHTML = `
         <div class="uploads-grid">
-          <div class="placeholder-card">
-            <div class="placeholder-img"></div>
-            <div class="placeholder-content">
-              <div class="placeholder-line"></div>
-              <div class="placeholder-line short"></div>
-              <div class="placeholder-line"></div>
-            </div>
-          </div>
-          <div class="placeholder-card">
-            <div class="placeholder-img"></div>
-            <div class="placeholder-content">
-              <div class="placeholder-line"></div>
-              <div class="placeholder-line short"></div>
-              <div class="placeholder-line"></div>
-            </div>
-          </div>
-          <div class="placeholder-card">
-            <div class="placeholder-img"></div>
-            <div class="placeholder-content">
-              <div class="placeholder-line"></div>
-              <div class="placeholder-line short"></div>
-              <div class="placeholder-line"></div>
-            </div>
-          </div>
+          <div class="placeholder-card"><div class="placeholder-img"></div><div class="placeholder-content"><div class="placeholder-line"></div><div class="placeholder-line short"></div><div class="placeholder-line"></div></div></div>
+          <div class="placeholder-card"><div class="placeholder-img"></div><div class="placeholder-content"><div class="placeholder-line"></div><div class="placeholder-line short"></div><div class="placeholder-line"></div></div></div>
+          <div class="placeholder-card"><div class="placeholder-img"></div><div class="placeholder-content"><div class="placeholder-line"></div><div class="placeholder-line short"></div><div class="placeholder-line"></div></div></div>
         </div>
       `;
 
       const res = await fetch("/upload/files");
       if (!res.ok) throw new Error("Failed to fetch products");
-      
-      const products = await res.json();
 
+      const products = await res.json();
       if (!products || products.length === 0) {
         result.innerHTML = '<p style="color: #888; text-align: center; padding: 2rem;">No products uploaded yet.</p>';
         return;
       }
 
+      // Build product grid
       let html = '<div class="uploads-grid">';
       products.forEach(product => {
         html += `
@@ -68,13 +50,16 @@ window.addEventListener("DOMContentLoaded", () => {
       });
       html += '</div>';
       result.innerHTML = html;
+
     } catch (err) {
       console.error("Fetch error:", err);
       result.innerHTML = `<p class="error" style="color: #f44336; text-align: center; padding: 1rem; background: rgba(244, 67, 54, 0.1); border-radius: 8px;">Error loading products: ${err.message}</p>`;
     }
   }
 
-  // Show loader
+  // ---------------------------
+  // Show loader during upload
+  // ---------------------------
   function showLoader() {
     result.innerHTML = `
       <div style="text-align: center; padding: 3rem; color: #888;">
@@ -84,11 +69,13 @@ window.addEventListener("DOMContentLoaded", () => {
     `;
   }
 
+  // ---------------------------
   // Handle form submission
+  // ---------------------------
   if (uploadForm) {
     uploadForm.addEventListener("submit", async (e) => {
       e.preventDefault();
-      
+
       if (!fileInput.files || fileInput.files.length === 0) {
         result.innerHTML = '<p class="error" style="color: #f44336; text-align: center; padding: 1rem; background: rgba(244, 67, 54, 0.1); border-radius: 8px;">Please select an image to upload.</p>';
         return;
@@ -98,9 +85,9 @@ window.addEventListener("DOMContentLoaded", () => {
 
       try {
         const formData = new FormData(uploadForm);
-        const response = await fetch("/upload", { 
-          method: "POST", 
-          body: formData 
+        const response = await fetch("/upload", {
+          method: "POST",
+          body: formData
         });
 
         const data = await response.json();
@@ -108,9 +95,7 @@ window.addEventListener("DOMContentLoaded", () => {
         if (data.success) {
           result.innerHTML = '<p class="success" style="color: #4CAF50; text-align: center; padding: 1rem; background: rgba(76, 175, 80, 0.1); border-radius: 8px; margin-bottom: 2rem;">✓ Product uploaded successfully!</p>';
           uploadForm.reset();
-          setTimeout(() => {
-            fetchAllUploads();
-          }, 1000);
+          setTimeout(() => fetchAllUploads(), 800);
         } else {
           result.innerHTML = `<p class="error" style="color: #f44336; text-align: center; padding: 1rem; background: rgba(244, 67, 54, 0.1); border-radius: 8px;">Error: ${data.message}</p>`;
         }
@@ -121,6 +106,8 @@ window.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  // Initial load
+  // ---------------------------
+  // Initial fetch
+  // ---------------------------
   fetchAllUploads();
 });
