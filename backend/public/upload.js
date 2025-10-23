@@ -210,10 +210,11 @@ modalBox?.addEventListener("click", (e) => {
   modalBox.classList.remove("active");
     e.preventDefault();
     if (!editingProductId && (!fileInput.files || !fileInput.files.length)) {
+      fetchAllUploads()
       uploadForm.reset()
       return showMessage("Please select an image to upload", "error");
     }
-
+fetchAllUploads()
     if (
       fileInput.files.length &&
       fileInput.files[0].size > 5 * 1024 * 1024
