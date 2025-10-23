@@ -8,11 +8,6 @@ window.addEventListener("DOMContentLoaded", () => {
     toggleBtn.addEventListener("click", () => {
       modalBox.classList.toggle("active")
       let modalTrue =  modalBox.classList.toggle("active")
-      toggleBtn.classList.toggle("active");
-      toggleBtn.querySelector("span").textContent = modalTrue
-        ? "Hide Upload Form"
-        : "New Product Upload";
-     
     });
   }
 
@@ -85,8 +80,8 @@ window.addEventListener("DOMContentLoaded", () => {
 
       renderProducts(allProducts.slice(0, 6), true);
     } catch (err) {
-      console.error("❌ Fetch error:", err);
-      showMessage(`⚠️ Failed to load products: ${err.message}`, "error");
+      console.error(" Fetch error:", err);
+      showMessage(` Failed to load products: ${err.message}`, "error");
     }
   }
 
