@@ -877,9 +877,8 @@ footer {
 
 .toggle-btn {
   position: fixed;
-  margin-top: 0;
-  left: 2rem;
-  margin-bottom: 2rem;
+  right: 4rem;
+  bottom: 4rem;
   background: linear-gradient(135deg, #667eea, #764ba2);
   color: #fff;
   padding: 0.8rem 1.6rem;
