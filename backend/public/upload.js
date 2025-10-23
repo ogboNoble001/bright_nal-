@@ -223,8 +223,7 @@ modalBox?.addEventListener("click", (e) => {
 fetchAllUploads()
 
     showLoader(editingProductId ? "Updating product..." : "Uploading product...");
-      
-fetchAllUploads()
+
     try {
       const formData = new FormData(uploadForm);
       const url = editingProductId ? `/upload/${editingProductId}` : "/upload";
@@ -236,21 +235,16 @@ fetchAllUploads()
       if (res.ok && data.success) {
         showMessage(`✓ Product ${editingProductId ? "updated" : "uploaded"} successfully!`, "success");
         uploadForm.reset();
-        
-fetchAllUploads()
         editingProductId = null;
         uploadForm.querySelector('button[type="submit"]').innerHTML =
           '<i data-lucide="plus"></i> Add Product';
         lucide.createIcons();
-        setTimeout(fetchAllUploads, 200);
+        setTimeout(fetchAllUploads, 800);
       } else showMessage(data.message || "Operation failed", "error");
-
-fetchAllUploads()
     } catch (err) {
       console.error("❌ Upload error:", err);
       showMessage(`Operation failed: ${err.message}`, "error");
     }
-
   });
 
   // === INIT ===
