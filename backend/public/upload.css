@@ -385,8 +385,9 @@ body {
   display: flex;
   flex-direction: column;
   gap: 0.9rem;
+  justify-content: center;
   align-items: center;
-  margin-bottom: 1.5rem;
+  margin-bottom: .7rem;
 }
 
 .custom-file-label {
@@ -413,9 +414,9 @@ body {
   box-shadow: 0 6px 18px rgba(102, 126, 234, 0.4);
 }
 
-.custom-file-label i {
-  width: 80px;
-  height: 80px;
+.custom-file-label i svg{
+  width: 180px;
+  height: 180px;
   stroke-width: 2.2px;
 }
 
