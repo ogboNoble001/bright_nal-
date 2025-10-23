@@ -186,7 +186,7 @@ modalBox?.addEventListener("click", (e) => {
       "colors",
     ];
     fields.forEach(
-      (f) => (document.querySelector(`input[name="${f}"]`).value = product[f])
+      (f) => (document.querySelector(`input[name="${f}"]`).value = product[f] || "")
     );
     modalBox.classList.add("active");
     const btn = uploadForm.querySelector('button[type="submit"]');
@@ -244,6 +244,7 @@ fetchAllUploads()
         lucide.createIcons();
         setTimeout(fetchAllUploads, 200);
       } else showMessage(data.message || "Operation failed", "error");
+
 fetchAllUploads()
     } catch (err) {
       console.error("❌ Upload error:", err);
