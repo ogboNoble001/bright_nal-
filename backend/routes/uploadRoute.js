@@ -14,7 +14,7 @@ const pool = new Pool({
   ssl: { rejectUnauthorized: false },
 });
 
-// Create table
+// Create table if not exists
 const createProductsTable = async () => {
   try {
     await pool.query(`
@@ -62,28 +62,24 @@ const upload = multer({
   },
 });
 
-// POST: Upload product
+// POST: Upload new product
 router.post("/", upload.single("images"), async (req, res) => {
   let cloudinaryId = null;
 
   try {
     if (!req.file) {
-      return res.status(400).json({ 
-        success: false, 
-        message: "No image file uploaded" 
+      return res.status(400).json({
+        success: false,
+        message: "No image file uploaded",
       });
     }
 
     const { productName, category, brand, price, stock, sku, productClass, sizes, colors, description } = req.body;
 
-    // Upload to Cloudinary
+    // Upload image to Cloudinary
     const cloudinaryResult = await new Promise((resolve, reject) => {
       const stream = cloudinary.uploader.upload_stream(
-        { 
-          folder: "myAppUploads", 
-          tags: ["myApp"],
-          resource_type: "image"
-        },
+        { folder: "myAppUploads", tags: ["myApp"], resource_type: "image" },
         (error, result) => {
           if (error) reject(error);
           else resolve(result);
@@ -94,14 +90,13 @@ router.post("/", upload.single("images"), async (req, res) => {
 
     cloudinaryId = cloudinaryResult.public_id;
 
-    // Insert into database
+    // Insert product data into database
     const query = `
       INSERT INTO products 
-        (product_name, category, brand, price, stock, sku, product_class, sizes, colors, description, image_url, cloudinary_id)
+      (product_name, category, brand, price, stock, sku, product_class, sizes, colors, description, image_url, cloudinary_id)
       VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12)
       RETURNING *;
     `;
-    
     const values = [
       productName || "Untitled Product",
       category || "Uncategorized",
@@ -119,16 +114,15 @@ router.post("/", upload.single("images"), async (req, res) => {
 
     const dbResult = await pool.query(query, values);
 
-    res.status(201).json({ 
-      success: true, 
+    res.status(201).json({
+      success: true,
       product: dbResult.rows[0],
-      message: "Product uploaded successfully"
+      message: "Product uploaded successfully",
     });
-
   } catch (error) {
     console.error("❌ Upload error:", error.message);
 
-    // Rollback: Delete from Cloudinary if DB insert fails
+    // Rollback: Delete Cloudinary image if DB insert fails
     if (cloudinaryId) {
       try {
         await cloudinary.uploader.destroy(cloudinaryId);
@@ -138,9 +132,9 @@ router.post("/", upload.single("images"), async (req, res) => {
       }
     }
 
-    res.status(500).json({ 
-      success: false, 
-      message: error.message || "Upload failed" 
+    res.status(500).json({
+      success: false,
+      message: error.message || "Upload failed",
     });
   }
 });
@@ -148,18 +142,14 @@ router.post("/", upload.single("images"), async (req, res) => {
 // GET: Fetch all products
 router.get("/files", async (req, res) => {
   try {
-    const result = await pool.query(
-      "SELECT * FROM products ORDER BY created_at DESC"
-    );
-
+    const result = await pool.query("SELECT * FROM products ORDER BY created_at DESC");
     res.json(result.rows);
-
   } catch (error) {
     console.error("❌ Fetch error:", error.message);
-    res.status(500).json({ 
-      success: false, 
+    res.status(500).json({
+      success: false,
       message: "Failed to fetch products",
-      error: error.message 
+      error: error.message,
     });
   }
 });
@@ -169,32 +159,124 @@ router.delete("/:id", async (req, res) => {
   try {
     const { id } = req.params;
 
-    // Get product to find cloudinary_id
+    // Find product to get cloudinary_id
     const product = await pool.query("SELECT cloudinary_id FROM products WHERE id = $1", [id]);
-    
+
     if (product.rows.length === 0) {
-      return res.status(404).json({ 
-        success: false, 
-        message: "Product not found" 
-      });
+      return res.status(404).json({ success: false, message: "Product not found" });
     }
 
-    // Delete from Cloudinary
+    // Delete image from Cloudinary
     await cloudinary.uploader.destroy(product.rows[0].cloudinary_id);
 
-    // Delete from database
+    // Delete product from DB
     await pool.query("DELETE FROM products WHERE id = $1", [id]);
 
-    res.json({ 
-      success: true, 
-      message: "Product deleted successfully" 
-    });
-
+    res.json({ success: true, message: "Product deleted successfully" });
   } catch (error) {
     console.error("❌ Delete error:", error.message);
-    res.status(500).json({ 
-      success: false, 
-      message: "Failed to delete product" 
+    res.status(500).json({ success: false, message: "Failed to delete product" });
+  }
+});
+
+// PUT: Update product
+router.put("/:id", upload.single("images"), async (req, res) => {
+  let newCloudinaryId = null;
+
+  try {
+    const { id } = req.params;
+    const { productName, category, brand, price, stock, sku, productClass, sizes, colors, description } = req.body;
+
+    // Fetch existing product
+    const existing = await pool.query("SELECT * FROM products WHERE id = $1", [id]);
+    if (existing.rows.length === 0) {
+      return res.status(404).json({ success: false, message: "Product not found" });
+    }
+
+    let imageUrl = existing.rows[0].image_url;
+    let cloudinaryId = existing.rows[0].cloudinary_id;
+
+    // If new image uploaded
+    if (req.file) {
+      // Delete old image
+      await cloudinary.uploader.destroy(existing.rows[0].cloudinary_id);
+
+      // Upload new image
+      const cloudinaryResult = await new Promise((resolve, reject) => {
+        const stream = cloudinary.uploader.upload_stream(
+          { folder: "myAppUploads", tags: ["myApp"] },
+          (error, result) => {
+            if (error) reject(error);
+            else resolve(result);
+          }
+        );
+        stream.end(req.file.buffer);
+      });
+
+      imageUrl = cloudinaryResult.secure_url;
+      cloudinaryId = cloudinaryResult.public_id;
+      newCloudinaryId = cloudinaryResult.public_id;
+    }
+
+    // Update product
+    const query = `
+      UPDATE products 
+      SET 
+        product_name = $1,
+        category = $2,
+        brand = $3,
+        price = $4,
+        stock = $5,
+        sku = $6,
+        product_class = $7,
+        sizes = $8,
+        colors = $9,
+        description = $10,
+        image_url = $11,
+        cloudinary_id = $12
+      WHERE id = $13
+      RETURNING *;
+    `;
+
+    const values = [
+      productName || existing.rows[0].product_name,
+      category || existing.rows[0].category,
+      brand || existing.rows[0].brand,
+      price ? parseFloat(price) : existing.rows[0].price,
+      stock ? parseInt(stock) : existing.rows[0].stock,
+      sku || existing.rows[0].sku,
+      productClass || existing.rows[0].product_class,
+      sizes || existing.rows[0].sizes,
+      colors || existing.rows[0].colors,
+      description || existing.rows[0].description,
+      imageUrl,
+      cloudinaryId,
+      id,
+    ];
+
+    const result = await pool.query(query, values);
+
+    res.json({
+      success: true,
+      product: result.rows[0],
+      message: "Product updated successfully",
+    });
+  } catch (error) {
+    console.error("❌ Update error:", error.message);
+
+    // Rollback new image if DB update fails
+    if (newCloudinaryId) {
+      try {
+        await cloudinary.uploader.destroy(newCloudinaryId);
+        console.log("🗑️ Rolled back new Cloudinary upload");
+      } catch (rollbackError) {
+        console.error("❌ Rollback failed:", rollbackError.message);
+      }
+    }
+
+    res.status(500).json({
+      success: false,
+      message: "Failed to update product",
     });
   }
 });
