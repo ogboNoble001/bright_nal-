@@ -186,7 +186,7 @@ modalBox?.addEventListener("click", (e) => {
       "colors",
     ];
     fields.forEach(
-      (f) => (document.querySelector(`input[name="${f}"]`).value = product[f] || "")
+      (f) => (document.querySelector(`input[name="${f}"]`).value = product[f])
     );
     modalBox.classList.add("active");
     const btn = uploadForm.querySelector('button[type="submit"]');
