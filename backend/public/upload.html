@@ -79,19 +79,24 @@
           </div>
         </div>
 <br>
-        <form id="uploadForm" enctype="multipart/form-data">
-          <input type="file" name="images" accept="image/*" />
-          <input type="text" name="productName" placeholder="Product Name (optional)" />
-          <input type="text" name="category" placeholder="Category (optional)" />
-          <input type="text" name="brand" placeholder="Brand (optional)" />
-          <input type="number" name="price" placeholder="Price (optional)" />
-          <input type="number" name="stock" placeholder="Stock (optional)" />
-          <input type="text" name="sku" placeholder="SKU (optional)" />
-          <input type="text" name="productClass" placeholder="Class (optional)" />
-          <input type="text" name="sizes" placeholder="Sizes (optional)" />
-          <input type="text" name="colors" placeholder="Colors (optional)" />
-          <button type="submit">Upload Product</button>
-        </form>
+<div class="upload-section">
+  <button class="toggle-btn" id="toggleUpload">+ Add New Product</button>
+
+  <form id="uploadForm" enctype="multipart/form-data">
+    <input type="file" name="images" accept="image/*" />
+    <input type="text" name="productName" placeholder="Product Name (optional)" />
+    <input type="text" name="category" placeholder="Category (optional)" />
+    <input type="text" name="brand" placeholder="Brand (optional)" />
+    <input type="number" name="price" placeholder="Price (optional)" />
+    <input type="number" name="stock" placeholder="Stock (optional)" />
+    <input type="text" name="sku" placeholder="SKU (optional)" />
+    <input type="text" name="productClass" placeholder="Class (optional)" />
+    <input type="text" name="sizes" placeholder="Sizes (optional)" />
+    <input type="text" name="colors" placeholder="Colors (optional)" />
+    <button type="submit">Upload Product</button>
+  </form>
+</div>
+
       </div>
 <br>
       <!-- STATS CARDS -->

@@ -1,7 +1,18 @@
 window.addEventListener("DOMContentLoaded", () => {
   if (typeof lucide !== "undefined") lucide.createIcons();
 
+  const toggleBtn = document.querySelector(".toggle-form-btn");
   const uploadForm = document.getElementById("uploadForm");
+
+  if (toggleBtn && uploadForm) {
+    toggleBtn.addEventListener("click", () => {
+      const expanded = uploadForm.classList.toggle("expanded");
+      toggleBtn.classList.toggle("active");
+      toggleBtn.querySelector("span").textContent = expanded
+        ? "Hide Upload Form"
+        : "New Product Upload";
+    });
+  }
   const result = document.getElementById("result");
   const fileInput = document.querySelector('input[name="images"]');
   let editingProductId = null;
