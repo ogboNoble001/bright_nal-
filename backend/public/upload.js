@@ -13,13 +13,13 @@ if (closeModal) {
   closeModal.addEventListener("click", () => {
     modalBox.classList.remove("active");
     uploadForm.reset();
-    alert("Modal closed");
   });
 }
 
 // Close on outside click
 modalBox?.addEventListener("click", (e) => {
   if (e.target === modalBox) {
+    result.scrollIntoView({ behavior: "smooth" });
     modalBox.classList.remove("active");
   }
 });
@@ -33,6 +33,7 @@ modalBox?.addEventListener("click", (e) => {
 
   // === UTILITIES ===
   const showPlaceholder = () => {
+    result.scrollIntoView({ behavior: "smooth" });
     result.innerHTML = `
       <div class="uploads-grid">
         ${Array(4)
@@ -58,6 +59,7 @@ modalBox?.addEventListener("click", (e) => {
       error: "#f44336",
       info: "#2196F3",
     };
+    result.scrollIntoView({ behavior: "smooth" });
     result.innerHTML = `
       <div style="color:${colors[type]}; text-align:center; padding:1rem;
         background:rgba(0,0,0,0.03); border:1px solid ${colors[type]}33;
@@ -88,12 +90,14 @@ modalBox?.addEventListener("click", (e) => {
 
       if (!allProducts.length) {
         result.innerHTML = `<p style="text-align:center;color:#888;padding:2rem;">No products yet!</p>`;
+        result.scrollIntoView({ behavior: "smooth" });
         return;
       }
 
       renderProducts(allProducts.slice(0, 6), true);
     } catch (err) {
       console.error(" Fetch error:", err);
+      result.scrollIntoView({ behavior: "smooth" });
       showMessage(` Failed to load products: ${err.message}`, "error");
     }
   }
@@ -168,27 +172,51 @@ modalBox?.addEventListener("click", (e) => {
   }
 
   // === EDIT & DELETE ===
-  function startEdit(id, product) {
-    modalBox.classList.add("active");
-    editingProductId = id;
-    const fields = [
-      "productName",
-      "category",
-      "brand",
-      "price",
-      "stock",
-      "sku",
-      "productClass",
-      "sizes",
-      "colors",
-    ];
-    fields.forEach(
-      (f) => (document.querySelector(`input[name="${f}"]`).value = product[f] || "")
-    );
-    const btn = uploadForm.querySelector('button[type="submit"]');
-    btn.innerHTML = '<i data-lucide="save"></i> Update Product';
-    lucide.createIcons();
-    uploadForm.scrollIntoView({ behavior: "smooth" });
+  function startEdit(id, product) {async function fetchProductDetails(id) {
+  try {
+    const res = await fetch(`/upload/${id}`);
+    if (!res.ok) throw new Error(`Failed to fetch product (${res.status})`);
+    const data = await res.json();
+    if (!data.success || !data.product) throw new Error("Product not found");
+    return data.product;
+  } catch (err) {
+    console.error("❌ Fetch product details error:", err);
+    showMessage("Failed to load product details", "error");
+    return null;
+  }
+}
+
+async function startEdit(id) {
+  editingProductId = id;
+
+  // Fetch latest from DB
+  const product = await fetchProductDetails(id);
+  if (!product) return;
+
+  const fields = [
+    "productName",
+    "category",
+    "brand",
+    "price",
+    "stock",
+    "sku",
+    "productClass",
+    "sizes",
+    "colors",
+  ];
+
+  fields.forEach((f) => {
+    const input = document.querySelector(`input[name="${f}"]`);
+    if (input) input.value = product[f] || "";
+  });
+
+  modalBox.classList.add("active");
+  const btn = uploadForm.querySelector('button[type="submit"]');
+  btn.innerHTML = '<i data-lucide="save"></i> Update Product';
+  if (typeof lucide !== "undefined") lucide.createIcons();
+  uploadForm.scrollIntoView({ behavior: "smooth" });
+}
+
   }
 
   async function deleteProduct(id) {
