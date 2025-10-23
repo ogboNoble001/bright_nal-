@@ -221,14 +221,10 @@ modalBox?.addEventListener("click", (e) => {
       return showMessage("Please select an image to upload", "error");
     }
 fetchAllUploads()
-    if (
-      fileInput.files.length &&
-      fileInput.files[0].size > 5 * 1024 * 1024
-    )
-      return showMessage("Image must be smaller than 5MB", "error");
 
     showLoader(editingProductId ? "Updating product..." : "Uploading product...");
-
+      
+fetchAllUploads()
     try {
       const formData = new FormData(uploadForm);
       const url = editingProductId ? `/upload/${editingProductId}` : "/upload";
@@ -240,16 +236,20 @@ fetchAllUploads()
       if (res.ok && data.success) {
         showMessage(`✓ Product ${editingProductId ? "updated" : "uploaded"} successfully!`, "success");
         uploadForm.reset();
+        
+fetchAllUploads()
         editingProductId = null;
         uploadForm.querySelector('button[type="submit"]').innerHTML =
           '<i data-lucide="plus"></i> Add Product';
         lucide.createIcons();
-        setTimeout(fetchAllUploads, 800);
+        setTimeout(fetchAllUploads, 200);
       } else showMessage(data.message || "Operation failed", "error");
+fetchAllUploads()
     } catch (err) {
       console.error("❌ Upload error:", err);
       showMessage(`Operation failed: ${err.message}`, "error");
     }
+
   });
 
   // === INIT ===
