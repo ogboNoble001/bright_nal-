@@ -12,7 +12,7 @@ window.addEventListener("DOMContentLoaded", () => {
     let editingProductId = null;
     let allProducts = [];
     let showingAll = false;
-    
+
     // === MODAL HANDLERS ===
     if (toggleBtn && modalBox) {
         toggleBtn.addEventListener("click", () => {
@@ -35,7 +35,7 @@ window.addEventListener("DOMContentLoaded", () => {
             lucide.createIcons();
         });
     }
-    
+
     // === UTILITIES ===
     const showPlaceholder = () => {
         result.innerHTML = `
@@ -55,7 +55,7 @@ window.addEventListener("DOMContentLoaded", () => {
             </div>
         `;
     };
-    
+
     const showMessage = (msg, type = "error") => {
         const colors = {
             success: "#4CAF50",
@@ -70,7 +70,7 @@ window.addEventListener("DOMContentLoaded", () => {
             </div>
         `;
     };
-    
+
     const showLoader = (text = "Processing...") => {
         result.innerHTML = `
             <div style="text-align:center; padding:3rem; color:#888;">
@@ -81,7 +81,7 @@ window.addEventListener("DOMContentLoaded", () => {
             </div>
         `;
     };
-    
+
     // === FETCH & DISPLAY ===
     async function fetchAllUploads(keepViewState = false) {
         try {
@@ -89,12 +89,12 @@ window.addEventListener("DOMContentLoaded", () => {
             const res = await fetch("/upload/files");
             if (!res.ok) throw new Error(`HTTP ${res.status}`);
             allProducts = await res.json();
-            
+
             if (!allProducts.length) {
                 result.innerHTML = `<p style="text-align:center;color:#888;padding:2rem;">No products yet!</p>`;
                 return;
             }
-            
+
             // Keep the current view state or reset to showing first 6
             if (!keepViewState) {
                 showingAll = false;
@@ -107,7 +107,7 @@ window.addEventListener("DOMContentLoaded", () => {
             showMessage(`Failed to load products: ${err.message}`, "error");
         }
     }
-    
+
     function renderProducts(products, showViewMore = false) {
         let html = '<div class="uploads-grid">';
         
@@ -138,7 +138,7 @@ window.addEventListener("DOMContentLoaded", () => {
         }
         
         html += "</div>";
-        
+
         if (showViewMore && allProducts.length > 6 && !showingAll) {
             html += `
                 <div style="text-align:center; margin-top:1.5rem;">
@@ -150,35 +150,40 @@ window.addEventListener("DOMContentLoaded", () => {
                 </div>
             `;
         }
-        
+
         result.innerHTML = html;
         if (typeof lucide !== "undefined") lucide.createIcons();
-        
+
         attachHandlers();
     }
-    
+
     function attachHandlers() {
         // Edit button handlers
         document.querySelectorAll(".edit-btn").forEach((btn) => {
             btn.addEventListener("click", () => {
                 const id = btn.getAttribute("data-id");
-                const product = allProducts.find(p => p.id === id);
+                console.log("Looking for product with ID:", id, "Type:", typeof id);
+                console.log("Available products:", allProducts.map(p => ({id: p.id, type: typeof p.id})));
+                
+                // Try both string and number comparison
+                const product = allProducts.find(p => p.id == id || p.id === id);
+                
                 if (product) {
                     startEdit(id, product);
                 } else {
-                    console.error("Product not found:", id);
-                    showMessage("Product not found", "error");
+                    console.error("Product not found. ID:", id, "Available IDs:", allProducts.map(p => p.id));
+                    showMessage("Product not found. Please refresh the page.", "error");
                 }
             });
         });
-        
+
         // Delete button handlers
         document.querySelectorAll(".delete-btn").forEach((btn) => {
             btn.addEventListener("click", () => {
                 deleteProduct(btn.getAttribute("data-id"));
             });
         });
-        
+
         // View more button handler
         const viewMoreBtn = document.getElementById("viewMoreBtn");
         if (viewMoreBtn) {
@@ -188,7 +193,7 @@ window.addEventListener("DOMContentLoaded", () => {
             });
         }
     }
-    
+
     // === EDIT & DELETE ===
     function startEdit(id, product) {
         if (!modalBox) return;
@@ -228,7 +233,7 @@ window.addEventListener("DOMContentLoaded", () => {
         
         uploadForm.scrollIntoView({ behavior: "smooth" });
     }
-    
+
     async function deleteProduct(id) {
         if (!confirm("Are you sure you want to delete this product?")) return;
         
@@ -248,7 +253,7 @@ window.addEventListener("DOMContentLoaded", () => {
             showMessage("Failed to delete product", "error");
         }
     }
-    
+
     // === FORM HANDLING ===
     if (uploadForm) {
         uploadForm.addEventListener("submit", async (e) => {
@@ -257,17 +262,17 @@ window.addEventListener("DOMContentLoaded", () => {
             if (!editingProductId && (!fileInput.files || !fileInput.files.length)) {
                 return showMessage("Please select an image to upload", "error");
             }
-            
+
             showLoader(editingProductId ? "Updating product..." : "Uploading product...");
-            
+
             try {
                 const formData = new FormData(uploadForm);
                 const url = editingProductId ? `/upload/${editingProductId}` : "/upload";
                 const method = editingProductId ? "PUT" : "POST";
-                
+
                 const res = await fetch(url, { method, body: formData });
                 const data = await res.json();
-                
+
                 if (res.ok && data.success) {
                     if (modalBox) modalBox.classList.remove("active");
                     showMessage(`✓ Product ${editingProductId ? "updated" : "uploaded"} successfully!`, "success");
@@ -291,7 +296,7 @@ window.addEventListener("DOMContentLoaded", () => {
             }
         });
     }
-    
+
     // === INIT ===
     fetchAllUploads();
 });
