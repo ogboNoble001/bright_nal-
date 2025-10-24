@@ -18,13 +18,14 @@ window.addEventListener("DOMContentLoaded", () => {
       uploads.forEach((u) => {
         html += `
           <div class="upload-card" data-id="${u.id}">
-            <img src="${u.image_url}" alt="${u.product_name}" onerror="this.src='https://via.placeholder.com/400x280?text=No+Image'">
+            <img src="${u.image_url}" alt="${u.product_name}" 
+                 onerror="this.src='https://via.placeholder.com/400x280?text=No+Image'">
             <div class="upload-info">
               <h3>${u.product_name || "Unnamed Product"}</h3>
-              <p><strong>Category:</strong><span>${u.category || "N/A"}</span></p>
-              <p><strong>Brand:</strong><span>${u.brand || "N/A"}</span></p>
-              <p><strong>Price:</strong><span>₦${u.price || "0"}</span></p>
-              <p><strong>Stock:</strong><span>${u.stock || "N/A"}</span></p>
+              <p><strong>Category:</strong> ${u.category || "N/A"}</p>
+              <p><strong>Brand:</strong> ${u.brand || "N/A"}</p>
+              <p><strong>Price:</strong> ₦${u.price || "0.00"}</p>
+              <p><strong>Stock:</strong> ${u.stock || "0"}</p>
             </div>
             <div class="card-actions">
               <button class="delete-btn" data-id="${u.id}">
@@ -49,19 +50,24 @@ window.addEventListener("DOMContentLoaded", () => {
     document.querySelectorAll(".delete-btn").forEach((btn) => {
       btn.addEventListener("click", async () => {
         const id = btn.dataset.id;
-        if (!confirm("Are you sure you want to delete this upload?")) return;
+        if (!confirm("Are you sure you want to delete this product?")) return;
         
         btn.innerHTML = `<i data-lucide="loader-2" class="spin"></i> Deleting...`;
         if (typeof lucide !== "undefined") lucide.createIcons();
         
         try {
-          const res = await fetch(`/upload/delete/${id}`, { method: "DELETE" });
+          const res = await fetch(`/upload/${id}`, { method: "DELETE" });
           const data = await res.json();
-          alert(data.message || "Upload deleted successfully!");
-          fetchUploads();
+          
+          if (data.success) {
+            alert("✅ Product deleted successfully!");
+            fetchUploads();
+          } else {
+            alert("❌ Delete failed: " + (data.message || "Unknown error"));
+          }
         } catch (err) {
           console.error(err);
-          alert("Failed to delete upload: " + err.message);
+          alert("Failed to delete product: " + err.message);
         }
       });
     });
