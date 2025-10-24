@@ -374,7 +374,7 @@ main {
   height: 18px;
 }
 
-/* === IMAGE SLIDER ===
+/* === IMAGE SLIDER === */
 .imageSlider {
   flex: 1;
   height: 400px;
@@ -460,7 +460,7 @@ main {
  height: 180px;
   width: 120px;
   z-index: 1;
-} */
+}
 
 .hero-btn {
   margin-top: 2em;
