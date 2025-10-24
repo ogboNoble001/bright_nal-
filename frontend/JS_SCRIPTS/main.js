@@ -1,4 +1,3 @@
-// Complete JavaScript for the fashion website
 window.addEventListener("load", () => {
     lucide.createIcons();
 
@@ -6,12 +5,8 @@ window.addEventListener("load", () => {
     const dropdownWrappers = document.querySelectorAll('.dropdown-wrapper');
     dropdownWrappers.forEach(wrapper => {
         const menu = wrapper.querySelector('.dropdown-menu');
-        wrapper.addEventListener('mouseenter', () => {
-            menu.classList.add('show');
-        });
-        wrapper.addEventListener('mouseleave', () => {
-            menu.classList.remove('show');
-        });
+        wrapper.addEventListener('mouseenter', () => menu.classList.add('show'));
+        wrapper.addEventListener('mouseleave', () => menu.classList.remove('show'));
     });
 
     // Mobile menu functionality
@@ -26,7 +21,6 @@ window.addEventListener("load", () => {
         menuToggle.classList.add('active');
         document.body.style.overflow = 'hidden';
     }
-
     function closeSidebarFunc() {
         mobileSidebar.classList.remove('active');
         sidebarOverlay.classList.remove('active');
@@ -34,30 +28,17 @@ window.addEventListener("load", () => {
         document.body.style.overflow = '';
     }
 
-    if (menuToggle) {
-        menuToggle.addEventListener('click', () => {
-            if (mobileSidebar.classList.contains('active')) {
-                closeSidebarFunc();
-            } else {
-                openSidebar();
-            }
-        });
-    }
-
-    if (closeSidebar) {
-        closeSidebar.addEventListener('click', closeSidebarFunc);
-    }
-
-    if (sidebarOverlay) {
-        sidebarOverlay.addEventListener('click', closeSidebarFunc);
-    }
+    menuToggle?.addEventListener('click', () => {
+        mobileSidebar.classList.contains('active') ? closeSidebarFunc() : openSidebar();
+    });
+    closeSidebar?.addEventListener('click', closeSidebarFunc);
+    sidebarOverlay?.addEventListener('click', closeSidebarFunc);
 
     // Mobile dropdown toggles
-    const mobileNavItems = document.querySelectorAll('.mobile-nav-item');
-    mobileNavItems.forEach(item => {
+    document.querySelectorAll('.mobile-nav-item').forEach(item => {
         item.addEventListener('click', () => {
             const dropdown = item.nextElementSibling;
-            if (dropdown && dropdown.classList.contains('mobile-dropdown')) {
+            if (dropdown?.classList.contains('mobile-dropdown')) {
                 item.classList.toggle('expanded');
                 dropdown.classList.toggle('expanded');
             }
@@ -67,11 +48,7 @@ window.addEventListener("load", () => {
     // Header scroll effect
     const header = document.querySelector(".header");
     window.addEventListener("scroll", () => {
-        if (window.scrollY > 10) {
-            header.classList.add("scrolled");
-        } else {
-            header.classList.remove("scrolled");
-        }
+        header.classList.toggle("scrolled", window.scrollY > 10);
     });
 
     // Search bar animation
@@ -83,7 +60,6 @@ window.addEventListener("load", () => {
         'Discover new fashion collections...',
         'Explore styles for every season...'
     ];
-    
     let i = 0;
     function changePlaceholder() {
         placeholder.classList.remove('animate');
@@ -92,71 +68,40 @@ window.addEventListener("load", () => {
         placeholder.textContent = placeholders[i];
         i = (i + 1) % placeholders.length;
     }
-
-    input.addEventListener('input', () => {
-        if (input.value.length > 0) {
-            placeholder.style.display = 'none';
-        } else {
-            placeholder.style.display = 'block';
-        }
-    });
-
+    input.addEventListener('input', () => placeholder.style.display = input.value.length > 0 ? 'none' : 'block');
     setInterval(changePlaceholder, 3000);
     changePlaceholder();
 
-    // Image slider
+    // Image slider (unchanged)
     const slider = document.querySelector('.imageSlider');
     const sliderTrack = document.querySelector('.slider-track');
-    
     if (slider && sliderTrack) {
         const originalImages = Array.from(sliderTrack.querySelectorAll('.imageCarousel'));
-        
-        for (let i = 0; i < 123; i++) {
-            originalImages.forEach(img => {
-                const clone = img.cloneNode(true);
-                sliderTrack.appendChild(clone);
-            });
-        }
-        
+        for (let j = 0; j < 123; j++) originalImages.forEach(img => sliderTrack.appendChild(img.cloneNode(true)));
+
         function updateImageClasses() {
             const allImages = Array.from(sliderTrack.querySelectorAll('.imageCarousel'));
             const sliderRect = slider.getBoundingClientRect();
             const sliderCenter = sliderRect.left + sliderRect.width / 2;
-            
-            let closestIndex = 0;
-            let minDistance = Infinity;
-            
-            allImages.forEach((img, index) => {
+
+            let closestIndex = 0, minDistance = Infinity;
+            allImages.forEach((img, idx) => {
                 const imgRect = img.getBoundingClientRect();
                 const imgCenter = imgRect.left + imgRect.width / 2 * 1.5;
-                const distanceFromCenter = Math.abs(imgCenter - sliderCenter);
-                
-                if (distanceFromCenter < minDistance) {
-                    minDistance = distanceFromCenter;
-                    closestIndex = index;
-                }
+                const distance = Math.abs(imgCenter - sliderCenter);
+                if (distance < minDistance) { minDistance = distance; closestIndex = idx; }
             });
-            
-            allImages.forEach((img, index) => {
+
+            allImages.forEach((img, idx) => {
                 img.classList.remove('active', 'prev', 'next', 'gen1', 'gen2', 'gen3');
-                
-                const distance = index - closestIndex;
-                const absDistance = Math.abs(distance);
-                
-                if (absDistance === 0) {
-                    img.classList.add('active');
-                } else if (absDistance === 1) {
-                    img.classList.add(distance < 0 ? 'prev' : 'next');
-                } else if (absDistance === 2) {
-                    img.classList.add('gen1');
-                } else if (absDistance === 3) {
-                    img.classList.add('gen2');
-                } else {
-                    img.classList.add('gen3');
-                }
+                const distance = idx - closestIndex, absDistance = Math.abs(distance);
+                if (absDistance === 0) img.classList.add('active');
+                else if (absDistance === 1) img.classList.add(distance < 0 ? 'prev' : 'next');
+                else if (absDistance === 2) img.classList.add('gen1');
+                else if (absDistance === 3) img.classList.add('gen2');
+                else img.classList.add('gen3');
             });
         }
-        
         setInterval(updateImageClasses, 100);
         updateImageClasses();
     }
@@ -175,65 +120,79 @@ window.addEventListener("load", () => {
     }
 
     // Tabs functionality
-    const tabs = document.querySelectorAll('.tab');
-    tabs.forEach(tab => {
+    document.querySelectorAll('.tab').forEach(tab => {
         tab.addEventListener('click', () => {
-            tabs.forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
             tab.classList.add('active');
-            const tabType = tab.getAttribute('data-tab');
-            console.log('Active tab:', tabType);
+            console.log('Active tab:', tab.getAttribute('data-tab'));
         });
     });
 
-    // Render products on page load
-    renderProducts();
+    // Fetch and render products dynamically
+    fetchProducts();
 });
-const searchBtn = document.getElementById('searchInputBar');
-    searchBtn.addEventListener('click', () => {
-    });
-// Product data and cart functions (add these globally)
-const products = [
-    { id: 1, name: "Elegant Summer Dress", category: "Dresses", price: 35999, originalPrice: 51999, image: "https://images.unsplash.com/photo-1595777457583-95e059d581b8?w=400&h=500&fit=crop", badge: "NEW ARRIVAL", productClass: "new", rating: 4.5 },
-    { id: 2, name: "Designer Leather Jacket", category: "Outerwear", price: 99999, image: "https://images.unsplash.com/photo-1551028719-00167b16eac5?w=400&h=500&fit=crop", badge: "sale", productClass: "sale", rating: 5 },
-    { id: 3, name: "Casual Cotton T-Shirt", category: "Tops", price: 11999, image: "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=400&h=500&fit=crop", badge: "sale", productClass: "sale", rating: 4 },
-    { id: 4, name: "Premium Wool Sweater", category: "Knitwear", price: 47999, image: "https://images.unsplash.com/photo-1434389677669-e08b4cac3105?w=400&h=500&fit=crop", badge: "sale", oductClass: "new",oductClass: "sale", rating: 4.5 },
-    { id: 5, name: "Silk Blouse", category: "Tops", price: 31999, originalPrice: 39999, image: "https://images.unsplash.com/photo-1485968579580-b6d095142e6e?w=400&h=500&fit=crop", badge: "sale",productClass: "new", rating: 4 },
-    { id: 6, name: "Tailored Blazer", category: "Outerwear", price: 75999, image: "https://images.unsplash.com/photo-1591369822096-ffd140ec948f?w=400&h=500&fit=crop", badge: "New Arrival", productClass: "new",  rating: 5 },
-    { id: 7, name: "Denim Jeans", category: "Bottoms", price: 27999, image: "https://images.unsplash.com/photo-1542272604-787c3835535d?w=400&h=500&fit=crop", rating: 4.5 },
-    { id: 8, name: "Evening Gown", category: "Dresses", price: 119999, image: "https://images.unsplash.com/photo-1566174053879-31528523f8ae?w=400&h=500&fit=crop", badge: "new", productClass: "new", rating: 5 },
-];
 
+// Cart and global functions
+let products = [];
 let cart = [];
+
+const apiURL = "https://bright-nal-1.onrender.com/upload/files";
+
+async function fetchProducts() {
+    try {
+        const res = await fetch(apiURL);
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        const data = await res.json();
+        products = data.map((item, idx) => ({
+            id: item.id || idx,
+            name: item.product_name || "Unnamed Product",
+            category: item.category || "Uncategorized",
+            price: item.price || 0,
+            originalPrice: item.originalPrice || null,
+            image: item.image_url || "https://via.placeholder.com/400x500",
+            badge: item.badge || null,
+            productClass: item.productClass || "new",
+            rating: item.rating || Math.floor(Math.random() * 5 + 1)
+        }));
+        renderProducts();
+    } catch (err) {
+        console.error("Failed to fetch products:", err);
+        const grid = document.getElementById('productGrid');
+        grid.innerHTML = `<p style="text-align:center; color:red;">Failed to load products.</p>`;
+    }
+}
+
 function renderProducts() {
     const grid = document.getElementById('productGrid');
     if (!grid) return;
-    
+
     grid.innerHTML = products.map(product => `
         <div class="product-card">
             <div class="product-image-container">
                 <img src="${product.image}" alt="${product.name}" class="product-image">
-                ${product.badge ? `
-                    <div class="product-badges"><span class="badge ${product.productClass}">${product.badge.toUpperCase()}</span></div>` : ''}
+                ${product.badge ? `<div class="product-badges"><span class="badge ${product.productClass}">${product.badge.toUpperCase()}</span></div>` : ''}
                 <div class="product-actions">
                     <button class="action-btn" onclick="addToWishlist(${product.id})" title="Add to Wishlist">
-                   <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-bookmark-icon lucide-bookmark"><path d="m19 21-7-4-7 4V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16z"/></svg>
-                   </button>
-                     </div>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-bookmark-icon">
+                        <path d="m19 21-7-4-7 4V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16z"/>
+                        </svg>
+                    </button>
+                </div>
                 <div class="product-overlay">
                     <div class="overlay-text"><strong>${product.category}</strong></div>
                     <div class="overlay-text">Premium quality crafted with attention to detail</div>
-                    <div class="overlay-text"> • ${Math.floor(Math.random() * 200 + 50)} purchases  </div>
+                    <div class="overlay-text">• ${Math.floor(Math.random()*200+50)} purchases</div>
                 </div>
             </div>
             <div class="product-details">
                 <div class="product-category">${product.category}</div>
                 <div class="product-name">${product.name}</div>
-                                <div class="product-price">
+                <div class="product-price">
                     <span class="current-price">₦${product.price.toLocaleString()}</span>
                     ${product.originalPrice ? `<span class="original-price">₦${product.originalPrice.toLocaleString()}</span>` : ''}
                 </div>
                 <div class="product-rating">
-                    <span>${Math.floor(Math.random() * 200 + 50)} purchases</span>
+                    <span>${Math.floor(Math.random()*200+50)} purchases</span>
                 </div>
                 <button class="add-to-cart-btn" onclick="addToCart(${product.id})">Add to Cart</button>
             </div>
@@ -244,13 +203,8 @@ function renderProducts() {
 function addToCart(productId) {
     const product = products.find(p => p.id === productId);
     const existingItem = cart.find(item => item.id === productId);
-    
-    if (existingItem) {
-        existingItem.quantity++;
-    } else {
-        cart.push({ ...product, quantity: 1 });
-    }
-    
+    if (existingItem) existingItem.quantity++;
+    else cart.push({ ...product, quantity: 1 });
     updateCart();
     console.log('✅ Item added to cart!');
 }
@@ -260,36 +214,33 @@ function updateCart() {
     const cartTotal = document.getElementById('cartTotal');
     const cartItemCount = document.getElementById('cartItemCount');
     const headerCartCount = document.getElementById('headerCartCount');
-    
-    if (cart.length === 0) {
-        cartItems.innerHTML = '<p style="text-align: center; color: #999; padding: 2rem;">Your cart is empty</p>';
+
+    if (!cart.length) {
+        cartItems.innerHTML = '<p style="text-align:center; color:#999; padding:2rem;">Your cart is empty</p>';
         cartTotal.textContent = '₦0';
         cartItemCount.textContent = '0';
         headerCartCount.textContent = '0';
-        // Hide badge when cart is empty
         headerCartCount.style.display = 'none';
         return;
     }
-    
+
     cartItems.innerHTML = cart.map(item => `
         <div class="cart-item">
             <img src="${item.image}" alt="${item.name}" class="cart-item-image">
             <div class="cart-item-details">
                 <div class="cart-item-name">${item.name}</div>
                 <div class="cart-item-price flex-row diff1">₦${item.price.toLocaleString()}<sup class="smaller">${item.quantity}</sup></div>
-    
-                <div class="cart-item-subtotal"><u>₦${(item.price * item.quantity).toLocaleString()}</u></div>
+                <div class="cart-item-subtotal"><u>₦${(item.price*item.quantity).toLocaleString()}</u></div>
                 <button class="remove-item" onclick="removeFromCart(${item.id})">Remove</button>
             </div>
         </div>
     `).join('');
-    
-    const total = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+
+    const total = cart.reduce((sum, item) => sum + item.price*item.quantity, 0);
     cartTotal.textContent = `₦${total.toLocaleString()}`;
     const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
     cartItemCount.textContent = totalItems;
     headerCartCount.textContent = totalItems;
-    // Show badge when cart has items
     headerCartCount.style.display = 'flex';
 }
 
@@ -299,32 +250,23 @@ function removeFromCart(productId) {
 }
 
 function toggleCart() {
-    const cartSidebar = document.getElementById('cartSidebar');
-    const cartOverlay = document.querySelector('.cart-overlay');
-    cartSidebar.classList.toggle('active');
-    cartOverlay.classList.toggle('active');
+    document.getElementById('cartSidebar').classList.toggle('active');
+    document.querySelector('.cart-overlay').classList.toggle('active');
 }
 
 function checkout() {
-    if (cart.length === 0) {
-        console.log('Your cart is empty!');
-        return;
-    }
+    if (!cart.length) return console.log('Your cart is empty!');
     console.log('🎉 Thank you for your purchase! Total: ' + document.getElementById('cartTotal').textContent);
     cart = [];
     updateCart();
     toggleCart();
 }
 
-function addToWishlist(productId) {
-    console.log('❤️ Added to wishlist!');
-}
-
+function addToWishlist(productId) { console.log('❤️ Added to wishlist!'); }
 function quickView(productId) {
     const product = products.find(p => p.id === productId);
     console.log(`Quick View: ${product.name}\nPrice: ₦${product.price.toLocaleString()}`);
 }
-
 function subscribeNewsletter(event) {
     event.preventDefault();
     console.log('✅ Thank you for subscribing!');
