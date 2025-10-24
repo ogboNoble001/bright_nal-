@@ -1,4 +1,5 @@
 window.addEventListener("DOMContentLoaded", async () => {
+    lucide.createIcons()
     const apiURL = "https://bright-nal-1.onrender.com/upload/files";
     
     try {
