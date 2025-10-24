@@ -1,260 +1,123 @@
 window.addEventListener("DOMContentLoaded", () => {
     if (typeof lucide !== "undefined") lucide.createIcons();
+    
     const uploadForm = document.getElementById("uploadForm");
     const toggleBtn = document.querySelector(".toggle-form-btn");
     const modalBox = document.getElementById("modalBoxForm");
-    
-    if (toggleBtn && modalBox) {
-        toggleBtn.addEventListener("click", () => {
-            editingProductId = null; // Reset editing mode
-            uploadForm.reset(); // Clear form
-            const btn = uploadForm.querySelector('button[type="submit"]');
-            btn.innerHTML = '<i data-lucide="plus"></i> Add Product';
-            lucide.createIcons();
-            modalBox.classList.add("active");
-        });
-    }
-    
-    const closeModal = document.getElementById("closeModal");
-    if (closeModal) {
-        closeModal.addEventListener("click", () => {
-            modalBox.classList.remove("active");
-            uploadForm.reset();
-            editingProductId = null;
-            const btn = uploadForm.querySelector('button[type="submit"]');
-            btn.innerHTML = '<i data-lucide="plus"></i> Add Product';
-            lucide.createIcons();
-        });
-    }
-
-    const result = document.getElementById("result");
-    const fileInput = document.querySelector('input[name="images"]');
+    const submitBtn = uploadForm.querySelector("button[type='submit']");
+    const fileInput = uploadForm.querySelector("#images");
     let editingProductId = null;
-    let allProducts = [];
-    let showingAll = false;
-
-    // === UTILITIES ===
-    const showPlaceholder = () => {
-        result.innerHTML = `
-      <div class="uploads-grid">
-        ${Array(4)
-          .fill()
-          .map(
-            () => `
-          <div class="placeholder-card">
-            <div class="placeholder-img"></div>
-            <div class="placeholder-content">
-              <div class="placeholder-line"></div>
-              <div class="placeholder-line short"></div>
-            </div>
-          </div>`
-          )
-          .join("")}
-      </div>
-    `;
+    
+    const apiURL = "https://bright-nal-1.onrender.com/upload";
+    
+    const showMessage = (msg, type = "info") => {
+        alert(`${type.toUpperCase()}: ${msg}`);
     };
-
-    const showMessage = (msg, type = "error") => {
-        const colors = {
-            success: "#4CAF50",
-            error: "#f44336",
-            info: "#2196F3",
-        };
-        result.innerHTML = `
-      <div style="color:${colors[type]}; text-align:center; padding:1rem;
-        background:rgba(0,0,0,0.03); border:1px solid ${colors[type]}33;
-        border-radius:8px; margin-bottom:1.5rem;">
-        ${msg}
-      </div>
-    `;
+    
+    const openModal = () => modalBox.classList.add("active");
+    const closeModal = () => modalBox.classList.remove("active");
+    
+    toggleBtn.addEventListener("click", () => {
+        editingProductId = null;
+        uploadForm.reset();
+        submitBtn.textContent = "Add Product";
+        openModal();
+    });
+    
+    const populateForm = (product) => {
+        uploadForm.querySelector("#productName").value = product.product_name || "";
+        uploadForm.querySelector("#category").value = product.category || "";
+        uploadForm.querySelector("#brand").value = product.brand || "";
+        uploadForm.querySelector("#price").value = product.price || "";
+        uploadForm.querySelector("#stock").value = product.stock || "";
+        uploadForm.querySelector("#sku").value = product.sku || "";
+        uploadForm.querySelector("#productClass").value = product.product_class || "";
+        uploadForm.querySelector("#sizes").value = product.sizes || "";
+        uploadForm.querySelector("#colors").value = product.colors || "";
+        uploadForm.querySelector("#description").value = product.description || "";
     };
-
-    const showLoader = (text = "Processing...") => {
-        result.innerHTML = `
-      <div style="text-align:center; padding:3rem; color:#888;">
-        <div style="width:50px;height:50px;border:4px solid rgba(0,0,0,0.1);
-        border-top-color:#000;border-radius:50%;animation:spin 1s linear infinite;
-        margin:0 auto 1rem;"></div>
-        <p>${text}</p>
-      </div>
-    `;
-    };
-
-    // === FETCH & DISPLAY ===
-    async function fetchAllUploads() {
+    
+    const fetchAllUploads = async () => {
         try {
-            showPlaceholder();
-            const res = await fetch("/upload/files");
+            const res = await fetch(`${apiURL}/files`);
             if (!res.ok) throw new Error(`HTTP ${res.status}`);
-            allProducts = await res.json();
-
-            if (!allProducts.length) {
-                result.innerHTML = `<p style="text-align:center;color:#888;padding:2rem;">No products yet!</p>`;
-                return;
-            }
-
-            renderProducts(allProducts.slice(0, 6), true);
+            const products = await res.json();
+            
+            const container = document.querySelector(".uploadedList");
+            container.innerHTML = "";
+            
+            products.forEach((p) => {
+                const item = document.createElement("div");
+                item.className = "upload-item";
+                item.innerHTML = `
+          <img src="${p.image_url}" alt="${p.product_name}">
+          <div class="details">
+            <h3>${p.product_name}</h3>
+            <p>${p.category} | ${p.brand}</p>
+            <p>$${p.price} | Stock: ${p.stock}</p>
+          </div>
+          <div class="actions">
+            <button class="edit-btn" data-id="${p.id}" title="Edit"><i data-lucide="pencil"></i></button>
+            <button class="delete-btn" data-id="${p.id}" title="Delete"><i data-lucide="trash-2"></i></button>
+          </div>
+        `;
+                container.appendChild(item);
+            });
+            
+            lucide.createIcons();
+            
+            document.querySelectorAll(".edit-btn").forEach((btn) => {
+                btn.addEventListener("click", async () => {
+                    const id = btn.dataset.id;
+                    editingProductId = id;
+                    const res = await fetch(`${apiURL}/${id}`);
+                    const product = await res.json();
+                    populateForm(product);
+                    submitBtn.textContent = "Update Product";
+                    openModal();
+                });
+            });
+            
+            document.querySelectorAll(".delete-btn").forEach((btn) => {
+                btn.addEventListener("click", async () => {
+                    const id = btn.dataset.id;
+                    if (confirm("Delete this product?")) {
+                        const res = await fetch(`${apiURL}/${id}`, { method: "DELETE" });
+                        const data = await res.json();
+                        showMessage(data.message, data.success ? "success" : "error");
+                        fetchAllUploads();
+                    }
+                });
+            });
         } catch (err) {
             console.error("Fetch error:", err);
-            showMessage(`Failed to load products: ${err.message}`, "error");
         }
-    }
-
-    function renderProducts(products, showViewMore = false) {
-        let html = '<div class="uploads-grid">';
-        for (const product of products) {
-            html += `
-        <div class="upload-card" data-id="${product.id}">
-          <img src="${product.image_url}" alt="${product.product_name}"
-            onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22100%22 height=%22100%22%3E%3Crect fill=%22%23333%22 width=%22100%22 height=%22100%22/%3E%3C/svg%3E'"/>
-          <div class="upload-info">
-            <h3>${product.product_name}</h3>
-            <p><strong>Category:</strong> ${product.category}</p>
-            <p><strong>Brand:</strong> ${product.brand}</p>
-            <p><strong>Price:</strong> ₦${parseFloat(product.price).toLocaleString()}</p>
-            <p><strong>Stock:</strong> ${product.stock}</p>
-            <p><strong>Class:</strong> ${product.product_class}</p>
-            <p><strong>SKU:</strong> ${product.sku}</p>
-          </div>
-          <div class="card-actions">
-            <button class="edit-btn" data-id="${product.id}" data-product='${JSON.stringify(product)}'>
-              <i data-lucide="edit"></i> Edit
-            </button>
-            <button class="delete-btn" data-id="${product.id}">
-              <i data-lucide="trash-2"></i> Delete
-            </button>
-          </div>
-        </div>`;
-        }
-        html += "</div>";
-
-        if (showViewMore && allProducts.length > 6 && !showingAll) {
-            html += `
-        <div style="text-align:center; margin-top:1.5rem;">
-          <button id="viewMoreBtn" style="padding:0.8rem 1.5rem; border:none; 
-          background:#000; color:#fff; border-radius:8px; cursor:pointer; 
-          font-weight:500; transition:all .3s;">
-            View More
-          </button>
-        </div>
-      `;
-        }
-
-        result.innerHTML = html;
-        if (typeof lucide !== "undefined") lucide.createIcons();
-
-        // Attach dynamic handlers
-        attachHandlers();
-    }
-
-    function attachHandlers() {
-        document.querySelectorAll(".edit-btn").forEach((btn) =>
-            btn.addEventListener("click", () => {
-                const id = btn.getAttribute("data-id");
-                const product = JSON.parse(btn.getAttribute("data-product"));
-                startEdit(id, product);
-            })
-        );
-
-        document.querySelectorAll(".delete-btn").forEach((btn) =>
-            btn.addEventListener("click", () => deleteProduct(btn.getAttribute("data-id")))
-        );
-
-        const viewMoreBtn = document.getElementById("viewMoreBtn");
-        if (viewMoreBtn) {
-            viewMoreBtn.addEventListener("click", () => {
-                showingAll = true;
-                renderProducts(allProducts);
-            });
-        }
-    }
-
-    // === EDIT & DELETE ===
-    function startEdit(id, product) {
-        modalBox.classList.add("active");
-        editingProductId = id;
-        
-        // Map form fields to database fields
-        const fieldMapping = {
-            "productName": "product_name",
-            "category": "category",
-            "brand": "brand",
-            "price": "price",
-            "stock": "stock",
-            "sku": "sku",
-            "productClass": "product_class",
-            "sizes": "sizes",
-            "colors": "colors",
-            "description": "description"
-        };
-        
-        Object.keys(fieldMapping).forEach(formField => {
-            const dbField = fieldMapping[formField];
-            const input = document.querySelector(`[name="${formField}"]`);
-            if (input) {
-                input.value = product[dbField] || "";
-            }
-        });
-        
-        const btn = uploadForm.querySelector('button[type="submit"]');
-        btn.innerHTML = '<i data-lucide="save"></i> Update Product';
-        lucide.createIcons();
-        uploadForm.scrollIntoView({ behavior: "smooth" });
-    }
-
-    async function deleteProduct(id) {
-        if (!confirm("Are you sure you want to delete this product?")) return;
-        try {
-            const res = await fetch(`/upload/${id}`, { method: "DELETE" });
-            const data = await res.json();
-            if (data.success) {
-                modalBox.classList.remove("active");
-                showMessage("✓ Product deleted successfully!", "success");
-                setTimeout(fetchAllUploads, 1000);
-            } else {
-                showMessage(data.message || "Delete failed", "error");
-            }
-        } catch (err) {
-            console.error("❌ Delete error:", err);
-            showMessage("Failed to delete product", "error");
-        }
-    }
-
-    // === FORM HANDLING ===
-    uploadForm?.addEventListener("submit", async (e) => {
+    };
+    
+    uploadForm.addEventListener("submit", async (e) => {
         e.preventDefault();
+        const formData = new FormData(uploadForm);
+        const endpoint = editingProductId ? `${apiURL}/${editingProductId}` : apiURL;
+        const method = editingProductId ? "PUT" : "POST";
         
         if (!editingProductId && (!fileInput.files || !fileInput.files.length)) {
             return showMessage("Please select an image to upload", "error");
         }
-
-        showLoader(editingProductId ? "Updating product..." : "Uploading product...");
-
+        
         try {
-            const formData = new FormData(uploadForm);
-            const url = editingProductId ? `/upload/${editingProductId}` : "/upload";
-            const method = editingProductId ? "PUT" : "POST";
-
-            const res = await fetch(url, { method, body: formData });
+            const res = await fetch(endpoint, { method, body: formData });
             const data = await res.json();
-
-            if (res.ok && data.success) {
-                modalBox.classList.remove("active");
-                showMessage(`✓ Product ${editingProductId ? "updated" : "uploaded"} successfully!`, "success");
+            showMessage(data.message, data.success ? "success" : "error");
+            if (data.success) {
+                closeModal();
                 uploadForm.reset();
                 editingProductId = null;
-                uploadForm.querySelector('button[type="submit"]').innerHTML = '<i data-lucide="plus"></i> Add Product';
-                lucide.createIcons();
-                setTimeout(fetchAllUploads, 800);
-            } else {
-                showMessage(data.message || "Operation failed", "error");
+                fetchAllUploads();
             }
         } catch (err) {
-            console.error("❌ Upload error:", err);
-            showMessage(`Operation failed: ${err.message}`, "error");
+            console.error("Upload failed:", err);
         }
     });
-
-    // === INIT ===
+    
     fetchAllUploads();
 });
