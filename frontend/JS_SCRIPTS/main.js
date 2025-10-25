@@ -1,7 +1,7 @@
 window.addEventListener("load", () => {
     lucide.createIcons();
 
-    // Desktop dropdown functionality
+    // ---------- Dropdown & Sidebar ----------
     const dropdownWrappers = document.querySelectorAll('.dropdown-wrapper');
     dropdownWrappers.forEach(wrapper => {
         const menu = wrapper.querySelector('.dropdown-menu');
@@ -9,32 +9,29 @@ window.addEventListener("load", () => {
         wrapper.addEventListener('mouseleave', () => menu.classList.remove('show'));
     });
 
-    // Mobile menu functionality
     const menuToggle = document.querySelector('.menu-toggle');
     const mobileSidebar = document.querySelector('.mobile-sidebar');
     const sidebarOverlay = document.querySelector('.sidebar-overlay');
     const closeSidebar = document.querySelector('.close-sidebar');
 
-    function openSidebar() {
+    const openSidebar = () => {
         mobileSidebar.classList.add('active');
         sidebarOverlay.classList.add('active');
         menuToggle.classList.add('active');
         document.body.style.overflow = 'hidden';
-    }
-    function closeSidebarFunc() {
+    };
+
+    const closeSidebarFunc = () => {
         mobileSidebar.classList.remove('active');
         sidebarOverlay.classList.remove('active');
         menuToggle.classList.remove('active');
         document.body.style.overflow = '';
-    }
+    };
 
-    menuToggle?.addEventListener('click', () => {
-        mobileSidebar.classList.contains('active') ? closeSidebarFunc() : openSidebar();
-    });
+    menuToggle?.addEventListener('click', () => mobileSidebar.classList.contains('active') ? closeSidebarFunc() : openSidebar());
     closeSidebar?.addEventListener('click', closeSidebarFunc);
     sidebarOverlay?.addEventListener('click', closeSidebarFunc);
 
-    // Mobile dropdown toggles
     document.querySelectorAll('.mobile-nav-item').forEach(item => {
         item.addEventListener('click', () => {
             const dropdown = item.nextElementSibling;
@@ -45,13 +42,13 @@ window.addEventListener("load", () => {
         });
     });
 
-    // Header scroll effect
+    // ---------- Header Scroll ----------
     const header = document.querySelector(".header");
     window.addEventListener("scroll", () => {
         header.classList.toggle("scrolled", window.scrollY > 10);
     });
 
-    // Search bar animation
+    // ---------- Search Placeholder ----------
     const placeholder = document.getElementById('animatedPlaceholder');
     const input = document.getElementById('searchInput');
     const placeholders = [
@@ -61,25 +58,25 @@ window.addEventListener("load", () => {
         'Explore styles for every season...'
     ];
     let i = 0;
-    function changePlaceholder() {
+    const changePlaceholder = () => {
         placeholder.classList.remove('animate');
         void placeholder.offsetWidth;
         placeholder.classList.add('animate');
         placeholder.textContent = placeholders[i];
         i = (i + 1) % placeholders.length;
-    }
+    };
     input.addEventListener('input', () => placeholder.style.display = input.value.length > 0 ? 'none' : 'block');
     setInterval(changePlaceholder, 3000);
     changePlaceholder();
 
-    // Image slider (unchanged)
+    // ---------- Slider ----------
     const slider = document.querySelector('.imageSlider');
     const sliderTrack = document.querySelector('.slider-track');
     if (slider && sliderTrack) {
         const originalImages = Array.from(sliderTrack.querySelectorAll('.imageCarousel'));
         for (let j = 0; j < 123; j++) originalImages.forEach(img => sliderTrack.appendChild(img.cloneNode(true)));
 
-        function updateImageClasses() {
+        const updateImageClasses = () => {
             const allImages = Array.from(sliderTrack.querySelectorAll('.imageCarousel'));
             const sliderRect = slider.getBoundingClientRect();
             const sliderCenter = sliderRect.left + sliderRect.width / 2;
@@ -94,19 +91,20 @@ window.addEventListener("load", () => {
 
             allImages.forEach((img, idx) => {
                 img.classList.remove('active', 'prev', 'next', 'gen1', 'gen2', 'gen3');
-                const distance = idx - closestIndex, absDistance = Math.abs(distance);
+                const distance = idx - closestIndex;
+                const absDistance = Math.abs(distance);
                 if (absDistance === 0) img.classList.add('active');
                 else if (absDistance === 1) img.classList.add(distance < 0 ? 'prev' : 'next');
                 else if (absDistance === 2) img.classList.add('gen1');
                 else if (absDistance === 3) img.classList.add('gen2');
                 else img.classList.add('gen3');
             });
-        }
+        };
         setInterval(updateImageClasses, 100);
         updateImageClasses();
     }
 
-    // Intro tagline animation
+    // ---------- Intro Tagline ----------
     const container = document.querySelector(".animateTxt");
     if (container) {
         const words = container.textContent.trim().split(/\s+/);
@@ -119,53 +117,50 @@ window.addEventListener("load", () => {
         });
     }
 
-    // Tabs functionality
+    // ---------- Tabs ----------
     document.querySelectorAll('.tab').forEach(tab => {
         tab.addEventListener('click', () => {
             document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
             tab.classList.add('active');
-            console.log('Active tab:', tab.getAttribute('data-tab'));
         });
     });
 
-    // Fetch and render products dynamically with placeholders
+    // ---------- Fetch Products ----------
     fetchProducts();
 });
 
-// Cart and global functions
+// ---------- Global Variables ----------
 let products = [];
 let cart = [];
+const apiURL = "/api/uploads"; // frontend calls proxy route
 
-const apiURL = "https://bright-nal-1.onrender.com/upload/files";
 
-// Add placeholder cards while fetching
+// ---------- Placeholders ----------
 function showPlaceholders(count = 6) {
     const grid = document.getElementById('productGrid');
     if (!grid) return;
 
-    let placeholderHTML = '';
-    for (let i = 0; i < count; i++) {
-        placeholderHTML += `
-            <div class="placeholder-card">
-              <div class="placeholder-img"></div>
-              <div class="placeholder-content">
+    grid.innerHTML = Array.from({ length: count }).map(() => `
+        <div class="placeholder-card">
+            <div class="placeholder-img"></div>
+            <div class="placeholder-content">
                 <div class="placeholder-line"></div>
                 <div class="placeholder-line short"></div>
                 <div class="placeholder-line"></div>
-              </div>
             </div>
-        `;
-    }
-    grid.innerHTML = placeholderHTML;
+        </div>
+    `).join('');
 }
 
+// ---------- Fetch Products ----------
 async function fetchProducts() {
-    showPlaceholders(6); // show placeholders immediately
+    showPlaceholders(6);
 
     try {
-        const res = await fetch(apiURL);
+        const res = await fetch(apiURL); // No API key needed
         if (!res.ok) throw new Error(`HTTP ${res.status}`);
         const data = await res.json();
+
         products = data.map((item, idx) => ({
             id: item.id || idx,
             name: item.product_name || "Unnamed Product",
@@ -177,14 +172,17 @@ async function fetchProducts() {
             productClass: item.productClass || "new",
             rating: item.rating || Math.floor(Math.random() * 5 + 1)
         }));
+
         renderProducts();
     } catch (err) {
         console.error("Failed to fetch products:", err);
         const grid = document.getElementById('productGrid');
-        grid.innerHTML = `<p style="text-align:center; color:red;">Failed to load products.</p>`;
+        if (grid) grid.innerHTML = `<p style="text-align:center; color:red;">Failed to load products.</p>`;
     }
 }
 
+
+// ---------- Render Products ----------
 function renderProducts() {
     const grid = document.getElementById('productGrid');
     if (!grid) return;
@@ -215,7 +213,7 @@ function renderProducts() {
                     ${product.originalPrice ? `<span class="original-price">₦${product.originalPrice.toLocaleString()}</span>` : ''}
                 </div>
                 <div class="product-rating">
-                    <span><i> No reviews yet</i> </span>
+                    <span><i>No reviews yet</i></span>
                 </div>
                 <button class="add-to-cart-btn" onclick="addToCart(${product.id})">Add to Cart</button>
             </div>
@@ -223,15 +221,15 @@ function renderProducts() {
     `).join('');
 }
 
-// Rest of your cart functions (unchanged)
+// ---------- Cart Functions ----------
 function addToCart(productId) {
     const product = products.find(p => p.id === productId);
     const existingItem = cart.find(item => item.id === productId);
     if (existingItem) existingItem.quantity++;
     else cart.push({ ...product, quantity: 1 });
     updateCart();
-    console.log('✅ Item added to cart!');
 }
+function removeFromCart(productId) { cart = cart.filter(item => item.id !== productId); updateCart(); }
 function updateCart() {
     const cartItems = document.getElementById('cartItems');
     const cartTotal = document.getElementById('cartTotal');
@@ -266,10 +264,8 @@ function updateCart() {
     headerCartCount.textContent = totalItems;
     headerCartCount.style.display = 'flex';
 }
-function removeFromCart(productId) { cart = cart.filter(item => item.id !== productId); updateCart(); }
 function toggleCart() { document.getElementById('cartSidebar').classList.toggle('active'); document.querySelector('.cart-overlay').classList.toggle('active'); }
 function checkout() { if (!cart.length) return console.log('Your cart is empty!'); console.log('🎉 Thank you for your purchase! Total: ' + document.getElementById('cartTotal').textContent); cart = []; updateCart(); toggleCart(); }
 function addToWishlist(productId) { console.log('❤️ Added to wishlist!'); }
 function quickView(productId) { const product = products.find(p => p.id === productId); console.log(`Quick View: ${product.name}\nPrice: ₦${product.price.toLocaleString()}`); }
 function subscribeNewsletter(event) { event.preventDefault(); console.log('✅ Thank you for subscribing!'); event.target.reset(); }
-  
