@@ -157,9 +157,13 @@ async function fetchProducts() {
     showPlaceholders(6);
 
     try {
-        const res = await fetch(apiURL); // No API key needed
-        if (!res.ok) throw new Error(`HTTP ${res.status}`);
-        const data = await res.json();
+      const res = await fetch("/api/uploads");
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      const uploads = await res.json();
+
+      if (!uploads.length) {
+        result.innerHTML = `<p class="no-products">No uploads found.</p>`;
+        return; }
 
         products = data.map((item, idx) => ({
             id: item.id || idx,
