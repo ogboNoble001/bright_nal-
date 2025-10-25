@@ -9,11 +9,11 @@ window.addEventListener("DOMContentLoaded", () => {
   let editingProductId = null; // Track if editing
 
   // --------------------------
-  // Fetch all uploads securely
+  // Fetch all uploads via proxy API
   // --------------------------
   async function fetchUploads() {
     try {
-      const res = await fetch("/secure/files");
+      const res = await fetch("/api/uploads");
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
       const uploads = await res.json();
 
@@ -59,7 +59,7 @@ window.addEventListener("DOMContentLoaded", () => {
   }
 
   // --------------------------
-  // Delete product securely
+  // Delete product
   // --------------------------
   function attachDeleteHandlers() {
     document.querySelectorAll(".delete-btn").forEach((btn) => {
@@ -71,7 +71,7 @@ window.addEventListener("DOMContentLoaded", () => {
         if (typeof lucide !== "undefined") lucide.createIcons();
 
         try {
-          const res = await fetch(`/secure/${id}`, { method: "DELETE" });
+          const res = await fetch(`/api/uploads/${id}`, { method: "DELETE" });
           const data = await res.json();
 
           if (data.success) {
@@ -89,14 +89,14 @@ window.addEventListener("DOMContentLoaded", () => {
   }
 
   // --------------------------
-  // Edit product securely
+  // Edit product
   // --------------------------
   function attachEditHandlers() {
     document.querySelectorAll(".edit-btn").forEach((btn) => {
       btn.addEventListener("click", async () => {
         const id = btn.dataset.id;
         try {
-          const res = await fetch(`/secure/${id}`);
+          const res = await fetch(`/api/uploads/${id}`);
           const product = await res.json();
 
           // Populate form
@@ -111,7 +111,7 @@ window.addEventListener("DOMContentLoaded", () => {
           uploadForm.querySelector('[name="colors"]').value = product.colors || "";
           uploadForm.querySelector('[name="description"]').value = product.description || "";
 
-          editingProductId = id;
+          editingProductId = id; // mark editing
           modalBox.classList.add("active");
         } catch (err) {
           console.error(err);
@@ -125,14 +125,14 @@ window.addEventListener("DOMContentLoaded", () => {
   closeModal.addEventListener("click", () => modalBox.classList.remove("active"));
 
   // --------------------------
-  // Handle upload form submit securely
+  // Handle upload form submit (create/update)
   // --------------------------
   uploadForm.addEventListener("submit", async (e) => {
     e.preventDefault();
 
     const formData = new FormData(uploadForm);
     try {
-      let url = "/secure-upload";
+      let url = "/api/uploads";
       let method = "POST";
 
       if (editingProductId) {
@@ -140,11 +140,7 @@ window.addEventListener("DOMContentLoaded", () => {
         method = "PUT";
       }
 
-      const res = await fetch(url, {
-        method,
-        body: formData,
-      });
-
+      const res = await fetch(url, { method, body: formData });
       const data = await res.json();
 
       if (data.success) {
@@ -162,8 +158,6 @@ window.addEventListener("DOMContentLoaded", () => {
     }
   });
 
-  // --------------------------
-  // Initialize
-  // --------------------------
+  // Initial load
   fetchUploads();
 });
