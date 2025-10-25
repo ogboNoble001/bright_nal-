@@ -203,8 +203,8 @@ function renderProducts() {
                 </div>
                 <div class="product-overlay">
                     <div class="overlay-text"><strong>${product.category}</strong></div>
-                    <div class="overlay-text">Premium quality crafted with attention to detail</div>
-                    <div class="overlay-text">• ${Math.floor(Math.random()*200+50)} purchases</div>
+                    <div class="overlay-text">Premium quality crafted with attention from BrightNal's</div>
+                    <div class="overlay-text">•<b> N/A</b> purchases</div>
                 </div>
             </div>
             <div class="product-details">
@@ -215,7 +215,7 @@ function renderProducts() {
                     ${product.originalPrice ? `<span class="original-price">₦${product.originalPrice.toLocaleString()}</span>` : ''}
                 </div>
                 <div class="product-rating">
-                    <span>${Math.floor(Math.random()*200+50)} purchases</span>
+                    <span><i> No reviews yet</i> </span>
                 </div>
                 <button class="add-to-cart-btn" onclick="addToCart(${product.id})">Add to Cart</button>
             </div>
