@@ -198,8 +198,6 @@
   .menu-toggle {
     display: flex !important;
   }
-
-  /* Transform search bar to icon on mobile */
   .searchBar {
     flex: 0 0 auto;
     margin-left: auto;
@@ -207,11 +205,22 @@
     padding: 0.7em;
     width: auto;
     min-width: auto;
+    position: relative; /* ADD THIS */
+    z-index: 1100; /* ADD THIS - higher than sidebar (z-index: 1000) */
   }
+  
   .searchBar.active {
-        width: 80%;
-        justify-content: space-between;
-      }
+    position: fixed; /* ADD THIS */
+    top: 1em; /* ADD THIS */
+    left: 1em; /* ADD THIS */
+    right: 1em; /* ADD THIS */
+    width: auto; /* MODIFY THIS */
+    justify-content: space-between;
+    background-color: #fff; /* ADD THIS */
+    box-shadow: 0 4px 20px rgba(0,0,0,0.15); /* ADD THIS */
+    z-index: 1100; /* ADD THIS */
+  }
+
   .searchBar input,
   .animatedPlaceholder {
     display: none;

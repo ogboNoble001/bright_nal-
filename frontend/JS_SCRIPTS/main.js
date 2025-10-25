@@ -68,6 +68,76 @@ window.addEventListener("load", () => {
     input.addEventListener('input', () => placeholder.style.display = input.value.length > 0 ? 'none' : 'block');
     setInterval(changePlaceholder, 3000);
     changePlaceholder();
+
+    // Mobile Search Bar Toggle
+const searchBar = document.getElementById('searchInputBar');
+const searchInput = document.getElementById('searchInput');
+
+// Only add click handler on mobile
+function handleSearchBarClick(e) {
+  if (window.innerWidth <= 1088) {
+    // If clicking the search icon (not the input itself)
+    if (!searchBar.classList.contains('active')) {
+      e.preventDefault();
+      searchBar.classList.add('active');
+      
+      // Show input and placeholder
+      searchInput.style.display = 'block';
+      const placeholder = document.getElementById('animatedPlaceholder');
+      if (placeholder) {
+        placeholder.style.display = 'block';
+      }
+      
+      // Focus the input
+      setTimeout(() => searchInput.focus(), 100);
+    }
+  }
+}
+
+// Close search when clicking outside
+function handleClickOutside(e) {
+  if (window.innerWidth <= 1088) {
+    if (!searchBar.contains(e.target) && searchBar.classList.contains('active')) {
+      searchBar.classList.remove('active');
+      searchInput.style.display = 'none';
+      const placeholder = document.getElementById('animatedPlaceholder');
+      if (placeholder) {
+        placeholder.style.display = 'none';
+      }
+    }
+  }
+}
+
+// Add event listeners
+searchBar.addEventListener('click', handleSearchBarClick);
+document.addEventListener('click', handleClickOutside);
+
+// Remove mobile search behavior on desktop
+window.addEventListener('resize', () => {
+  if (window.innerWidth > 1088) {
+    searchBar.classList.remove('active');
+    searchInput.style.display = 'block';
+    const placeholder = document.getElementById('animatedPlaceholder');
+    if (placeholder) {
+      placeholder.style.display = 'block';
+    }
+  } else if (!searchBar.classList.contains('active')) {
+    searchInput.style.display = 'none';
+    const placeholder = document.getElementById('animatedPlaceholder');
+    if (placeholder) {
+      placeholder.style.display = 'none';
+    }
+  }
+});
+
+// Initial state check
+if (window.innerWidth <= 1088 && !searchBar.classList.contains('active')) {
+  searchInput.style.display = 'none';
+  const placeholder = document.getElementById('animatedPlaceholder');
+  if (placeholder) {
+    placeholder.style.display = 'none';
+  }
+}
 /*
     // ---------- Slider ----------
     const slider = document.querySelector('.imageSlider');
