@@ -91,16 +91,17 @@ window.addEventListener("DOMContentLoaded", () => {
           const product = await res.json();
 
           // Populate form
-          uploadForm.productName.value = product.product_name || "";
-          uploadForm.category.value = product.category || "";
-          uploadForm.brand.value = product.brand || "";
-          uploadForm.price.value = product.price || "";
-          uploadForm.stock.value = product.stock || "";
-          uploadForm.sku.value = product.sku || "";
-          uploadForm.productClass.value = product.product_class || "";
-          uploadForm.sizes.value = product.sizes || "";
-          uploadForm.colors.value = product.colors || "";
-          uploadForm.description.value = product.description || "";
+          uploadForm.querySelector('[name="productName"]').value = product.product_name || "";
+uploadForm.querySelector('[name="category"]').value = product.category || "";
+uploadForm.querySelector('[name="brand"]').value = product.brand || "";
+uploadForm.querySelector('[name="price"]').value = product.price || "";
+uploadForm.querySelector('[name="stock"]').value = product.stock || "";
+uploadForm.querySelector('[name="sku"]').value = product.sku || "";
+uploadForm.querySelector('[name="productClass"]').value = product.product_class || "";
+uploadForm.querySelector('[name="sizes"]').value = product.sizes || "";
+uploadForm.querySelector('[name="colors"]').value = product.colors || "";
+uploadForm.querySelector('[name="description"]').value = product.description || "";
+
 
           editingProductId = id; // mark editing
 
