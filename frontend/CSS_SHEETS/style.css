@@ -1100,7 +1100,7 @@ footer {
 }
 
 .placeholder-card {
-  background: rgba(255, 255, 255, 0.04);
+  background: rgba(255, 25, 255, 0.04);
   border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 16px;
   overflow: hidden;
@@ -1154,15 +1154,18 @@ border-top: 1px solid rgba(255, 255, 255, 0.08);
   position: absolute;
   inset: 0;
   background: linear-gradient(90deg, transparent, rgba(212, 175, 55, 0.1), transparent);
-  animation: shimmerBanner 3s infinite;
+  animation: shimmer 3s infinite;
 }
 
 @keyframes shimmerBanner {
   0% { transform: translateX(-100%); }
   100% { transform: translateX(100%); }
 }
-
-
+.content-grid{
+  display: grid;
+   grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); 
+   gap: 2.5rem;
+}
 .promo-content {
   margin: 3em auto;
   max-width: 1100px;

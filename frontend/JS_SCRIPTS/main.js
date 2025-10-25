@@ -146,15 +146,13 @@ function showPlaceholders(count = 6) {
     let placeholderHTML = '';
     for (let i = 0; i < count; i++) {
         placeholderHTML += `
-            <div class="product-card placeholder">
-                <div class="product-image-container">
-                    <div class="placeholder-img"></div>
-                </div>
-                <div class="product-details">
-                    <div class="placeholder-line short"></div>
-                    <div class="placeholder-line"></div>
-                    <div class="placeholder-line"></div>
-                </div>
+            <div class="placeholder-card">
+              <div class="placeholder-img"></div>
+              <div class="placeholder-content">
+                <div class="placeholder-line"></div>
+                <div class="placeholder-line short"></div>
+                <div class="placeholder-line"></div>
+              </div>
             </div>
         `;
     }
