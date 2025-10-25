@@ -128,7 +128,7 @@ window.addEventListener("load", () => {
         });
     });
 
-    // Fetch and render products dynamically
+    // Fetch and render products dynamically with placeholders
     fetchProducts();
 });
 
@@ -138,7 +138,32 @@ let cart = [];
 
 const apiURL = "https://bright-nal-1.onrender.com/upload/files";
 
+// Add placeholder cards while fetching
+function showPlaceholders(count = 6) {
+    const grid = document.getElementById('productGrid');
+    if (!grid) return;
+
+    let placeholderHTML = '';
+    for (let i = 0; i < count; i++) {
+        placeholderHTML += `
+            <div class="product-card placeholder">
+                <div class="product-image-container">
+                    <div class="placeholder-img"></div>
+                </div>
+                <div class="product-details">
+                    <div class="placeholder-line short"></div>
+                    <div class="placeholder-line"></div>
+                    <div class="placeholder-line"></div>
+                </div>
+            </div>
+        `;
+    }
+    grid.innerHTML = placeholderHTML;
+}
+
 async function fetchProducts() {
+    showPlaceholders(6); // show placeholders immediately
+
     try {
         const res = await fetch(apiURL);
         if (!res.ok) throw new Error(`HTTP ${res.status}`);
@@ -200,6 +225,7 @@ function renderProducts() {
     `).join('');
 }
 
+// Rest of your cart functions (unchanged)
 function addToCart(productId) {
     const product = products.find(p => p.id === productId);
     const existingItem = cart.find(item => item.id === productId);
@@ -208,7 +234,6 @@ function addToCart(productId) {
     updateCart();
     console.log('✅ Item added to cart!');
 }
-
 function updateCart() {
     const cartItems = document.getElementById('cartItems');
     const cartTotal = document.getElementById('cartTotal');
@@ -243,32 +268,9 @@ function updateCart() {
     headerCartCount.textContent = totalItems;
     headerCartCount.style.display = 'flex';
 }
-
-function removeFromCart(productId) {
-    cart = cart.filter(item => item.id !== productId);
-    updateCart();
-}
-
-function toggleCart() {
-    document.getElementById('cartSidebar').classList.toggle('active');
-    document.querySelector('.cart-overlay').classList.toggle('active');
-}
-
-function checkout() {
-    if (!cart.length) return console.log('Your cart is empty!');
-    console.log('🎉 Thank you for your purchase! Total: ' + document.getElementById('cartTotal').textContent);
-    cart = [];
-    updateCart();
-    toggleCart();
-}
-
+function removeFromCart(productId) { cart = cart.filter(item => item.id !== productId); updateCart(); }
+function toggleCart() { document.getElementById('cartSidebar').classList.toggle('active'); document.querySelector('.cart-overlay').classList.toggle('active'); }
+function checkout() { if (!cart.length) return console.log('Your cart is empty!'); console.log('🎉 Thank you for your purchase! Total: ' + document.getElementById('cartTotal').textContent); cart = []; updateCart(); toggleCart(); }
 function addToWishlist(productId) { console.log('❤️ Added to wishlist!'); }
-function quickView(productId) {
-    const product = products.find(p => p.id === productId);
-    console.log(`Quick View: ${product.name}\nPrice: ₦${product.price.toLocaleString()}`);
-}
-function subscribeNewsletter(event) {
-    event.preventDefault();
-    console.log('✅ Thank you for subscribing!');
-    event.target.reset();
-}
+function quickView(productId) { const product = products.find(p => p.id === productId); console.log(`Quick View: ${product.name}\nPrice: ₦${product.price.toLocaleString()}`); }
+function subscribeNewsletter(event) { event.preventDefault(); console.log('✅ Thank you for subscribing!'); event.target.reset(); }
