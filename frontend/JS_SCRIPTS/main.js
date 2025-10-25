@@ -132,7 +132,8 @@ window.addEventListener("load", () => {
 // ---------- Global Variables ----------
 let products = [];
 let cart = [];
-const apiURL = "https://bright-nal-1.onrender.com/secure/files";
+const apiURL = "/api/uploads"; // frontend calls proxy route
+
 
 // ---------- Placeholders ----------
 function showPlaceholders(count = 6) {
@@ -153,14 +154,13 @@ function showPlaceholders(count = 6) {
 
 // ---------- Fetch Products ----------
 async function fetchProducts() {
-    showPlaceholders(6); // show placeholders immediately
+    showPlaceholders(6);
 
     try {
-        // Call the proxy endpoint
-        const res = await fetch("/api/uploads");
+        const res = await fetch(apiURL); // No API key needed
         if (!res.ok) throw new Error(`HTTP ${res.status}`);
-
         const data = await res.json();
+
         products = data.map((item, idx) => ({
             id: item.id || idx,
             name: item.product_name || "Unnamed Product",
@@ -172,11 +172,12 @@ async function fetchProducts() {
             productClass: item.productClass || "new",
             rating: item.rating || Math.floor(Math.random() * 5 + 1)
         }));
+
         renderProducts();
     } catch (err) {
         console.error("Failed to fetch products:", err);
         const grid = document.getElementById('productGrid');
-        grid.innerHTML = `<p style="text-align:center; color:red;">Failed to load products.</p>`;
+        if (grid) grid.innerHTML = `<p style="text-align:center; color:red;">Failed to load products.</p>`;
     }
 }
 
