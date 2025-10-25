@@ -132,7 +132,7 @@ window.addEventListener("load", () => {
 // ---------- Global Variables ----------
 let products = [];
 let cart = [];
-const apiURL = "/api/uploads"; // frontend calls proxy route
+const apiURL = "https://bright-nal-1.onrender.com"; // frontend calls proxy route
 
 
 // ---------- Placeholders ----------
@@ -158,7 +158,7 @@ async function fetchProducts() {
     showPlaceholders(6);
 
     try {
-      const res = await fetch("/api/uploads");
+      const res = await fetch("/");
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
       const uploads = await res.json();
 
