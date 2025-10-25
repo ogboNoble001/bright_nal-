@@ -132,8 +132,7 @@ window.addEventListener("load", () => {
 // ---------- Global Variables ----------
 let products = [];
 let cart = [];
- const apiURL = "https://bright-nal-1.onrender.com/api/uploads";
-; // frontend calls proxy route
+const apiURL = "/api/uploads"; // frontend calls proxy route
 
 
 // ---------- Placeholders ----------
