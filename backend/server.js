@@ -15,9 +15,8 @@ app.use(express.static("public"));
 // Protected secure routes
 app.use("/secure", apiKeyMiddleware, uploadRoute);
 
-// Proxy routes for frontend (no node-fetch)
+// 🟢 Public (Safe) - anyone can view
 app.get("/api/uploads", async (req, res, next) => {
-  // Call the same handler as /secure/files directly
   req.url = "/files";
   uploadRoute.handle(req, res, next);
 });
@@ -27,17 +26,18 @@ app.get("/api/uploads/:id", async (req, res, next) => {
   uploadRoute.handle(req, res, next);
 });
 
-app.post("/api/uploads", (req, res, next) => {
+// 🔒 Protected (Sensitive) - require API key
+app.post("/api/uploads", apiKeyMiddleware, (req, res, next) => {
   req.url = "/";
   uploadRoute.handle(req, res, next);
 });
 
-app.put("/api/uploads/:id", (req, res, next) => {
+app.put("/api/uploads/:id", apiKeyMiddleware, (req, res, next) => {
   req.url = `/${req.params.id}`;
   uploadRoute.handle(req, res, next);
 });
 
-app.delete("/api/uploads/:id", (req, res, next) => {
+app.delete("/api/uploads/:id", apiKeyMiddleware, (req, res, next) => {
   req.url = `/${req.params.id}`;
   uploadRoute.handle(req, res, next);
 });
