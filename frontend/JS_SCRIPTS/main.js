@@ -68,7 +68,7 @@ window.addEventListener("load", () => {
     input.addEventListener('input', () => placeholder.style.display = input.value.length > 0 ? 'none' : 'block');
     setInterval(changePlaceholder, 3000);
     changePlaceholder();
-
+/*
     // ---------- Slider ----------
     const slider = document.querySelector('.imageSlider');
     const sliderTrack = document.querySelector('.slider-track');
@@ -103,7 +103,7 @@ window.addEventListener("load", () => {
         setInterval(updateImageClasses, 100);
         updateImageClasses();
     }
-
+*/
     // ---------- Intro Tagline ----------
     const container = document.querySelector(".animateTxt");
     if (container) {
@@ -132,7 +132,7 @@ window.addEventListener("load", () => {
 // ---------- Global Variables ----------
 let products = [];
 let cart = [];
-const apiURL = "/api/uploads"; // frontend calls proxy route
+const apiURL = "https://bright-nal-1.onrender.com/api/uploads"; // frontend calls proxy route
 
 
 // ---------- Placeholders ----------
