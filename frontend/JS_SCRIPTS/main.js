@@ -153,6 +153,7 @@ function showPlaceholders(count = 6) {
 }
 
 // ---------- Fetch Products ----------
+// BEFORE (Buggy Code)
 async function fetchProducts() {
     showPlaceholders(6);
 
@@ -163,9 +164,47 @@ async function fetchProducts() {
 
       if (!uploads.length) {
         result.innerHTML = `<p class="no-products">No uploads found.</p>`;
-        return; }
+        return; 
+      }
 
-        products = data.map((item, idx) => ({
+      // ❌ BUG: Using 'data' instead of 'uploads'
+      products = data.map((item, idx) => ({
+            id: item.id || idx,
+            name: item.product_name || "Unnamed Product",
+            category: item.category || "Uncategorized",
+            price: item.price || 0,
+            originalPrice: item.originalPrice || null,
+            image: item.image_url || "https://via.placeholder.com/400x500",
+            badge: item.badge || null,
+            productClass: item.productClass || "new",
+            rating: item.rating || Math.floor(Math.random() * 5 + 1)
+        }));
+
+        renderProducts();
+    } catch (err) {
+        console.error("Failed to fetch products:", err);
+        const grid = document.getElementById('productGrid');
+        if (grid) grid.innerHTML = `<p style="text-align:center; color:red;">Failed to load products.</p>`;
+    }
+}
+
+// ✅ AFTER (Fixed Code)
+async function fetchProducts() {
+    showPlaceholders(6);
+
+    try {
+      const res = await fetch("/api/uploads");
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      const uploads = await res.json();
+
+      if (!uploads.length) {
+        const grid = document.getElementById('productGrid');
+        grid.innerHTML = `<p class="no-products">No uploads found.</p>`;
+        return; 
+      }
+
+      // ✅ FIX: Changed 'data' to 'uploads'
+      products = uploads.map((item, idx) => ({
             id: item.id || idx,
             name: item.product_name || "Unnamed Product",
             category: item.category || "Uncategorized",
