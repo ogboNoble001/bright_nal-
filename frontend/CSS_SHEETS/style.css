@@ -468,7 +468,7 @@ main {
 }
 */
 .hero-btn {
-  margin-top: 2em;
+  margin-top: 1.7em;
   padding: 0.9em 2.2em;
   background-color: #111;
   color: #fff;
@@ -480,24 +480,25 @@ main {
   transition: all 0.3s ease;
 }
 .hero-btn:hover {
-  margin-bottom: 1em;
   background-color: #000;
   transform: translateY(-2px);
 }
 /* === COLLECTIONS SECTION === */
 .collections {
   width: 100%;
+  margin: 0 auto;
   display: flex;
-  
+  max-width: 1100px;
+  overflow-x: auto;
   flex-direction: column;
   gap: .5rem;
 }
 
 /* === POPULAR TAGS === */
 .popular-tags {
-  max-width: 980px;
-  padding-top: 2rem;
-  margin-left: auto;margin-right: auto;
+  max-width: 1100px;
+  margin-left: auto;
+  margin-right: auto;
   width: 100%;
   overflow-x: scroll;
   scrollbar-width: none;
@@ -513,9 +514,17 @@ main {
   font-size: 0.95rem;
 }
 
+
 .tags-list {
+width: 100%;
+  overflow-x: scroll;
+  scrollbar-width: none;
   display: flex;
-  gap: 0.8em;
+  flex:0 0 auto;
+  gap: .8em;
+  padding: .3em;
+  justify-content: flex-start;
+  align-items: center;
 }
 .tag {
   padding: 0.6em 1.2em;
@@ -533,7 +542,9 @@ main {
   color: #111;
   transform: translateY(-2px);
 }
-
+.tags-title{
+  flex: 0 0 auto;
+}
 /* === PRODUCT CARDS === */
 .product-card {
   position: relative;
@@ -1125,4 +1136,76 @@ footer {
 @keyframes shimmer {
   0% { background-position: 200% 0; }
   100% { background-position: -200% 0; }
+}
+
+.promo-banner {
+  background: linear-gradient(135deg, #1A1A1A 0%, #0F0F0F 100%);
+border-top: 1px solid rgba(255, 255, 255, 0.08);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  padding: 1rem 5%;
+  color: white;
+  margin-top: 1rem;
+  overflow: hidden;
+  position: relative;
+}
+
+.promo-banner::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, transparent, rgba(212, 175, 55, 0.1), transparent);
+  animation: shimmerBanner 3s infinite;
+}
+
+@keyframes shimmerBanner {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
+}
+
+
+.promo-content {
+  margin: 3em auto;
+  max-width: 1100px;
+  position: relative;
+  background-color: #F8F8FC;
+  padding: 1em;
+  border-radius: 12px;
+  z-index: 1;
+}
+
+.pro-badge {
+  background: rgba(0, 0, 34, 0.5);
+  backdrop-filter: blur(10px);
+  padding: 0.375rem 0.875rem;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  margin-right: auto;
+  text-transform: uppercase;
+  display: inline-block;
+  margin-bottom: 0.5rem;
+}
+  
+.promo-text {
+  font-size: 0.9375rem;
+  line-height: 1.6;
+  max-width: 900px;
+  text-align: left;
+  transition: all .2s ease-in;
+}
+
+.close-btn {
+  margin-bottom: auto;
+  margin-left: auto;
+  margin-right: 1em;
+  cursor: pointer;
+  opacity: 0.8;
+  transition: opacity 0.3s ease;
+  width: 1px;
+  height: 1px;
+}
+
+.close-btn:hover {
+  opacity: 1;
 }

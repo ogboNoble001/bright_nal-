@@ -274,3 +274,4 @@ function checkout() { if (!cart.length) return console.log('Your cart is empty!'
 function addToWishlist(productId) { console.log('❤️ Added to wishlist!'); }
 function quickView(productId) { const product = products.find(p => p.id === productId); console.log(`Quick View: ${product.name}\nPrice: ₦${product.price.toLocaleString()}`); }
 function subscribeNewsletter(event) { event.preventDefault(); console.log('✅ Thank you for subscribing!'); event.target.reset(); }
+  

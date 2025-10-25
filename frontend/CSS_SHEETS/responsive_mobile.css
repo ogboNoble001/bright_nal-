@@ -227,7 +227,6 @@
     flex-direction: column;
     text-align: center;
     justify-content: center;
-    
     min-height: auto;
   }
 
@@ -242,6 +241,7 @@
   .tabs {
     justify-content: center;
     flex-wrap: nowrap;
+    align-items: center;
     margin-top: 1em;
   }
 
