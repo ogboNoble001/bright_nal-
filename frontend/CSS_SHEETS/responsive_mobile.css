@@ -229,7 +229,6 @@
     justify-content: center;
     gap: 2em;
     min-height: auto;
-    margin: 2em 0;
   }
 
   .hero-title {
@@ -238,7 +237,6 @@
     text-align: center;
     justify-content: center;
     max-width: 100%;
-    order: 1;
   }
 
   .tabs {
@@ -252,11 +250,6 @@
 
   .hero-btn {
     align-self: center;
-  }
-
-  .imageSlider {
-    width: 100%;
-    order: 2;
   }
 
   .collections {
@@ -403,12 +396,12 @@
     justify-content: center;
   }
 
-
+/*
   .imageCarousel.active {
     height: 150px;
     width: 100px;
   }
-
+*/
   /* Product cards smaller */
   .content-grid,
   #productGrid {
