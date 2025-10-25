@@ -11,7 +11,7 @@ const { Pool } = pkg;
 const app = express();
 app.use(cors());
 app.use(express.json());
-app.use(express.static("public")); // serves HTML page
+app.use(express.static("public")); // serves frontend HTML
 
 const pool = new Pool({
   connectionString: process.env.DATABASE_URL,
@@ -23,10 +23,21 @@ const pool = new Pool({
 app.use("/upload", apiKeyMiddleware, uploadRoute);
 // --------------------------
 
-// Proxy route for frontend to upload without exposing API key
-app.post("/secure-upload", (req, res, next) => {
-  // attach apiKey header before forwarding
-  req.headers["x-api-key"] = process.env.API_KEY;
+// Secure endpoints for frontend
+// Frontend calls these without knowing API key
+app.get("/secure/files", apiKeyMiddleware, async (req, res) => {
+  try {
+    // Directly call the uploadRoute handler logic
+    const result = await pool.query("SELECT * FROM products ORDER BY created_at DESC");
+    res.json(result.rows);
+  } catch (err) {
+    res.status(500).json({ success: false, message: "Failed to fetch products", error: err.message });
+  }
+});
+
+// If you want a secure upload endpoint for the frontend
+app.post("/secure-upload", apiKeyMiddleware, async (req, res, next) => {
+  // Pass request to the /upload route handler
   uploadRoute.handle(req, res, next);
 });
 
