@@ -227,7 +227,7 @@
     flex-direction: column;
     text-align: center;
     justify-content: center;
-    gap: 2em;
+    
     min-height: auto;
   }
 
@@ -241,9 +241,12 @@
 
   .tabs {
     justify-content: center;
+    flex-wrap: nowrap;
+    margin-top: 1em;
   }
 
   .tab {
+    flex: 0 0 auto;
     font-size: 0.85rem;
     padding: 0.7rem 1.2rem;
   }

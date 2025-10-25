@@ -309,7 +309,7 @@ main {
 }
 
 .hero-title h1 {
-  font-family: "Mona Sans", sans-serif;
+  font-family: "Playfair Display", sans-serif;
   font-size: 3.2em;
   font-weight: 800;
   letter-spacing: -0.02em;
@@ -488,13 +488,16 @@ main {
 .collections {
   width: 100%;
   display: flex;
+  
   flex-direction: column;
   gap: .5rem;
 }
 
 /* === POPULAR TAGS === */
 .popular-tags {
+  max-width: 980px;
   padding-top: 2rem;
+  margin-left: auto;margin-right: auto;
   width: 100%;
   overflow-x: scroll;
   scrollbar-width: none;
@@ -535,6 +538,7 @@ main {
 .product-card {
   position: relative;
   background: #fff;
+  margin-top: 1rem;
   border-radius: 15px;
   overflow: hidden;
   box-shadow: 0 5px 15px rgba(0,0,0,0.08);
