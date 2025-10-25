@@ -153,13 +153,14 @@ function showPlaceholders(count = 6) {
 
 // ---------- Fetch Products ----------
 async function fetchProducts() {
-    showPlaceholders(6);
+    showPlaceholders(6); // show placeholders immediately
 
     try {
-        const res = await fetch(apiURL, { headers: { "x-api-key": "YOUR_API_KEY_HERE" } });
+        // Call the proxy endpoint
+        const res = await fetch("/api/uploads");
         if (!res.ok) throw new Error(`HTTP ${res.status}`);
-        const data = await res.json();
 
+        const data = await res.json();
         products = data.map((item, idx) => ({
             id: item.id || idx,
             name: item.product_name || "Unnamed Product",
@@ -171,14 +172,14 @@ async function fetchProducts() {
             productClass: item.productClass || "new",
             rating: item.rating || Math.floor(Math.random() * 5 + 1)
         }));
-
         renderProducts();
     } catch (err) {
         console.error("Failed to fetch products:", err);
         const grid = document.getElementById('productGrid');
-        if (grid) grid.innerHTML = `<p style="text-align:center; color:red;">Failed to load products.</p>`;
+        grid.innerHTML = `<p style="text-align:center; color:red;">Failed to load products.</p>`;
     }
 }
+
 
 // ---------- Render Products ----------
 function renderProducts() {
