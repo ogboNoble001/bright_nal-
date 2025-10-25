@@ -3,15 +3,11 @@ window.addEventListener("DOMContentLoaded", () => {
 
   const result = document.getElementById("result");
   const uploadForm = document.getElementById("uploadForm");
-  const toggleUpload = document.getElementById("toggleUpload");
+  const toggleUploadBtn = document.getElementById("toggleUpload");
   const modalBox = document.getElementById("modalBoxForm");
   const closeModal = document.getElementById("closeModal");
+  let editingProductId = null; // Track if editing
 
-  // Toggle upload modal
-  toggleUpload.addEventListener("click", () => modalBox.classList.add("active"));
-  closeModal.addEventListener("click", () => modalBox.classList.remove("active"));
-
-  // --- Fetch uploads ---
   async function fetchUploads() {
     try {
       const res = await fetch("/upload/files");
@@ -37,6 +33,9 @@ window.addEventListener("DOMContentLoaded", () => {
               <p><strong>Stock:</strong> ${u.stock || "0"}</p>
             </div>
             <div class="card-actions">
+              <button class="edit-btn" data-id="${u.id}">
+                <i data-lucide="edit-3"></i> Edit
+              </button>
               <button class="delete-btn" data-id="${u.id}">
                 <i data-lucide="trash-2"></i> Delete
               </button>
@@ -49,13 +48,13 @@ window.addEventListener("DOMContentLoaded", () => {
 
       if (typeof lucide !== "undefined") lucide.createIcons();
       attachDeleteHandlers();
+      attachEditHandlers();
     } catch (err) {
       console.error(err);
       result.innerHTML = `<p class="error">Failed to load uploads: ${err.message}</p>`;
     }
   }
 
-  // --- Delete functionality ---
   function attachDeleteHandlers() {
     document.querySelectorAll(".delete-btn").forEach((btn) => {
       btn.addEventListener("click", async () => {
@@ -83,41 +82,76 @@ window.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  // --- Upload functionality ---
-  if (uploadForm) {
-    uploadForm.addEventListener("submit", async (e) => {
-      e.preventDefault();
+  function attachEditHandlers() {
+    document.querySelectorAll(".edit-btn").forEach((btn) => {
+      btn.addEventListener("click", async () => {
+        const id = btn.dataset.id;
+        try {
+          const res = await fetch(`/upload/${id}`);
+          const product = await res.json();
 
-      const formData = new FormData(uploadForm);
-      const submitBtn = uploadForm.querySelector("button[type='submit']");
-      submitBtn.disabled = true;
-      submitBtn.textContent = "Uploading...";
+          // Populate form
+          uploadForm.productName.value = product.product_name || "";
+          uploadForm.category.value = product.category || "";
+          uploadForm.brand.value = product.brand || "";
+          uploadForm.price.value = product.price || "";
+          uploadForm.stock.value = product.stock || "";
+          uploadForm.sku.value = product.sku || "";
+          uploadForm.productClass.value = product.product_class || "";
+          uploadForm.sizes.value = product.sizes || "";
+          uploadForm.colors.value = product.colors || "";
+          uploadForm.description.value = product.description || "";
 
-      try {
-        const res = await fetch("/upload", {
-          method: "POST",
-          body: formData
-        });
-        const data = await res.json();
+          editingProductId = id; // mark editing
 
-        if (data.success) {
-          alert("✅ Product uploaded successfully!");
-          uploadForm.reset();
-          modalBox.classList.remove("active");
-          fetchUploads();
-        } else {
-          alert("❌ Upload failed: " + (data.message || "Unknown error"));
+          // Open modal
+          modalBox.classList.add("active");
+        } catch (err) {
+          console.error(err);
+          alert("Failed to fetch product data.");
         }
-      } catch (err) {
-        console.error(err);
-        alert("Failed to upload product: " + err.message);
-      } finally {
-        submitBtn.disabled = false;
-        submitBtn.textContent = "Upload Product";
-      }
+      });
     });
   }
 
-  // Initial fetch
+  toggleUploadBtn.addEventListener("click", () => modalBox.classList.add("active"));
+  closeModal.addEventListener("click", () => modalBox.classList.remove("active"));
+
+  // Handle upload form submit
+  uploadForm.addEventListener("submit", async (e) => {
+    e.preventDefault();
+
+    const formData = new FormData(uploadForm);
+    try {
+      let url = "/upload";
+      let method = "POST";
+
+      if (editingProductId) {
+        url += `/${editingProductId}`;
+        method = "PUT";
+      }
+
+      const res = await fetch(url, {
+        method,
+        body: formData,
+      });
+
+      const data = await res.json();
+
+      if (data.success) {
+        alert(editingProductId ? "✅ Product updated!" : "✅ Product uploaded!");
+        uploadForm.reset();
+        editingProductId = null;
+        modalBox.classList.remove("active");
+        fetchUploads();
+      } else {
+        alert("❌ Failed: " + (data.message || "Unknown error"));
+      }
+    } catch (err) {
+      console.error(err);
+      alert("❌ Request failed: " + err.message);
+    }
+  });
+
   fetchUploads();
 });
