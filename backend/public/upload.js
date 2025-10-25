@@ -8,9 +8,12 @@ window.addEventListener("DOMContentLoaded", () => {
   const closeModal = document.getElementById("closeModal");
   let editingProductId = null; // Track if editing
 
+  // --------------------------
+  // Fetch all uploads via proxy API
+  // --------------------------
   async function fetchUploads() {
     try {
-      const res = await fetch("/upload/files");
+      const res = await fetch("/api/uploads");
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
       const uploads = await res.json();
 
@@ -55,6 +58,9 @@ window.addEventListener("DOMContentLoaded", () => {
     }
   }
 
+  // --------------------------
+  // Delete product
+  // --------------------------
   function attachDeleteHandlers() {
     document.querySelectorAll(".delete-btn").forEach((btn) => {
       btn.addEventListener("click", async () => {
@@ -65,7 +71,7 @@ window.addEventListener("DOMContentLoaded", () => {
         if (typeof lucide !== "undefined") lucide.createIcons();
 
         try {
-          const res = await fetch(`/upload/${id}`, { method: "DELETE" });
+          const res = await fetch(`/api/uploads/${id}`, { method: "DELETE" });
           const data = await res.json();
 
           if (data.success) {
@@ -82,30 +88,30 @@ window.addEventListener("DOMContentLoaded", () => {
     });
   }
 
+  // --------------------------
+  // Edit product
+  // --------------------------
   function attachEditHandlers() {
     document.querySelectorAll(".edit-btn").forEach((btn) => {
       btn.addEventListener("click", async () => {
         const id = btn.dataset.id;
         try {
-          const res = await fetch(`/upload/${id}`);
+          const res = await fetch(`/api/uploads/${id}`);
           const product = await res.json();
 
           // Populate form
           uploadForm.querySelector('[name="productName"]').value = product.product_name || "";
-uploadForm.querySelector('[name="category"]').value = product.category || "";
-uploadForm.querySelector('[name="brand"]').value = product.brand || "";
-uploadForm.querySelector('[name="price"]').value = product.price || "";
-uploadForm.querySelector('[name="stock"]').value = product.stock || "";
-uploadForm.querySelector('[name="sku"]').value = product.sku || "";
-uploadForm.querySelector('[name="productClass"]').value = product.product_class || "";
-uploadForm.querySelector('[name="sizes"]').value = product.sizes || "";
-uploadForm.querySelector('[name="colors"]').value = product.colors || "";
-uploadForm.querySelector('[name="description"]').value = product.description || "";
-
+          uploadForm.querySelector('[name="category"]').value = product.category || "";
+          uploadForm.querySelector('[name="brand"]').value = product.brand || "";
+          uploadForm.querySelector('[name="price"]').value = product.price || "";
+          uploadForm.querySelector('[name="stock"]').value = product.stock || "";
+          uploadForm.querySelector('[name="sku"]').value = product.sku || "";
+          uploadForm.querySelector('[name="productClass"]').value = product.product_class || "";
+          uploadForm.querySelector('[name="sizes"]').value = product.sizes || "";
+          uploadForm.querySelector('[name="colors"]').value = product.colors || "";
+          uploadForm.querySelector('[name="description"]').value = product.description || "";
 
           editingProductId = id; // mark editing
-
-          // Open modal
           modalBox.classList.add("active");
         } catch (err) {
           console.error(err);
@@ -118,13 +124,15 @@ uploadForm.querySelector('[name="description"]').value = product.description || 
   toggleUploadBtn.addEventListener("click", () => modalBox.classList.add("active"));
   closeModal.addEventListener("click", () => modalBox.classList.remove("active"));
 
-  // Handle upload form submit
+  // --------------------------
+  // Handle upload form submit (create/update)
+  // --------------------------
   uploadForm.addEventListener("submit", async (e) => {
     e.preventDefault();
 
     const formData = new FormData(uploadForm);
     try {
-      let url = "/upload";
+      let url = "/api/uploads";
       let method = "POST";
 
       if (editingProductId) {
@@ -132,11 +140,7 @@ uploadForm.querySelector('[name="description"]').value = product.description || 
         method = "PUT";
       }
 
-      const res = await fetch(url, {
-        method,
-        body: formData,
-      });
-
+      const res = await fetch(url, { method, body: formData });
       const data = await res.json();
 
       if (data.success) {
@@ -154,5 +158,6 @@ uploadForm.querySelector('[name="description"]').value = product.description || 
     }
   });
 
+  // Initial load
   fetchUploads();
 });
