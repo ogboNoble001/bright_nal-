@@ -4,7 +4,6 @@ import cors from "cors";
 import pkg from "pg";
 import uploadRoute from "./routes/uploadRoute.js";
 import apiKeyMiddleware from "./middleware/apikey.js"; // API key middleware
-import fetch from "node-fetch"; // fetch for Node
 
 dotenv.config();
 const { Pool } = pkg;
@@ -24,22 +23,11 @@ const pool = new Pool({
 app.use("/upload", apiKeyMiddleware, uploadRoute);
 // --------------------------
 
-// Proxy route for frontend to call without exposing API key
-app.post("/secure-upload", async (req, res) => {
-  try {
-    const response = await fetch(`${process.env.BACKEND_URL}/upload`, {
-      method: "POST",
-      headers: {
-        "x-api-key": process.env.API_KEY
-      },
-      body: JSON.stringify(req.body)
-    });
-
-    const data = await response.json();
-    res.status(response.status).json(data);
-  } catch (err) {
-    res.status(500).json({ message: "Server error", error: err.message });
-  }
+// Proxy route for frontend to upload without exposing API key
+app.post("/secure-upload", (req, res, next) => {
+  // attach apiKey header before forwarding
+  req.headers["x-api-key"] = process.env.API_KEY;
+  uploadRoute.handle(req, res, next);
 });
 
 // Home route
