@@ -1,4 +1,4 @@
-window.addEventListener("DOMContentLoaded", () => {
+window.addEventListener("DOMContentLoaded", async () => {
   if (typeof lucide !== "undefined") lucide.createIcons();
 
   const result = document.getElementById("result");
@@ -6,10 +6,29 @@ window.addEventListener("DOMContentLoaded", () => {
   const toggleUploadBtn = document.getElementById("toggleUpload");
   const modalBox = document.getElementById("modalBoxForm");
   const closeModal = document.getElementById("closeModal");
-  let editingProductId = null; // Track if editing
+  let editingProductId = null;
+
+  // Mutable variable for the API key
+  let API_KEY = "";
 
   // --------------------------
-  // Fetch all uploads via proxy API
+  // Load API key from backend
+  // --------------------------
+  async function getApiKey() {
+    try {
+      const res = await fetch("/api/key");
+      const data = await res.json();
+      API_KEY = data.key;
+    } catch (err) {
+      console.error("Failed to load API key:", err);
+    }
+  }
+
+  // Load key before anything else
+  await getApiKey();
+
+  // --------------------------
+  // Fetch all uploads (public)
   // --------------------------
   async function fetchUploads() {
     try {
@@ -59,7 +78,7 @@ window.addEventListener("DOMContentLoaded", () => {
   }
 
   // --------------------------
-  // Delete product
+  // Delete product (requires API key)
   // --------------------------
   function attachDeleteHandlers() {
     document.querySelectorAll(".delete-btn").forEach((btn) => {
@@ -71,7 +90,11 @@ window.addEventListener("DOMContentLoaded", () => {
         if (typeof lucide !== "undefined") lucide.createIcons();
 
         try {
-          const res = await fetch(`/api/uploads/${id}`, { method: "DELETE" });
+          const res = await fetch(`/api/uploads/${id}`, {
+            method: "DELETE",
+            headers: { "x-api-key": API_KEY }
+          });
+
           const data = await res.json();
 
           if (data.success) {
@@ -89,7 +112,7 @@ window.addEventListener("DOMContentLoaded", () => {
   }
 
   // --------------------------
-  // Edit product
+  // Edit product (fetch + populate form)
   // --------------------------
   function attachEditHandlers() {
     document.querySelectorAll(".edit-btn").forEach((btn) => {
@@ -99,7 +122,6 @@ window.addEventListener("DOMContentLoaded", () => {
           const res = await fetch(`/api/uploads/${id}`);
           const product = await res.json();
 
-          // Populate form
           uploadForm.querySelector('[name="productName"]').value = product.product_name || "";
           uploadForm.querySelector('[name="category"]').value = product.category || "";
           uploadForm.querySelector('[name="brand"]').value = product.brand || "";
@@ -111,7 +133,7 @@ window.addEventListener("DOMContentLoaded", () => {
           uploadForm.querySelector('[name="colors"]').value = product.colors || "";
           uploadForm.querySelector('[name="description"]').value = product.description || "";
 
-          editingProductId = id; // mark editing
+          editingProductId = id;
           modalBox.classList.add("active");
         } catch (err) {
           console.error(err);
@@ -125,7 +147,7 @@ window.addEventListener("DOMContentLoaded", () => {
   closeModal.addEventListener("click", () => modalBox.classList.remove("active"));
 
   // --------------------------
-  // Handle upload form submit (create/update)
+  // Handle upload form submit (requires API key)
   // --------------------------
   uploadForm.addEventListener("submit", async (e) => {
     e.preventDefault();
@@ -140,7 +162,12 @@ window.addEventListener("DOMContentLoaded", () => {
         method = "PUT";
       }
 
-      const res = await fetch(url, { method, body: formData });
+      const res = await fetch(url, {
+        method,
+        headers: { "x-api-key": API_KEY },
+        body: formData
+      });
+
       const data = await res.json();
 
       if (data.success) {

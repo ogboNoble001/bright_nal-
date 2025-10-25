@@ -41,6 +41,10 @@ app.delete("/api/uploads/:id", apiKeyMiddleware, (req, res, next) => {
   req.url = `/${req.params.id}`;
   uploadRoute.handle(req, res, next);
 });
+app.get("/api/key", (req, res) => {
+  res.json({ key: process.env.API_KEY });
+});
+
 
 const PORT = process.env.PORT || 7700;
 app.listen(PORT, () => console.log(`🚀 Server running on port ${PORT}`));
