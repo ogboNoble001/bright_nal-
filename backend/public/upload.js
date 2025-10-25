@@ -9,7 +9,7 @@ window.addEventListener("DOMContentLoaded", () => {
   let editingProductId = null; // Track if editing
 
   // --------------------------
-  // Fetch all uploads
+  // Fetch all uploads securely
   // --------------------------
   async function fetchUploads() {
     try {
@@ -59,7 +59,7 @@ window.addEventListener("DOMContentLoaded", () => {
   }
 
   // --------------------------
-  // Delete product
+  // Delete product securely
   // --------------------------
   function attachDeleteHandlers() {
     document.querySelectorAll(".delete-btn").forEach((btn) => {
@@ -89,7 +89,7 @@ window.addEventListener("DOMContentLoaded", () => {
   }
 
   // --------------------------
-  // Edit product
+  // Edit product securely
   // --------------------------
   function attachEditHandlers() {
     document.querySelectorAll(".edit-btn").forEach((btn) => {
@@ -111,7 +111,7 @@ window.addEventListener("DOMContentLoaded", () => {
           uploadForm.querySelector('[name="colors"]').value = product.colors || "";
           uploadForm.querySelector('[name="description"]').value = product.description || "";
 
-          editingProductId = id; // mark editing
+          editingProductId = id;
           modalBox.classList.add("active");
         } catch (err) {
           console.error(err);
@@ -125,7 +125,7 @@ window.addEventListener("DOMContentLoaded", () => {
   closeModal.addEventListener("click", () => modalBox.classList.remove("active"));
 
   // --------------------------
-  // Handle upload form submit (create/update)
+  // Handle upload form submit securely
   // --------------------------
   uploadForm.addEventListener("submit", async (e) => {
     e.preventDefault();
@@ -162,5 +162,8 @@ window.addEventListener("DOMContentLoaded", () => {
     }
   });
 
+  // --------------------------
+  // Initialize
+  // --------------------------
   fetchUploads();
 });
