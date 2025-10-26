@@ -1143,7 +1143,7 @@ footer {
   background: linear-gradient(135deg, #1A1A1A 0%, #0F0F0F 100%);
 border-top: 1px solid rgba(255, 255, 255, 0.08);
   border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-  
+  width: 100%;
   color: white;
   overflow: hidden;
   position: relative;
@@ -1151,6 +1151,7 @@ border-top: 1px solid rgba(255, 255, 255, 0.08);
 
 .promo-content::before {
   content: '';
+  overflow: hidden;
   position: absolute;
   top: 0;
   inset: 0;
@@ -1160,7 +1161,7 @@ border-top: 1px solid rgba(255, 255, 255, 0.08);
   background: linear-gradient(
     120deg,
     rgba(255, 255, 255, 0) 0%,
-    rgba(255, 255, 255, 0.6) 50%,
+    rgba(255, 255, 255, 0.53) 50%,
     rgba(255, 255, 255, 0) 100%
   );
   transform: skewX(-20deg);
@@ -1186,6 +1187,8 @@ border-top: 1px solid rgba(255, 255, 255, 0.08);
 .promo-content {
   margin: 0 ;
   position: relative;
+  overflow: hidden;
+  width: 100%;
   background-color: rgba(69, 50, 50, 0.178);
   padding: 1em;
   z-index: 1;
