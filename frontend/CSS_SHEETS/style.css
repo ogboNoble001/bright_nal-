@@ -1149,17 +1149,34 @@ border-top: 1px solid rgba(255, 255, 255, 0.08);
   position: relative;
 }
 
-.promo-banner::before {
+.promo-content::before {
   content: '';
   position: absolute;
+  top: 0;
   inset: 0;
-  background: linear-gradient(90deg, transparent, rgba(212, 175, 55, 0.1), transparent);
-  animation: shimmer 3s infinite;
+  left: -75%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    120deg,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(255, 255, 255, 0.6) 50%,
+    rgba(255, 255, 255, 0) 100%
+  );
+  transform: skewX(-20deg);
+  pointer-events: none;
+  z-index: 1;
+  transform: skewX(-20deg);
+  animation: shimmerBanner 3s infinite;
 }
 
-@keyframes shimmerBanner {
-  0% { transform: translateX(-100%); }
-  100% { transform: translateX(100%); }
+@keyframes shimmerBanner{
+  0% {
+    left: -75%;
+  }
+  100% {
+    left: 125%;
+  }
 }
 .content-grid{
   display: grid;
