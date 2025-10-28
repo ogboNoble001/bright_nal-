@@ -155,6 +155,7 @@ window.addEventListener("load", () => {
 // ---------- Global Variables ----------
 let products = [];
 let cart = [];
+let displayedProductCount = 5; // Start with 4 products
 const apiURL = "https://bright-nal-1.onrender.com/api/uploads";
 
 // ---------- Placeholders ----------
@@ -180,7 +181,7 @@ function showPlaceholders(count = 6) {
 
 // ---------- Fetch Products ----------
 async function fetchProducts() {
-  showPlaceholders(6);
+  showPlaceholders(4); // Show 4 placeholders initially
 
   try {
     const res = await fetch(apiURL);
@@ -209,11 +210,13 @@ async function fetchProducts() {
 }
 
 // ---------- Render Products ----------
-function renderProducts() {
+function renderProducts(showAll = false) {
   const grid = document.getElementById("productGrid");
   if (!grid) return;
 
-  grid.innerHTML = products
+  const productsToShow = showAll ? products : products.slice(0, displayedProductCount);
+
+  grid.innerHTML = productsToShow
     .map(
       (product) => `
         <div class="product-card">
@@ -257,8 +260,33 @@ function renderProducts() {
     )
     .join("");
 
-  // ✅ UPDATE PRODUCT LENGTH DISPLAY
+  // Add View More button if there are more products to show
+  if (!showAll && products.length > displayedProductCount) {
+    const viewMoreBtn = document.createElement('div');
+    viewMoreBtn.style.cssText = 'grid-column: 1/-1; text-align: center; margin: 2rem 0;';
+    viewMoreBtn.innerHTML = `
+      <button onclick="viewMoreProducts()" style="
+        padding: 12px 32px;
+        background: #333;
+        color: white;
+        border: none;
+        border-radius: 8px;
+        font-size: 16px;
+        cursor: pointer;
+        transition: background 0.3s;
+      " onmouseover="this.style.background='#555'" onmouseout="this.style.background='#333'">
+        View More (${products.length - displayedProductCount} more)
+      </button>
+    `;
+    grid.appendChild(viewMoreBtn);
+  }
+
   updateProductLength(products.length);
+}
+
+// ---------- View More Products ----------
+function viewMoreProducts() {
+  renderProducts(true);
 }
 
 // ---------- Update Product Length ----------
@@ -292,6 +320,7 @@ function handleSearch() {
     return;
   }
 
+  // Show all filtered results when searching
   grid.innerHTML = filtered
     .map(
       (product) => `
@@ -336,7 +365,6 @@ function handleSearch() {
     )
     .join("");
 
-  // ✅ UPDATE TO SHOW FILTERED COUNT
   updateProductLength(filtered.length);
 }
 

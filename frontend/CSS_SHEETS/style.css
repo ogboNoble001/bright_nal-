@@ -285,7 +285,7 @@ body {
 }
 
 main {
-  padding: 0 2.2em;
+  padding: 0 1em;
 }
 
 /* === HERO SECTION === */
@@ -556,7 +556,7 @@ main {
   background: #111;
   color: #fff;
   font-weight: 700;
-  padding: 0.5em 1em 0.5em 1.2em;
+  padding: 0.5em .6em 0.5em .6em;
   box-shadow: 0 2px 10px rgba(0,0,0,0.15);
   cursor: default;
   transition: background 0.3s ease, transform 0.2s ease;

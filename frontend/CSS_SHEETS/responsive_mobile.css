@@ -332,11 +332,6 @@
     font-size: 2.5em;
   }
 
-  main {
-    padding: 0 1.5em;
-  }
-
-
 @media (max-width: 768px) {
 
   /* Cart sidebar full width on tablet/mobile */
