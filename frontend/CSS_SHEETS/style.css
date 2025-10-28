@@ -1324,3 +1324,19 @@ border-top: 1px solid rgba(255, 255, 255, 0.08);
 .close-btn:hover {
   opacity: 1;
 }
+.profile-pic{
+  width: 30px;
+  height: 30px;cursor: pointer;
+  border-radius: 50%;
+}
+.m-t{
+  position: absolute;
+  bottom: 0;
+
+  margin-bottom:2em ;
+}
+.font-small{
+  font-size: small;
+  cursor: pointer;
+  color: #555;
+}
