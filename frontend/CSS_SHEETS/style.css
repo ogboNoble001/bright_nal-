@@ -565,6 +565,7 @@ width: 100%;
 
 .product-image-container {
   position: relative;
+  margin: 2em;
   height: 350px;
   overflow: hidden;
   background: #f5f5f5;
@@ -572,8 +573,9 @@ width: 100%;
 
 .product-image {
   width: 100%;
+  object-fit: cover; /* or contain */
+  object-position: top; /* 👈 focuses top part of image */
   height: 100%;
-  object-fit: cover;
   transition: transform 0.6s;
 }
 

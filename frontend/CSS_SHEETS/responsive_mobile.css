@@ -477,10 +477,6 @@
     padding: 0.8em 1em;
   }
 
-  .logo::before {
-    font-size: 0.9em;
-  }
-
   .hero-title h1 {
     font-size: 1.6em;
     line-height: 1.2;
