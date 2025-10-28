@@ -1,217 +1,170 @@
 window.addEventListener("load", () => {
+  lucide.createIcons();
     
-    lucide.createIcons();
+  // ---------- Dropdown & Sidebar ----------
+  const dropdownWrappers = document.querySelectorAll(".dropdown-wrapper");
+  dropdownWrappers.forEach((wrapper) => {
+    const menu = wrapper.querySelector(".dropdown-menu");
+    wrapper.addEventListener("mouseenter", () => menu.classList.add("show"));
+    wrapper.addEventListener("mouseleave", () => menu.classList.remove("show"));
+  });
 
-    // ---------- Dropdown & Sidebar ----------
-    const dropdownWrappers = document.querySelectorAll('.dropdown-wrapper');
-    dropdownWrappers.forEach(wrapper => {
-        const menu = wrapper.querySelector('.dropdown-menu');
-        wrapper.addEventListener('mouseenter', () => menu.classList.add('show'));
-        wrapper.addEventListener('mouseleave', () => menu.classList.remove('show'));
-    });
+  const menuToggle = document.querySelector(".menu-toggle");
+  const mobileSidebar = document.querySelector(".mobile-sidebar");
+  const sidebarOverlay = document.querySelector(".sidebar-overlay");
+  const closeSidebar = document.querySelector(".close-sidebar");
 
-    const menuToggle = document.querySelector('.menu-toggle');
-    const mobileSidebar = document.querySelector('.mobile-sidebar');
-    const sidebarOverlay = document.querySelector('.sidebar-overlay');
-    const closeSidebar = document.querySelector('.close-sidebar');
+  const openSidebar = () => {
+    mobileSidebar.classList.add("active");
+    sidebarOverlay.classList.add("active");
+    menuToggle.classList.add("active");
+    document.body.style.overflow = "hidden";
+  };
 
-    const openSidebar = () => {
-        mobileSidebar.classList.add('active');
-        sidebarOverlay.classList.add('active');
-        menuToggle.classList.add('active');
-        document.body.style.overflow = 'hidden';
-    };
+  const closeSidebarFunc = () => {
+    mobileSidebar.classList.remove("active");
+    sidebarOverlay.classList.remove("active");
+    menuToggle.classList.remove("active");
+    document.body.style.overflow = "";
+  };
 
-    const closeSidebarFunc = () => {
-        mobileSidebar.classList.remove('active');
-        sidebarOverlay.classList.remove('active');
-        menuToggle.classList.remove('active');
-        document.body.style.overflow = '';
-    };
+  menuToggle?.addEventListener("click", () =>
+    mobileSidebar.classList.contains("active") ? closeSidebarFunc() : openSidebar()
+  );
+  closeSidebar?.addEventListener("click", closeSidebarFunc);
+  sidebarOverlay?.addEventListener("click", closeSidebarFunc);
 
-    menuToggle?.addEventListener('click', () => mobileSidebar.classList.contains('active') ? closeSidebarFunc() : openSidebar());
-    closeSidebar?.addEventListener('click', closeSidebarFunc);
-    sidebarOverlay?.addEventListener('click', closeSidebarFunc);
-
-    document.querySelectorAll('.mobile-nav-item').forEach(item => {
-        item.addEventListener('click', () => {
-            const dropdown = item.nextElementSibling;
-            if (dropdown?.classList.contains('mobile-dropdown')) {
-                item.classList.toggle('expanded');
-                dropdown.classList.toggle('expanded');
-            }
-        });
-    });
-
-    // ---------- Header Scroll ----------
-    const header = document.querySelector(".header");
-    window.addEventListener("scroll", () => {
-        header.classList.toggle("scrolled", window.scrollY > 10);
-    });
-
-    // ---------- Search Placeholder ----------
-    const placeholder = document.getElementById('animatedPlaceholder');
-    const input = document.getElementById('searchInput');
-    const placeholders = [
-        'Search elegant suits and formal wears...',
-        'Find trendy traditional outfits...',
-        'Discover new fashion collections...',
-        'Explore styles for every season...'
-    ];
-    let i = 0;
-    const changePlaceholder = () => {
-        placeholder.classList.remove('animate');
-        void placeholder.offsetWidth;
-        placeholder.classList.add('animate');
-        placeholder.textContent = placeholders[i];
-        i = (i + 1) % placeholders.length;
-    };
-    input.addEventListener('input', () => placeholder.style.display = input.value.length > 0 ? 'none' : 'block');
-    setInterval(changePlaceholder, 3000);
-    changePlaceholder();
-
-    // Mobile Search Bar Toggle
-const searchBar = document.getElementById('searchInputBar');
-const searchInput = document.getElementById('searchInput');
-
-// Only add click handler on mobile
-function handleSearchBarClick(e) {
-  if (window.innerWidth <= 1088) {
-    // If clicking the search icon (not the input itself)
-    if (!searchBar.classList.contains('active')) {
-      e.preventDefault();
-      searchBar.classList.add('active');
-      
-      // Show input and placeholder
-      searchInput.style.display = 'block';
-      const placeholder = document.getElementById('animatedPlaceholder');
-      if (placeholder) {
-        placeholder.style.display = 'block';
+  document.querySelectorAll(".mobile-nav-item").forEach((item) => {
+    item.addEventListener("click", () => {
+      const dropdown = item.nextElementSibling;
+      if (dropdown?.classList.contains("mobile-dropdown")) {
+        item.classList.toggle("expanded");
+        dropdown.classList.toggle("expanded");
       }
-      
-      // Focus the input
-      setTimeout(() => searchInput.focus(), 100);
-    }
-  }
-}
+    });
+  });
 
-// Close search when clicking outside
-function handleClickOutside(e) {
-  if (window.innerWidth <= 1088) {
-    if (!searchBar.contains(e.target) && searchBar.classList.contains('active')) {
-      searchBar.classList.remove('active');
-      searchInput.style.display = 'none';
-      const placeholder = document.getElementById('animatedPlaceholder');
-      if (placeholder) {
-        placeholder.style.display = 'none';
+  // ---------- Header Scroll ----------
+  const header = document.querySelector(".header");
+  window.addEventListener("scroll", () => {
+    header.classList.toggle("scrolled", window.scrollY > 10);
+  });
+
+  // ---------- Search Placeholder ----------
+  const placeholder = document.getElementById("animatedPlaceholder");
+  const input = document.getElementById("searchInput");
+  const placeholders = [
+    "Search elegant suits and formal wears...",
+    "Find trendy traditional outfits...",
+    "Discover new fashion collections...",
+    "Explore styles for every season...",
+  ];
+  let i = 0;
+  const changePlaceholder = () => {
+    placeholder.classList.remove("animate");
+    void placeholder.offsetWidth;
+    placeholder.classList.add("animate");
+    placeholder.textContent = placeholders[i];
+    i = (i + 1) % placeholders.length;
+  };
+  input.addEventListener("input", () => (placeholder.style.display = input.value.length > 0 ? "none" : "block"));
+  setInterval(changePlaceholder, 3000);
+  changePlaceholder();
+
+  // ---------- Mobile Search Bar Toggle ----------
+  const searchBar = document.getElementById("searchInputBar");
+  const searchInput = document.getElementById("searchInput");
+
+  function handleSearchBarClick(e) {
+    if (window.innerWidth <= 1088) {
+      if (!searchBar.classList.contains("active")) {
+        e.preventDefault();
+        searchBar.classList.add("active");
+        searchInput.style.display = "block";
+        const placeholder = document.getElementById("animatedPlaceholder");
+        if (placeholder) placeholder.style.display = "block";
+        setTimeout(() => searchInput.focus(), 100);
       }
     }
   }
-}
 
-// Add event listeners
-searchBar.addEventListener('click', handleSearchBarClick);
-document.addEventListener('click', handleClickOutside);
-
-// Remove mobile search behavior on desktop
-window.addEventListener('resize', () => {
-  if (window.innerWidth > 1088) {
-    searchBar.classList.remove('active');
-    searchInput.style.display = 'block';
-    const placeholder = document.getElementById('animatedPlaceholder');
-    if (placeholder) {
-      placeholder.style.display = 'block';
-    }
-  } else if (!searchBar.classList.contains('active')) {
-    searchInput.style.display = 'none';
-    const placeholder = document.getElementById('animatedPlaceholder');
-    if (placeholder) {
-      placeholder.style.display = 'none';
+  function handleClickOutside(e) {
+    if (window.innerWidth <= 1088) {
+      if (!searchBar.contains(e.target) && searchBar.classList.contains("active")) {
+        searchBar.classList.remove("active");
+        searchInput.style.display = "none";
+        const placeholder = document.getElementById("animatedPlaceholder");
+        if (placeholder) placeholder.style.display = "none";
+      }
     }
   }
-});
 
-// Initial state check
-if (window.innerWidth <= 1088 && !searchBar.classList.contains('active')) {
-  searchInput.style.display = 'none';
-  const placeholder = document.getElementById('animatedPlaceholder');
-  if (placeholder) {
-    placeholder.style.display = 'none';
+  searchBar.addEventListener("click", handleSearchBarClick);
+  document.addEventListener("click", handleClickOutside);
+
+  window.addEventListener("resize", () => {
+    const placeholder = document.getElementById("animatedPlaceholder");
+    if (window.innerWidth > 1088) {
+      searchBar.classList.remove("active");
+      searchInput.style.display = "block";
+      if (placeholder) placeholder.style.display = "block";
+    } else if (!searchBar.classList.contains("active")) {
+      searchInput.style.display = "none";
+      if (placeholder) placeholder.style.display = "none";
+    }
+  });
+
+  if (window.innerWidth <= 1088 && !searchBar.classList.contains("active")) {
+    searchInput.style.display = "none";
+    const placeholder = document.getElementById("animatedPlaceholder");
+    if (placeholder) placeholder.style.display = "none";
   }
-}
-/*
-    // ---------- Slider ----------
-    const slider = document.querySelector('.imageSlider');
-    const sliderTrack = document.querySelector('.slider-track');
-    if (slider && sliderTrack) {
-        const originalImages = Array.from(sliderTrack.querySelectorAll('.imageCarousel'));
-        for (let j = 0; j < 123; j++) originalImages.forEach(img => sliderTrack.appendChild(img.cloneNode(true)));
 
-        const updateImageClasses = () => {
-            const allImages = Array.from(sliderTrack.querySelectorAll('.imageCarousel'));
-            const sliderRect = slider.getBoundingClientRect();
-            const sliderCenter = sliderRect.left + sliderRect.width / 2;
-
-            let closestIndex = 0, minDistance = Infinity;
-            allImages.forEach((img, idx) => {
-                const imgRect = img.getBoundingClientRect();
-                const imgCenter = imgRect.left + imgRect.width / 2 * 1.5;
-                const distance = Math.abs(imgCenter - sliderCenter);
-                if (distance < minDistance) { minDistance = distance; closestIndex = idx; }
-            });
-
-            allImages.forEach((img, idx) => {
-                img.classList.remove('active', 'prev', 'next', 'gen1', 'gen2', 'gen3');
-                const distance = idx - closestIndex;
-                const absDistance = Math.abs(distance);
-                if (absDistance === 0) img.classList.add('active');
-                else if (absDistance === 1) img.classList.add(distance < 0 ? 'prev' : 'next');
-                else if (absDistance === 2) img.classList.add('gen1');
-                else if (absDistance === 3) img.classList.add('gen2');
-                else img.classList.add('gen3');
-            });
-        };
-        setInterval(updateImageClasses, 100);
-        updateImageClasses();
-    }
-*/
-    // ---------- Intro Tagline ----------
-    const container = document.querySelector(".animateTxt");
-    if (container) {
-        const words = container.textContent.trim().split(/\s+/);
-        container.textContent = "";
-        words.forEach((word, index) => {
-            const span = document.createElement("span");
-            span.textContent = word + "\u00A0";
-            span.style.animationDelay = `${index * 0.15}s`;
-            container.appendChild(span);
-        });
-    }
-
-    // ---------- Tabs ----------
-    document.querySelectorAll('.tab').forEach(tab => {
-        tab.addEventListener('click', () => {
-            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-            tab.classList.add('active');
-        });
+  // ---------- Intro Tagline ----------
+  const container = document.querySelector(".animateTxt");
+  if (container) {
+    const words = container.textContent.trim().split(/\s+/);
+    container.textContent = "";
+    words.forEach((word, index) => {
+      const span = document.createElement("span");
+      span.textContent = word + "\u00A0";
+      span.style.animationDelay = `${index * 0.15}s`;
+      container.appendChild(span);
     });
+  }
 
-    // ---------- Fetch Products ----------
-    fetchProducts();
+  // ---------- Tabs ----------
+  document.querySelectorAll(".tab").forEach((tab) => {
+    tab.addEventListener("click", () => {
+      document.querySelectorAll(".tab").forEach((t) => t.classList.remove("active"));
+      tab.classList.add("active");
+    });
+  });
+
+  // ---------- Fetch Products ----------
+  fetchProducts();
+
+  // ---------- Attach Search Event ----------
+  let searchTimeout;
+  input.addEventListener("keyup", () => {
+    clearTimeout(searchTimeout);
+    searchTimeout = setTimeout(handleSearch, 250);
+  });
 });
 
 // ---------- Global Variables ----------
 let products = [];
 let cart = [];
-const apiURL = "https://bright-nal-1.onrender.com/api/uploads"; // frontend calls proxy route
-
+const apiURL = "https://bright-nal-1.onrender.com/api/uploads";
 
 // ---------- Placeholders ----------
 function showPlaceholders(count = 6) {
-    const grid = document.getElementById('productGrid');
-    if (!grid) return;
+  const grid = document.getElementById("productGrid");
+  if (!grid) return;
 
-    grid.innerHTML = Array.from({ length: count }).map(() => `
+  grid.innerHTML = Array.from({ length: count })
+    .map(
+      () => `
         <div class="placeholder-card">
             <div class="placeholder-img"></div>
             <div class="placeholder-content">
@@ -220,49 +173,57 @@ function showPlaceholders(count = 6) {
                 <div class="placeholder-line"></div>
             </div>
         </div>
-    `).join('');
+    `
+    )
+    .join("");
 }
 
 // ---------- Fetch Products ----------
 async function fetchProducts() {
-    showPlaceholders(6);
+  showPlaceholders(6);
 
-    try {
-        const res = await fetch(apiURL); // No API key needed
-        if (!res.ok) throw new Error(`HTTP ${res.status}`);
-        const data = await res.json();
+  try {
+    const res = await fetch(apiURL);
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    const data = await res.json();
 
-        products = data.map((item, idx) => ({
-            id: item.id || idx,
-            name: item.product_name || "Unnamed Product",
-            category: item.category || "Uncategorized",
-            price: item.price || 0,
-            originalPrice: item.originalPrice || null,
-            image: item.image_url || "https://via.placeholder.com/400x500",
-            badge: item.badge || null,
-            productClass: item.productClass || "new",
-            rating: item.rating || Math.floor(Math.random() * 5 + 1)
-        }));
+    products = data.map((item, idx) => ({
+      id: item.id || idx,
+      name: item.product_name || "Unnamed Product",
+      category: item.category || "Uncategorized",
+      price: item.price || 0,
+      originalPrice: item.originalPrice || null,
+      image: item.image_url || "https://via.placeholder.com/400x500",
+      badge: item.badge || null,
+      productClass: item.productClass || "new",
+      rating: item.rating || Math.floor(Math.random() * 5 + 1),
+    }));
 
-        renderProducts();
-    } catch (err) {
-        console.error("Failed to fetch products:", err);
-        const grid = document.getElementById('productGrid');
-        if (grid) grid.innerHTML = `<p style="text-align:center; color:red;">Failed to load products.</p>`;
-    }
+    renderProducts();
+  } catch (err) {
+    console.error("Failed to fetch products:", err);
+    const grid = document.getElementById("productGrid");
+    if (grid)
+      grid.innerHTML = `<p style="text-align:center; color:red;">Failed to load products.</p>`;
+  }
 }
-
 
 // ---------- Render Products ----------
 function renderProducts() {
-    const grid = document.getElementById('productGrid');
-    if (!grid) return;
+  const grid = document.getElementById("productGrid");
+  if (!grid) return;
 
-    grid.innerHTML = products.map(product => `
+  grid.innerHTML = products
+    .map(
+      (product) => `
         <div class="product-card">
             <div class="product-image-container">
                 <img src="${product.image}" alt="${product.name}" class="product-image">
-                ${product.badge ? `<div class="product-badges"><span class="badge ${product.productClass}">${product.badge.toUpperCase()}</span></div>` : ''}
+                ${
+                  product.badge
+                    ? `<div class="product-badges"><span class="badge ${product.productClass}">${product.badge.toUpperCase()}</span></div>`
+                    : ""
+                }
                 <div class="product-actions">
                     <button class="action-btn" onclick="addToWishlist(${product.id})" title="Add to Wishlist">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-bookmark-icon">
@@ -280,7 +241,11 @@ function renderProducts() {
                 <div class="product-name">${product.name}</div>
                 <div class="product-price">
                     <span class="current-price">₦${product.price.toLocaleString()}</span>
-                    ${product.originalPrice ? `<span class="original-price">₦${product.originalPrice.toLocaleString()}</span>` : ''}
+                    ${
+                      product.originalPrice
+                        ? `<span class="original-price">₦${product.originalPrice.toLocaleString()}</span>`
+                        : ""
+                    }
                 </div>
                 <div class="product-rating">
                     <span><i>No reviews yet</i></span>
@@ -288,54 +253,170 @@ function renderProducts() {
                 <button class="add-to-cart-btn" onclick="addToCart(${product.id})">Add to Cart</button>
             </div>
         </div>
-    `).join('');
+    `
+    )
+    .join("");
+
+  // ✅ UPDATE PRODUCT LENGTH DISPLAY
+  updateProductLength(products.length);
+}
+
+// ---------- Update Product Length ----------
+function updateProductLength(count) {
+  const productLengthElements = document.querySelectorAll(".productLength");
+  productLengthElements.forEach((element) => {
+    element.textContent = count;
+  });
+}
+
+// ---------- Search Function ----------
+function handleSearch() {
+  const query = document.getElementById("searchInput").value.trim().toLowerCase();
+  const grid = document.getElementById("productGrid");
+  if (!grid) return;
+
+  if (!query) {
+    renderProducts();
+    return;
+  }
+
+  const filtered = products.filter(
+    (p) =>
+      p.name.toLowerCase().includes(query) ||
+      p.category.toLowerCase().includes(query)
+  );
+
+  if (!filtered.length) {
+    grid.innerHTML = `<p style="text-align:center; color:#777;">No products found for "<b>${query}</b>"</p>`;
+    updateProductLength(0);
+    return;
+  }
+
+  grid.innerHTML = filtered
+    .map(
+      (product) => `
+        <div class="product-card">
+            <div class="product-image-container">
+                <img src="${product.image}" alt="${product.name}" class="product-image">
+                ${
+                  product.badge
+                    ? `<div class="product-badges"><span class="badge ${product.productClass}">${product.badge.toUpperCase()}</span></div>`
+                    : ""
+                }
+                <div class="product-actions">
+                    <button class="action-btn" onclick="addToWishlist(${product.id})" title="Add to Wishlist">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-bookmark-icon">
+                        <path d="m19 21-7-4-7 4V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16z"/>
+                        </svg>
+                    </button>
+                </div>
+                <div class="product-overlay">
+                    <div class="overlay-text"><strong>${product.category}</strong></div>
+                    <div class="overlay-text">•<b> N/A</b> purchases</div>
+                </div>
+            </div>
+            <div class="product-details">
+                <div class="product-category">${product.category}</div>
+                <div class="product-name">${product.name}</div>
+                <div class="product-price">
+                    <span class="current-price">₦${product.price.toLocaleString()}</span>
+                    ${
+                      product.originalPrice
+                        ? `<span class="original-price">₦${product.originalPrice.toLocaleString()}</span>`
+                        : ""
+                    }
+                </div>
+                <div class="product-rating">
+                    <span><i>No reviews yet</i></span>
+                </div>
+                <button class="add-to-cart-btn" onclick="addToCart(${product.id})">Add to Cart</button>
+            </div>
+        </div>
+    `
+    )
+    .join("");
+
+  // ✅ UPDATE TO SHOW FILTERED COUNT
+  updateProductLength(filtered.length);
 }
 
 // ---------- Cart Functions ----------
 function addToCart(productId) {
-    const product = products.find(p => p.id === productId);
-    const existingItem = cart.find(item => item.id === productId);
-    if (existingItem) existingItem.quantity++;
-    else cart.push({ ...product, quantity: 1 });
-    updateCart();
+  const product = products.find((p) => p.id === productId);
+  const existingItem = cart.find((item) => item.id === productId);
+  if (existingItem) existingItem.quantity++;
+  else cart.push({ ...product, quantity: 1 });
+  updateCart();
 }
-function removeFromCart(productId) { cart = cart.filter(item => item.id !== productId); updateCart(); }
+
+function removeFromCart(productId) {
+  cart = cart.filter((item) => item.id !== productId);
+  updateCart();
+}
+
 function updateCart() {
-    const cartItems = document.getElementById('cartItems');
-    const cartTotal = document.getElementById('cartTotal');
-    const cartItemCount = document.getElementById('cartItemCount');
-    const headerCartCount = document.getElementById('headerCartCount');
+  const cartItems = document.getElementById("cartItems");
+  const cartTotal = document.getElementById("cartTotal");
+  const cartItemCount = document.getElementById("cartItemCount");
+  const headerCartCount = document.getElementById("headerCartCount");
 
-    if (!cart.length) {
-        cartItems.innerHTML = '<p style="text-align:center; color:#999; padding:2rem;">Your cart is empty</p>';
-        cartTotal.textContent = '₦0';
-        cartItemCount.textContent = '0';
-        headerCartCount.textContent = '0';
-        headerCartCount.style.display = 'none';
-        return;
-    }
+  if (!cart.length) {
+    cartItems.innerHTML = '<p style="text-align:center; color:#999; padding:2rem;">Your cart is empty</p>';
+    cartTotal.textContent = "₦0";
+    cartItemCount.textContent = "0";
+    headerCartCount.textContent = "0";
+    headerCartCount.style.display = "none";
+    return;
+  }
 
-    cartItems.innerHTML = cart.map(item => `
+  cartItems.innerHTML = cart
+    .map(
+      (item) => `
         <div class="cart-item">
             <img src="${item.image}" alt="${item.name}" class="cart-item-image">
             <div class="cart-item-details">
                 <div class="cart-item-name">${item.name}</div>
                 <div class="cart-item-price flex-row diff1">₦${item.price.toLocaleString()}<sup class="smaller">${item.quantity}</sup></div>
-                <div class="cart-item-subtotal"><u>₦${(item.price*item.quantity).toLocaleString()}</u></div>
+                <div class="cart-item-subtotal"><u>₦${(item.price * item.quantity).toLocaleString()}</u></div>
                 <button class="remove-item" onclick="removeFromCart(${item.id})">Remove</button>
             </div>
         </div>
-    `).join('');
+    `
+    )
+    .join("");
 
-    const total = cart.reduce((sum, item) => sum + item.price*item.quantity, 0);
-    cartTotal.textContent = `₦${total.toLocaleString()}`;
-    const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
-    cartItemCount.textContent = totalItems;
-    headerCartCount.textContent = totalItems;
-    headerCartCount.style.display = 'flex';
+  const total = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
+  cartTotal.textContent = `₦${total.toLocaleString()}`;
+  const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+  cartItemCount.textContent = totalItems;
+  headerCartCount.textContent = totalItems;
+  headerCartCount.style.display = "flex";
 }
-function toggleCart() { document.getElementById('cartSidebar').classList.toggle('active'); document.querySelector('.cart-overlay').classList.toggle('active'); }
-function checkout() { if (!cart.length) return console.log('Your cart is empty!'); console.log('🎉 Thank you for your purchase! Total: ' + document.getElementById('cartTotal').textContent); cart = []; updateCart(); toggleCart(); }
-function addToWishlist(productId) { console.log('❤️ Added to wishlist!'); }
-function quickView(productId) { const product = products.find(p => p.id === productId); console.log(`Quick View: ${product.name}\nPrice: ₦${product.price.toLocaleString()}`); }
-function subscribeNewsletter(event) { event.preventDefault(); console.log('✅ Thank you for subscribing!'); event.target.reset(); }
+
+function toggleCart() {
+  document.getElementById("cartSidebar").classList.toggle("active");
+  document.querySelector(".cart-overlay").classList.toggle("active");
+}
+
+function checkout() {
+  if (!cart.length) return console.log("Your cart is empty!");
+  console.log("🎉 Thank you for your purchase! Total: " + document.getElementById("cartTotal").textContent);
+  cart = [];
+  updateCart();
+  toggleCart();
+}
+
+function addToWishlist(productId) {
+  console.log("❤️ Added to wishlist!");
+}
+
+function quickView(productId) {
+  const product = products.find((p) => p.id === productId);
+  console.log(`Quick View: ${product.name}\nPrice: ₦${product.price.toLocaleString()}`);
+}
+
+function subscribeNewsletter(event) {
+  event.preventDefault();
+  console.log("✅ Thank you for subscribing!");
+  event.target.reset();
+}

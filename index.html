@@ -200,8 +200,9 @@
                 </div>
                 <button class="hero-btn flex-row ai-c jc-c diff1" href="#searchInput">
                     Explore Now
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-arrow-up-right-icon lucide-arrow-up-right"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg>
-                    </button>
+                    <div class="white-circle">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-arrow-up-right-icon lucide-arrow-up-right"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg>
+                    </div></button>
             </section>
             
             <div class="imageSlider">
@@ -220,17 +221,22 @@
         <!-- Content Below Hero -->
         <section class="collections">
             <!-- Popular Tags -->
-            <div class="popular-tags flex-row ">
-                <div class="tags-title" style="flex: 0 0 auto;"><b>Popular Tags:</b></div>
-                <div class="tags-list">
-                    <span class="tag">Traditionals</span>
-                    <span class="tag">Designer Jackets</span>
-                    <span class="tag">Casual Wear</span>
-                    <span class="tag">Suites</span>
-                    <span class="tag">Asoeke</span>
-                    <span class="tag">Corporate</span>
-                </div>
-            </div>
+         <div class="popular-tags">
+  <div class="tags-title"><b>Popular Tags:</b></div>
+  <div class="tags-list">
+    <span class="tag all">
+      All <div class="smallCircle"><span class="productLength"></span></div>
+    </span>
+    <span class="tag">Latest</span>
+    <span class="tag">New Arrival</span>
+    <span class="tag">Most Bought</span>
+    <span class="tag">Men</span>
+    <span class="tag">Women</span>
+    <span class="tag">Children</span>
+    <span class="tag">Custom</span>
+  </div>
+</div>
+
             <!-- Product Grid -->
             <div class="content-grid" id="productGrid" >
                 <!-- Products will be inserted here by JavaScript -->
