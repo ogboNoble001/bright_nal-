@@ -271,7 +271,6 @@ function renderProducts() {
                 </div>
                 <div class="product-overlay">
                     <div class="overlay-text"><strong>${product.category}</strong></div>
-                    <div class="overlay-text">Premium quality crafted with attention from BrightNal's</div>
                     <div class="overlay-text">•<b> N/A</b> purchases</div>
                 </div>
             </div>
