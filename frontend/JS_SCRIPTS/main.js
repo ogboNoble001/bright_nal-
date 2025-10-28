@@ -155,7 +155,7 @@ window.addEventListener("load", () => {
 // ---------- Global Variables ----------
 let products = [];
 let cart = [];
-let displayedProductCount = 5; // Start with 4 products
+let displayedProductCount = 6; // Start with 4 products
 const apiURL = "https://bright-nal-1.onrender.com/api/uploads";
 
 // ---------- Placeholders ----------
