@@ -1,4 +1,14 @@
+window.addEventListener("DOMContentLoaded", () => {
+    // Splash Screen
+    setTimeout(function() {
+        document.getElementById('splashScreen').classList.add('fade-out');
+        setTimeout(function() {
+            document.getElementById('splashScreen').style.display = 'none';
+        }, 800);
+    }, 2500);
+});
 window.addEventListener("load", () => {
+    
     lucide.createIcons();
 
     // ---------- Dropdown & Sidebar ----------
