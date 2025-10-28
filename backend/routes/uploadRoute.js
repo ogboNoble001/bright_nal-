@@ -89,7 +89,7 @@ router.post("/", upload.single("images"), async (req, res) => {
       productName || "Untitled Product",
       category || "Uncategorized",
       brand || "Unknown",
-      price ? parseFloat(price) : 0,
+      price.toLocaleString() ? parseFloat(price) : 0,
       stock ? parseInt(stock) : 0,
       sku || `SKU-${Date.now()}`,
       productClass || "Standard",
