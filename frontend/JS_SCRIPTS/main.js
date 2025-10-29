@@ -425,14 +425,52 @@ function toggleCart() {
   document.getElementById("cartSidebar").classList.toggle("active");
   document.querySelector(".cart-overlay").classList.toggle("active");
 }
-
 function checkout() {
-  if (!cart.length) return console.log("Your cart is empty!");
-  console.log("🎉 Thank you for your purchase! Total: " + document.getElementById("cartTotal").textContent);
-  cart = [];
-  updateCart();
-  toggleCart();
+  if (!cart.length) return alert("Your cart is empty!");
+
+  const total = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
+  const email = prompt("Enter your email for receipt:");
+
+  if (!email) {
+    alert("Please enter a valid email to proceed.");
+    return;
+  }
+
+  let handler = PaystackPop.setup({
+    key: "pk_test_063ca1f5e8ab353d84401b69b6693f62b2e15860", // Replace with your own Paystack public key
+    email: email,
+    amount: total * 100, // Convert Naira to Kobo
+    currency: "NGN",
+    ref: "REF_" + Math.floor(Math.random() * 1000000000),
+    callback: function (response) {
+      alert("Payment successful! Reference: " + response.reference);
+
+      // Verify payment on your backend
+      fetch("https://bright-nal-1.onrender.com", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ reference: response.reference })
+      })
+      .then(res => res.json())
+      .then(data => {
+        if (data.success) {
+          alert("✅ Payment verified successfully!");
+          cart = [];
+          updateCart();
+          toggleCart();
+        } else {
+          alert("❌ Payment verification failed. Please contact support.");
+        }
+      });
+    },
+    onClose: function () {
+      alert("Payment window closed.");
+    },
+  });
+
+  handler.openIframe();
 }
+
 
 function addToWishlist(productId) {
   console.log("❤️ Added to wishlist!");
