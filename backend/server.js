@@ -8,7 +8,26 @@ import apiKeyMiddleware from "./middleware/apikey.js";
 dotenv.config();
 const app = express();
 
-app.use(cors());
+// ---------- CORS Configuration ----------
+const allowedOrigins = process.env.ALLOWED_ORIGINS?.split(',') || [
+  'http://localhost:3000',
+  'http://localhost:5173'
+];
+
+app.use(cors({
+  origin: function(origin, callback) {
+    // Allow requests with no origin (like mobile apps or Postman)
+    if (!origin) return callback(null, true);
+    
+    if (allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
+  credentials: true
+}));
+
 app.use(express.json());
 app.use(express.static("public"));
 
@@ -54,14 +73,14 @@ app.post("/verify-payment", async (req, res) => {
   const { reference } = req.body;
   if (!reference)
     return res.status(400).json({ success: false, message: "Reference is required" });
-
+  
   try {
     const verify = await fetch(`https://api.paystack.co/transaction/verify/${reference}`, {
       headers: { Authorization: `Bearer ${PAYSTACK_SECRET_KEY}` },
     });
-
+    
     const data = await verify.json();
-
+    
     if (data.status && data.data.status === "success") {
       res.json({ success: true, message: "✅ Payment verified successfully!" });
     } else {
