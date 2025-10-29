@@ -1,6 +1,388 @@
+// ---------- Global Variables ----------
+let products = [];
+let cart = [];
+let displayedProductCount = 6;
+const apiURL = "https://bright-nal-1.onrender.com/api/uploads";
+
+// ---------- Modal Setup ----------
+let modalElement;
+
+function initModal() {
+  const body = document.querySelector("body");
+  modalElement = document.createElement("div");
+  body.appendChild(modalElement);
+  modalElement.className = "modal";
+  modalElement.style.display = "none";
+  modalElement.innerHTML = `
+    <div class="modal-content">
+      <div class="modal-header"></div>
+      <div class="modal-message"></div>
+      <button class="modal-close">OK</button>
+    </div>
+  `;
+}
+
+function showModal(header, message, color = "#2196f3") {
+  const headerEl = modalElement.querySelector(".modal-header");
+  const messageEl = modalElement.querySelector(".modal-message");
+  const closeBtn = modalElement.querySelector(".modal-close");
+
+  headerEl.textContent = header;
+  messageEl.textContent = message;
+  headerEl.style.backgroundColor = color;
+
+  modalElement.style.display = "flex";
+
+  closeBtn.onclick = () => {
+    modalElement.style.display = "none";
+  };
+}
+
+// ---------- Placeholders ----------
+function showPlaceholders(count = 6) {
+  const grid = document.getElementById("productGrid");
+  if (!grid) return;
+
+  grid.innerHTML = Array.from({ length: count })
+    .map(
+      () => `
+        <div class="placeholder-card">
+            <div class="placeholder-img"></div>
+            <div class="placeholder-content">
+                <div class="placeholder-line"></div>
+                <div class="placeholder-line short"></div>
+                <div class="placeholder-line"></div>
+            </div>
+        </div>
+    `
+    )
+    .join("");
+}
+
+// ---------- Fetch Products ----------
+async function fetchProducts() {
+  showPlaceholders(4);
+
+  try {
+    const res = await fetch(apiURL);
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    const data = await res.json();
+
+    products = data.map((item, idx) => ({
+      id: item.id || idx,
+      name: item.product_name || "Unnamed Product",
+      category: item.category || "Uncategorized",
+      price: item.price || 0,
+      originalPrice: item.originalPrice || null,
+      image: item.image_url || "https://via.placeholder.com/400x500",
+      badge: item.badge || null,
+      productClass: item.productClass || "new",
+      rating: item.rating || Math.floor(Math.random() * 5 + 1),
+    }));
+
+    renderProducts();
+  } catch (err) {
+    console.error("Failed to fetch products:", err);
+    const grid = document.getElementById("productGrid");
+    if (grid)
+      grid.innerHTML = `<p style="text-align:center; color:red;">Failed to load products.</p>`;
+  }
+}
+
+// ---------- Render Products ----------
+function renderProducts(showAll = false) {
+  const grid = document.getElementById("productGrid");
+  if (!grid) return;
+
+  const productsToShow = showAll ? products : products.slice(0, displayedProductCount);
+
+  grid.innerHTML = productsToShow
+    .map(
+      (product) => `
+        <div class="product-card">
+            <div class="product-image-container">
+                <img src="${product.image}" alt="${product.name}" class="product-image">
+                ${
+                  product.badge
+                    ? `<div class="product-badges"><span class="badge ${product.productClass}">${product.badge.toUpperCase()}</span></div>`
+                    : ""
+                }
+                <div class="product-actions">
+                    <button class="action-btn" onclick="addToWishlist(${product.id})" title="Add to Wishlist">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-bookmark-icon">
+                        <path d="m19 21-7-4-7 4V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16z"/>
+                        </svg>
+                    </button>
+                </div>
+                <div class="product-overlay">
+                    <div class="overlay-text"><strong>${product.category}</strong></div>
+                    <div class="overlay-text">•<b> N/A</b> purchases</div>
+                </div>
+            </div>
+            <div class="product-details">
+                <div class="product-category">${product.category}</div>
+                <div class="product-name">${product.name}</div>
+                <div class="product-price">
+                    <span class="current-price">₦${product.price.toLocaleString()}</span>
+                    ${
+                      product.originalPrice
+                        ? `<span class="original-price">₦${product.originalPrice.toLocaleString()}</span>`
+                        : ""
+                    }
+                </div>
+                <div class="product-rating">
+                    <span><i>No reviews yet</i></span>
+                </div>
+                <button class="add-to-cart-btn" onclick="addToCart(${product.id})">Add to Cart</button>
+            </div>
+        </div>
+    `
+    )
+    .join("");
+
+  if (!showAll && products.length > displayedProductCount) {
+    const viewMoreBtn = document.createElement('div');
+    viewMoreBtn.style.cssText = 'grid-column: 1/-1; text-align: center; margin: 2rem 0;';
+    viewMoreBtn.innerHTML = `
+      <button onclick="viewMoreProducts()" style="
+        padding: 12px 32px;
+        background: #333;
+        color: white;
+        border: none;
+        border-radius: 8px;
+        font-size: 16px;
+        cursor: pointer;
+        transition: background 0.3s;
+      " onmouseover="this.style.background='#555'" onmouseout="this.style.background='#333'">
+        View More (${products.length - displayedProductCount} more)
+      </button>
+    `;
+    grid.appendChild(viewMoreBtn);
+  }
+
+  updateProductLength(products.length);
+}
+
+// ---------- View More Products ----------
+function viewMoreProducts() {
+  renderProducts(true);
+}
+
+// ---------- Update Product Length ----------
+function updateProductLength(count) {
+  const productLengthElements = document.querySelectorAll(".productLength");
+  productLengthElements.forEach((element) => {
+    element.textContent = count;
+  });
+}
+
+// ---------- Search Function ----------
+function handleSearch() {
+  const query = document.getElementById("searchInput").value.trim().toLowerCase();
+  const grid = document.getElementById("productGrid");
+  if (!grid) return;
+
+  if (!query) {
+    renderProducts();
+    return;
+  }
+
+  const filtered = products.filter(
+    (p) =>
+      p.name.toLowerCase().includes(query) ||
+      p.category.toLowerCase().includes(query)
+  );
+
+  if (!filtered.length) {
+    grid.innerHTML = `<p style="text-align:center; color:#777;">No products found for "<b>${query}</b>"</p>`;
+    updateProductLength(0);
+    return;
+  }
+
+  grid.innerHTML = filtered
+    .map(
+      (product) => `
+        <div class="product-card">
+            <div class="product-image-container">
+                <img src="${product.image}" alt="${product.name}" class="product-image">
+                ${
+                  product.badge
+                    ? `<div class="product-badges"><span class="badge ${product.productClass}">${product.badge.toUpperCase()}</span></div>`
+                    : ""
+                }
+                <div class="product-actions">
+                    <button class="action-btn" onclick="addToWishlist(${product.id})" title="Add to Wishlist">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-bookmark-icon">
+                        <path d="m19 21-7-4-7 4V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16z"/>
+                        </svg>
+                    </button>
+                </div>
+                <div class="product-overlay">
+                    <div class="overlay-text"><strong>${product.category}</strong></div>
+                    <div class="overlay-text">•<b> N/A</b> purchases</div>
+                </div>
+            </div>
+            <div class="product-details">
+                <div class="product-category">${product.category}</div>
+                <div class="product-name">${product.name}</div>
+                <div class="product-price">
+                    <span class="current-price">₦${product.price.toLocaleString()}</span>
+                    ${
+                      product.originalPrice
+                        ? `<span class="original-price">₦${product.originalPrice.toLocaleString()}</span>`
+                        : ""
+                    }
+                </div>
+                <div class="product-rating">
+                    <span><i>No reviews yet</i></span>
+                </div>
+                <button class="add-to-cart-btn" onclick="addToCart(${product.id})">Add to Cart</button>
+            </div>
+        </div>
+    `
+    )
+    .join("");
+
+  updateProductLength(filtered.length);
+}
+
+// ---------- Cart Functions ----------
+function addToCart(productId) {
+  const product = products.find((p) => p.id === productId);
+  const existingItem = cart.find((item) => item.id === productId);
+  if (existingItem) existingItem.quantity++;
+  else cart.push({ ...product, quantity: 1 });
+  updateCart();
+  showModal("Added to Cart", `${product.name} has been added to your cart!`, "#4CAF50");
+}
+
+function removeFromCart(productId) {
+  cart = cart.filter((item) => item.id !== productId);
+  updateCart();
+}
+
+function updateCart() {
+  const cartItems = document.getElementById("cartItems");
+  const cartTotal = document.getElementById("cartTotal");
+  const cartItemCount = document.getElementById("cartItemCount");
+  const headerCartCount = document.getElementById("headerCartCount");
+
+  if (!cart.length) {
+    cartItems.innerHTML = '<p style="text-align:center; color:#999; padding:2rem;">Your cart is empty</p>';
+    cartTotal.textContent = "₦0";
+    cartItemCount.textContent = "0";
+    headerCartCount.textContent = "0";
+    headerCartCount.style.display = "none";
+    return;
+  }
+
+  cartItems.innerHTML = cart
+    .map(
+      (item) => `
+        <div class="cart-item">
+            <img src="${item.image}" alt="${item.name}" class="cart-item-image">
+            <div class="cart-item-details">
+                <div class="cart-item-name">${item.name}</div>
+                <div class="cart-item-price flex-row diff1">₦${item.price.toLocaleString()}<sup class="smaller">×${item.quantity}</sup></div>
+                <div class="cart-item-subtotal"><u>₦${(item.price * item.quantity).toLocaleString()}</u></div>
+                <button class="remove-item" onclick="removeFromCart(${item.id})">Remove</button>
+            </div>
+        </div>
+    `
+    )
+    .join("");
+
+  const total = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
+  cartTotal.textContent = `₦${total.toLocaleString()}`;
+  const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+  cartItemCount.textContent = totalItems;
+  headerCartCount.textContent = totalItems;
+  headerCartCount.style.display = "flex";
+}
+
+function toggleCart() {
+  document.getElementById("cartSidebar").classList.toggle("active");
+  document.querySelector(".cart-overlay").classList.toggle("active");
+}
+
+function checkout() {
+  if (!cart.length) {
+    showModal("Cart Empty", "Your cart is empty! Please add items before checkout.", "#ff9800");
+    return;
+  }
+
+  const total = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
+  const email = prompt("Please enter your email address for payment:");
+
+  if (!email || !email.includes("@")) {
+    showModal("Invalid Email", "Please enter a valid email to proceed.", "#f44336");
+    return;
+  }
+
+  if (typeof PaystackPop === 'undefined') {
+    showModal("Payment Error", "Payment system is not available. Please try again later.", "#f44336");
+    return;
+  }
+
+  let handler = PaystackPop.setup({
+    key: "pk_test_063ca1f5e8ab353d84401b69b6693f62b2e15860",
+    email: email,
+    amount: total * 100,
+    currency: "NGN",
+    ref: "REF_" + Math.floor(Math.random() * 1000000000),
+    callback: function (response) {
+      fetch("https://bright-nal-1.onrender.com/api/verify-payment", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ reference: response.reference })
+      })
+      .then(res => res.json())
+      .then(data => {
+        if (data.success) {
+          showModal("Success", "Payment successful! Thank you for your order.", "#4CAF50");
+          cart = [];
+          updateCart();
+          toggleCart();
+        } else {
+          showModal("Error", "Payment verification failed. Please contact support.", "#f44336");
+        }
+      })
+      .catch(err => {
+        console.error("Verification error:", err);
+        showModal("Error", "Something went wrong with payment verification.", "#f44336");
+      });
+    },
+    onClose: function () {
+      console.log("Payment window closed.");
+    },
+  });
+
+  handler.openIframe();
+}
+
+function addToWishlist(productId) {
+  const product = products.find((p) => p.id === productId);
+  if (product) {
+    showModal("Added to Wishlist", `${product.name} has been added to your wishlist!`, "#e91e63");
+  }
+}
+
+function quickView(productId) {
+  const product = products.find((p) => p.id === productId);
+  console.log(`Quick View: ${product.name}\nPrice: ₦${product.price.toLocaleString()}`);
+}
+
+function subscribeNewsletter(event) {
+  event.preventDefault();
+  showModal("Subscribed", "Thank you for subscribing to our newsletter!", "#4CAF50");
+  event.target.reset();
+}
+
+// ---------- Initialize on Load ----------
 window.addEventListener("load", () => {
   lucide.createIcons();
-    
+  initModal();
+
   // ---------- Dropdown & Sidebar ----------
   const dropdownWrappers = document.querySelectorAll(".dropdown-wrapper");
   dropdownWrappers.forEach((wrapper) => {
@@ -151,338 +533,3 @@ window.addEventListener("load", () => {
     searchTimeout = setTimeout(handleSearch, 250);
   });
 });
-
-// ---------- Global Variables ----------
-let products = [];
-let cart = [];
-let displayedProductCount = 6; // Start with 4 products
-const apiURL = "https://bright-nal-1.onrender.com/api/uploads";
-
-// ---------- Placeholders ----------
-function showPlaceholders(count = 6) {
-  const grid = document.getElementById("productGrid");
-  if (!grid) return;
-
-  grid.innerHTML = Array.from({ length: count })
-    .map(
-      () => `
-        <div class="placeholder-card">
-            <div class="placeholder-img"></div>
-            <div class="placeholder-content">
-                <div class="placeholder-line"></div>
-                <div class="placeholder-line short"></div>
-                <div class="placeholder-line"></div>
-            </div>
-        </div>
-    `
-    )
-    .join("");
-}
-
-// ---------- Fetch Products ----------
-async function fetchProducts() {
-  showPlaceholders(4); // Show 4 placeholders initially
-
-  try {
-    const res = await fetch(apiURL);
-    if (!res.ok) throw new Error(`HTTP ${res.status}`);
-    const data = await res.json();
-
-    products = data.map((item, idx) => ({
-      id: item.id || idx,
-      name: item.product_name || "Unnamed Product",
-      category: item.category || "Uncategorized",
-      price: item.price || 0,
-      originalPrice: item.originalPrice || null,
-      image: item.image_url || "https://via.placeholder.com/400x500",
-      badge: item.badge || null,
-      productClass: item.productClass || "new",
-      rating: item.rating || Math.floor(Math.random() * 5 + 1),
-    }));
-
-    renderProducts();
-  } catch (err) {
-    console.error("Failed to fetch products:", err);
-    const grid = document.getElementById("productGrid");
-    if (grid)
-      grid.innerHTML = `<p style="text-align:center; color:red;">Failed to load products.</p>`;
-  }
-}
-
-// ---------- Render Products ----------
-function renderProducts(showAll = false) {
-  const grid = document.getElementById("productGrid");
-  if (!grid) return;
-
-  const productsToShow = showAll ? products : products.slice(0, displayedProductCount);
-
-  grid.innerHTML = productsToShow
-    .map(
-      (product) => `
-        <div class="product-card">
-            <div class="product-image-container">
-                <img src="${product.image}" alt="${product.name}" class="product-image">
-                ${
-                  product.badge
-                    ? `<div class="product-badges"><span class="badge ${product.productClass}">${product.badge.toUpperCase()}</span></div>`
-                    : ""
-                }
-                <div class="product-actions">
-                    <button class="action-btn" onclick="addToWishlist(${product.id})" title="Add to Wishlist">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-bookmark-icon">
-                        <path d="m19 21-7-4-7 4V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16z"/>
-                        </svg>
-                    </button>
-                </div>
-                <div class="product-overlay">
-                    <div class="overlay-text"><strong>${product.category}</strong></div>
-                    <div class="overlay-text">•<b> N/A</b> purchases</div>
-                </div>
-            </div>
-            <div class="product-details">
-                <div class="product-category">${product.category}</div>
-                <div class="product-name">${product.name}</div>
-                <div class="product-price">
-                    <span class="current-price">₦${product.price.toLocaleString()}</span>
-                    ${
-                      product.originalPrice
-                        ? `<span class="original-price">₦${product.originalPrice.toLocaleString()}</span>`
-                        : ""
-                    }
-                </div>
-                <div class="product-rating">
-                    <span><i>No reviews yet</i></span>
-                </div>
-                <button class="add-to-cart-btn" onclick="addToCart(${product.id})">Add to Cart</button>
-            </div>
-        </div>
-    `
-    )
-    .join("");
-
-  // Add View More button if there are more products to show
-  if (!showAll && products.length > displayedProductCount) {
-    const viewMoreBtn = document.createElement('div');
-    viewMoreBtn.style.cssText = 'grid-column: 1/-1; text-align: center; margin: 2rem 0;';
-    viewMoreBtn.innerHTML = `
-      <button onclick="viewMoreProducts()" style="
-        padding: 12px 32px;
-        background: #333;
-        color: white;
-        border: none;
-        border-radius: 8px;
-        font-size: 16px;
-        cursor: pointer;
-        transition: background 0.3s;
-      " onmouseover="this.style.background='#555'" onmouseout="this.style.background='#333'">
-        View More (${products.length - displayedProductCount} more)
-      </button>
-    `;
-    grid.appendChild(viewMoreBtn);
-  }
-
-  updateProductLength(products.length);
-}
-
-// ---------- View More Products ----------
-function viewMoreProducts() {
-  renderProducts(true);
-}
-
-// ---------- Update Product Length ----------
-function updateProductLength(count) {
-  const productLengthElements = document.querySelectorAll(".productLength");
-  productLengthElements.forEach((element) => {
-    element.textContent = count;
-  });
-}
-
-// ---------- Search Function ----------
-function handleSearch() {
-  const query = document.getElementById("searchInput").value.trim().toLowerCase();
-  const grid = document.getElementById("productGrid");
-  if (!grid) return;
-
-  if (!query) {
-    renderProducts();
-    return;
-  }
-
-  const filtered = products.filter(
-    (p) =>
-      p.name.toLowerCase().includes(query) ||
-      p.category.toLowerCase().includes(query)
-  );
-
-  if (!filtered.length) {
-    grid.innerHTML = `<p style="text-align:center; color:#777;">No products found for "<b>${query}</b>"</p>`;
-    updateProductLength(0);
-    return;
-  }
-
-  // Show all filtered results when searching
-  grid.innerHTML = filtered
-    .map(
-      (product) => `
-        <div class="product-card">
-            <div class="product-image-container">
-                <img src="${product.image}" alt="${product.name}" class="product-image">
-                ${
-                  product.badge
-                    ? `<div class="product-badges"><span class="badge ${product.productClass}">${product.badge.toUpperCase()}</span></div>`
-                    : ""
-                }
-                <div class="product-actions">
-                    <button class="action-btn" onclick="addToWishlist(${product.id})" title="Add to Wishlist">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-bookmark-icon">
-                        <path d="m19 21-7-4-7 4V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16z"/>
-                        </svg>
-                    </button>
-                </div>
-                <div class="product-overlay">
-                    <div class="overlay-text"><strong>${product.category}</strong></div>
-                    <div class="overlay-text">•<b> N/A</b> purchases</div>
-                </div>
-            </div>
-            <div class="product-details">
-                <div class="product-category">${product.category}</div>
-                <div class="product-name">${product.name}</div>
-                <div class="product-price">
-                    <span class="current-price">₦${product.price.toLocaleString()}</span>
-                    ${
-                      product.originalPrice
-                        ? `<span class="original-price">₦${product.originalPrice.toLocaleString()}</span>`
-                        : ""
-                    }
-                </div>
-                <div class="product-rating">
-                    <span><i>No reviews yet</i></span>
-                </div>
-                <button class="add-to-cart-btn" onclick="addToCart(${product.id})">Add to Cart</button>
-            </div>
-        </div>
-    `
-    )
-    .join("");
-
-  updateProductLength(filtered.length);
-}
-
-// ---------- Cart Functions ----------
-function addToCart(productId) {
-  const product = products.find((p) => p.id === productId);
-  const existingItem = cart.find((item) => item.id === productId);
-  if (existingItem) existingItem.quantity++;
-  else cart.push({ ...product, quantity: 1 });
-  updateCart();
-}
-
-function removeFromCart(productId) {
-  cart = cart.filter((item) => item.id !== productId);
-  updateCart();
-}
-
-function updateCart() {
-  const cartItems = document.getElementById("cartItems");
-  const cartTotal = document.getElementById("cartTotal");
-  const cartItemCount = document.getElementById("cartItemCount");
-  const headerCartCount = document.getElementById("headerCartCount");
-
-  if (!cart.length) {
-    cartItems.innerHTML = '<p style="text-align:center; color:#999; padding:2rem;">Your cart is empty</p>';
-    cartTotal.textContent = "₦0";
-    cartItemCount.textContent = "0";
-    headerCartCount.textContent = "0";
-    headerCartCount.style.display = "none";
-    return;
-  }
-
-  cartItems.innerHTML = cart
-    .map(
-      (item) => `
-        <div class="cart-item">
-            <img src="${item.image}" alt="${item.name}" class="cart-item-image">
-            <div class="cart-item-details">
-                <div class="cart-item-name">${item.name}</div>
-                <div class="cart-item-price flex-row diff1">₦${item.price.toLocaleString()}<sup class="smaller">${item.quantity}</sup></div>
-                <div class="cart-item-subtotal"><u>₦${(item.price * item.quantity).toLocaleString()}</u></div>
-                <button class="remove-item" onclick="removeFromCart(${item.id})">Remove</button>
-            </div>
-        </div>
-    `
-    )
-    .join("");
-
-  const total = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
-  cartTotal.textContent = `₦${total.toLocaleString()}`;
-  const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
-  cartItemCount.textContent = totalItems;
-  headerCartCount.textContent = totalItems;
-  headerCartCount.style.display = "flex";
-}
-
-function toggleCart() {
-  document.getElementById("cartSidebar").classList.toggle("active");
-  document.querySelector(".cart-overlay").classList.toggle("active");
-}
-function checkout() {
-  if (!cart.length) return alert("Your cart is empty!");
-
-  const total = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
-  const email = prompt("Enter your email for receipt:");
-
-  if (!email) {
-    alert("Please enter a valid email to proceed.");
-    return;
-  }
-
-  let handler = PaystackPop.setup({
-    key: "pk_test_063ca1f5e8ab353d84401b69b6693f62b2e15860", // Replace with your own Paystack public key
-    email: email,
-    amount: total * 100, // Convert Naira to Kobo
-    currency: "NGN",
-    ref: "REF_" + Math.floor(Math.random() * 1000000000),
-    callback: function (response) {
-      alert("Payment successful! Reference: " + response.reference);
-
-      // Verify payment on your backend
-      fetch("https://bright-nal-1.onrender.com", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ reference: response.reference })
-      })
-      .then(res => res.json())
-      .then(data => {
-        if (data.success) {
-          alert("✅ Payment verified successfully!");
-          cart = [];
-          updateCart();
-          toggleCart();
-        } else {
-          alert("❌ Payment verification failed. Please contact support.");
-        }
-      });
-    },
-    onClose: function () {
-      alert("Payment window closed.");
-    },
-  });
-
-  handler.openIframe();
-}
-
-
-function addToWishlist(productId) {
-  console.log("❤️ Added to wishlist!");
-}
-
-function quickView(productId) {
-  const product = products.find((p) => p.id === productId);
-  console.log(`Quick View: ${product.name}\nPrice: ₦${product.price.toLocaleString()}`);
-}
-
-function subscribeNewsletter(event) {
-  event.preventDefault();
-  console.log("✅ Thank you for subscribing!");
-  event.target.reset();
-}
