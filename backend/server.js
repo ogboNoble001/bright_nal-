@@ -10,11 +10,8 @@ const app = express();
 
 // ---------- CORS Configuration ----------
 const allowedOrigins = process.env.ALLOWED_ORIGINS?.split(',') || [
-  'http://localhost:3000', 
-  'https://bright-nal.ogbonoble84.workers.dev',
-  'http://localhost:7700',
-  'http://127.0.0.1:3000'
-
+  'http://localhost:3000',
+  'http://localhost:7700'
 ];
 
 app.use(cors({

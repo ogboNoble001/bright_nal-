@@ -2,7 +2,7 @@
 let products = [];
 let cart = [];
 let displayedProductCount = 6;
-const apiURL = "https://bright-nal-2qev.onrender.com";
+const apiURL = "https://bright-nal-1.onrender.com/api/uploads";
 
 // ---------- Color Theme ----------
 const THEME = {
@@ -787,7 +787,7 @@ function checkout() {
         currency: "NGN",
         ref: "REF_" + Math.floor(Math.random() * 1000000000),
         callback: function (response) {
-          fetch("https://bright-nal-2qev.onrender.com/api/verify-payment", {
+          fetch("https://bright-nal-1.onrender.com/api/verify-payment", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ reference: response.reference })
