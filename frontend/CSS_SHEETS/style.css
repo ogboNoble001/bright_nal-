@@ -84,23 +84,24 @@ body {
 
 /* === LOGO === */
 .logo {
+  width: 36px; 
+  margin-top: auto;
+  height: 36px;
+  margin-right: .9em;
   display: flex;
-  gap: 0.5em;
+  position: relative;
   align-items: center;
-  font-weight: 700;
-  font-size: 1.1em;
-  color: #111;
-  transition: transform 0.3s ease;
-  cursor: pointer;
+  flex-direction: row;
 }
+.logo img{
+  width: 60px; 
+  transform: scale(2.5);
+  height:60px;
 
-.logo::before {
-  content: "BRIGHTNAL'S CONCEPTS";
-  font-family: "Playfair Display", serif;
-  font-size: 1.2em;
-  letter-spacing: 0.5px;
 }
-
+.logo::after{
+  
+}
 .logo:hover {
   transform: scale(1.05);
 }
