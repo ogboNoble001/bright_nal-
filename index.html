@@ -8,11 +8,9 @@
     <meta http-equiv="X-UA-Compatible" content="IE=Edge">  
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="shortcut icon" type="image/x-icon" href="/frontend/res/file_00000000b070720ab1ee5c8ca436c6bc.png">
     <link href="https://fonts.googleapis.com/css2?family=Mona+Sans:ital,wght@0,200..900;1,200..900&family=Nata+Sans:wght@100..900&family=Playfair+Display:wght@400;700;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="/frontend/CSS_SHEETS/style.css">
     <link rel="stylesheet" href="/frontend/CSS_SHEETS/animations.css">
-    <link rel="stylesheet" href="/frontend/CSS_SHEETS/modal.css">
     <link rel="stylesheet" href="/frontend/CSS_SHEETS/responsive_mobile.css">
 </head>
 <body class="flex-col">
@@ -31,7 +29,7 @@
         <div class="cart-footer">
             <div class="cart-total">
                 <span>Total:</span>
-                <span id="cartTotal">₦0.00</span>
+                <span id="cartTotal">$0.00</span>
             </div>
             <button class="checkout-btn" onclick="checkout()">Proceed to Checkout</button>
         </div>
@@ -95,24 +93,14 @@
         </div>
 
         <button class="mobile-login-btn">Login</button>
-       
-         <div class="flex-row jc-c ai-c m-t diff1">
-                <img src="https://images.unsplash.com/photo-1490481651871-ab68de25d43d?w=500&h=400&fit=crop" 
-                class="profile-pic noShaking" alt="">
-            <div class="flex-col diff1">
-                <span ><h6 class="font-small">User ID: <u>cfEod143JA#dd...</u></h6></span>
-                <span class="font-small">Guest Profile</span>
-            </div>
-            </div>
     </aside>
 
     <!-- Header -->
     <header class="flex-row header diff4 ai-c">
         <div class="logo">
-            <img src="/frontend/res/1000063101.png" alt="" />
         </div>
         
-        <div class="searchBar" id="searchInputBar">
+        <div class="searchBar">
             <div data-lucide="search"></div>
             <input type="text" id="searchInput">
             <span class="animatedPlaceholder" id="animatedPlaceholder">Search elegant suits...</span>
@@ -167,15 +155,7 @@
             <span></span>
         </div>
     </header>
-<div class="promo-content">
-<div class=" ">
-<span class="pro-badge">Try ON</span>
 
-<div class="promo-text">  
-      Premium members get exclusive access to limited collections and special discounts.  
-                      </div>  
-            </div>  
-      </div> 
     <!-- Main Content -->
     <main class="main-content">
         <!-- Hero Section -->
@@ -201,49 +181,35 @@
                         Custom Orders  
                     </div>  
                 </div>
-                <button class="hero-btn flex-row ai-c jc-c diff1" href="#searchInput">
-                    Explore Now
-                    <div class="white-circle">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-arrow-up-right-icon lucide-arrow-up-right"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg>
-                    </div></button>
             </section>
             
             <div class="imageSlider">
-                <!----
                 <div class="slider-track">
                     <img src="https://images.unsplash.com/photo-1490481651871-ab68de25d43d?w=500&h=400&fit=crop" alt="Fashion Dress" class="imageCarousel">
                     <img src="https://images.unsplash.com/photo-1529374255404-311a2a4f1fd9?w=500&h=400&fit=crop" alt="Casual Outfit" class="imageCarousel">
                     <img src="https://images.unsplash.com/photo-1509631179647-0177331693ae?w=500&h=400&fit=crop" alt="Designer Jacket" class="imageCarousel">
                     <img src="https://images.unsplash.com/photo-1523381210434-271e8be1f52b?w=500&h=400&fit=crop" alt="T-Shirt Collection" class="imageCarousel">
                     <img src="https://images.unsplash.com/photo-1578681994506-b8f463449011?w=500&h=400&fit=crop" alt="Stylish Sweater" class="imageCarousel">
-                </div>-->
+                </div>
             </div>
         </div>
-       
- 
+        
         <!-- Content Below Hero -->
         <section class="collections">
             <!-- Popular Tags -->
-         <div class="popular-tags">
-  <div class="tags-title"><b>Popular Tags:</b></div>
-  <div class="tags-list">
-    <span class="tag all">
-      All <div class="smallCircle"><span class="productLength"></span></div>
-    </span>
-    <span class="tag">Latest</span>
-    <span class="tag">New Arrival</span>
-    <span class="tag">Most Bought</span>
-    <span class="tag">Men</span>
-    <span class="tag">Women</span>
-    <span class="tag">Children</span>
-    <span class="tag">Custom</span>
-  </div>
-</div>
-
+            <div class="popular-tags">
+                <div class="tags-list">
+                    <span class="tag">Summer Dresses</span>
+                    <span class="tag">Designer Jackets</span>
+                    <span class="tag">Casual Wear</span>
+                    <span class="tag">Luxury Bags</span>
+                    <span class="tag">Footwear</span>
+                    <span class="tag">Accessories</span>
+                </div>
+            </div>
             <!-- Product Grid -->
-            <div class="content-grid" id="productGrid" >
+            <div class="content-grid" id="productGrid" style="margin-top: 3rem; display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 2.5rem;">
                 <!-- Products will be inserted here by JavaScript -->
-                
             </div>
         </section>
     </main>
@@ -254,7 +220,7 @@
             <div class="feature-item">
                 <div class="feature-icon" data-lucide="truck"></div>
                 <h3 class="feature-title">Free Shipping</h3>
-                <p>On all orders over ₦10000</p>
+                <p>On all orders over $100</p>
             </div>
             <div class="feature-item">
                 <div class="feature-icon" data-lucide="rotate-ccw"></div>
@@ -331,8 +297,8 @@
         <div class="footer-bottom">
             <p>&copy; 2025 BrightNal's Concepts. All rights reserved.</div>
     </footer>
-   <script src="https://unpkg.com/lucide@latest"></script>
-   <script src="https://js.paystack.co/v1/inline.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
     <script src="/frontend/JS_SCRIPTS/main.js"></script>
 </body>
 </html>
