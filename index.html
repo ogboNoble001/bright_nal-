@@ -1,304 +1,302 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>Home - BrightNal's Concepts</title>
-    <meta name="theme-color" content="#0f1419">
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="IE=Edge">  
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Mona+Sans:ital,wght@0,200..900;1,200..900&family=Nata+Sans:wght@100..900&family=Playfair+Display:wght@400;700;900&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="/frontend/CSS_SHEETS/style.css">
-    <link rel="stylesheet" href="/frontend/CSS_SHEETS/animations.css">
-    <link rel="stylesheet" href="/frontend/CSS_SHEETS/responsive_mobile.css">
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <title>BrightNal's Concepts — Nigerian Fashion House</title>
+  <meta name="description" content="Nigerian fashion house. Bespoke tailoring, contemporary design, premium fabrics."/>
+  <link rel="stylesheet" href="style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,300;1,9..40,400&display=swap" rel="stylesheet"/>
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
 </head>
-<body class="flex-col">
-    <!-- Cart Overlay -->
-    <div class="cart-overlay" onclick="toggleCart()"></div>
+<body>
 
-    <!-- Cart Sidebar -->
-    <div class="cart-sidebar" id="cartSidebar">
-        <div class="cart-header">
-            <h3>Shopping Cart <span class="cart-badge" id="cartItemCount"></span></h3>
-            <button class="close-cart" onclick="toggleCart()">✕</button>
-        </div>
-        <div class="cart-items" id="cartItems">
-            <p style="text-align: center; color: #999; padding: 2rem;">Your cart is empty</p>
-        </div>
-        <div class="cart-footer">
-            <div class="cart-total">
-                <span>Total:</span>
-                <span id="cartTotal">$0.00</span>
-            </div>
-            <button class="checkout-btn" onclick="checkout()">Proceed to Checkout</button>
-        </div>
+<!-- NAV -->
+<nav class="nav" id="nav">
+  <div class="nav-brand">
+    <div class="nav-brand-n">BrightNal's</div>
+    <div class="nav-brand-s">Fashion Concepts</div>
+  </div>
+  <ul class="nav-links">
+    <li><a href="#collections">Collections</a></li>
+    <li><a href="#bento">Services</a></li>
+    <li><a href="#story">Brand</a></li>
+    <li><a href="#products">Shop</a></li>
+  </ul>
+  <div class="nav-r">
+    <button class="nav-ib" onclick="toggleCart()" aria-label="Bag">
+      <i data-lucide="shopping-bag" style="width:16px;height:16px;"></i>
+      <span class="nav-badge" id="cartCount">0</span>
+    </button>
+    <button class="nav-cta">Sign In</button>
+    <button class="nav-ham" id="ham" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
+
+<!-- DRAWER -->
+<div class="dbg" id="dbg" onclick="closeDrw()"></div>
+<div class="drw" id="drw">
+  <div class="drw-hd">
+    <div class="nav-brand"><div class="nav-brand-n" style="font-size:1.2rem;">BrightNal's</div></div>
+    <button class="drw-close" onclick="closeDrw()"><i data-lucide="x" style="width:14px;height:14px;"></i></button>
+  </div>
+  <a href="#collections" onclick="closeDrw()">Collections</a>
+  <a href="#bento" onclick="closeDrw()">Services</a>
+  <a href="#story" onclick="closeDrw()">Brand</a>
+  <a href="#products" onclick="closeDrw()">Shop</a>
+  <a href="#" class="drw-cta">Sign In</a>
+</div>
+
+<!-- HERO -->
+<section class="hero" id="hero">
+  <div class="hero-mesh"></div>
+  <div class="hero-grid"></div>
+  <div class="hero-body">
+    <div class="hero-tag">
+      Nigerian Fashion House &mdash; Est. 2019</div>
+    <h1 class="hero-h">
+      Dressed<br>
+      <span class="line-indent"><em>in Culture,</em></span>
+      Worn
+      <br />
+      with&nbsp;Pride.
+    </h1>
+    <div class="CEO" style="position: absolute;top: 6.4em; right: 3em;">
+<img 
+class="hero-ic" 
+src="/Picsart_26-03-15_19-53-08-781 (1).jpg" 
+alt=""
+style="
+width:150px;
+height:150px;
+border-radius:50%;
+border:7px dashed lightseagreen;
+object-fit:cover;
+object-position:top center; /* focus on the head */
+"
+>
     </div>
 
-      <!-- Modal Overlay -->
-    <div class="modal-overlay" id="modalOverlay"></div>
-    
-    <!-- Modal -->
-    <div class="modal" id="modal">
-        <div class="modal-content">
-            <div class="modal-icon" id="modalIcon"></div>
-            <h2 class="modal-title" id="modalTitle"></h2>
-            <p class="modal-message" id="modalMessage"></p> </div>
+    <div class="hero-bot">
+      <p class="hero-desc">Premium designs rooted in Nigerian heritage. From reimagined Aso-oke to contemporary silhouettes &mdash; every piece tells a story worth wearing.</p>
+      <div class="hero-cta-c">
+        <button class="btn-p" onclick="document.getElementById('products').scrollIntoView({behavior:'smooth'})">
+          <i data-lucide="arrow-right" style="width:15px;height:15px;"></i>Shop Collection
+        </button>
+        <button class="btn-g" onclick="document.getElementById('story').scrollIntoView({behavior:'smooth'})">
+          Our Story <i data-lucide="chevron-right" style="width:12px;height:12px;"></i>
+        </button>
+      </div>
+      <div class="hero-stats-r">
+        <div class="hero-stats">
+          <div><div class="hero-stat-n gt-amber">2,400+</div><div class="hero-stat-l">Styled Clients</div></div>
+          <div><div class="hero-stat-n gt-amber">180+</div><div class="hero-stat-l">Designs</div></div>
+          <div><div class="hero-stat-n gt-amber">6 yrs</div><div class="hero-stat-l">In Craft</div></div>
+        </div>
+      </div>
     </div>
-    <!-- Sidebar Overlay -->
-    <div class="sidebar-overlay"></div>
+  </div>
+  <div class="hero-imgs" id="collections">
+    <div class="hero-ic"><img src="https://images.unsplash.com/photo-1509631179647-0177331693ae?w=600&h=750&fit=crop&crop=top" alt="Evening"/><span class="hero-ic-lbl">Evening</span></div>
+    <div class="hero-ic"><img src="https://images.unsplash.com/photo-1594751543129-6701ad444259?w=500&h=700&fit=crop" alt="Contemporary"/><span class="hero-ic-lbl">Contemporary</span></div>
+    <div class="hero-ic"><img src="https://images.unsplash.com/photo-1595777457583-95e059d581b8?w=700&h=750&fit=crop" alt="Dresses"/><span class="hero-ic-lbl">Dresses</span></div>
+    <div class="hero-ic"><img src="https://images.unsplash.com/photo-1485968579580-b6d095142e6e?w=500&h=700&fit=crop" alt="Bridal"/><span class="hero-ic-lbl">Bridal</span></div>
+    <div class="hero-ic"><img src="https://images.unsplash.com/photo-1434389677669-e08b4cac3105?w=600&h=700&fit=crop" alt="Knitwear"/><span class="hero-ic-lbl">Knitwear</span></div>
+  </div>
+</section>
 
-    <!-- Mobile Sidebar -->
-    <aside class="mobile-sidebar">
-        <div class="mobile-sidebar-header">
-            <h3>Menu</h3>
-            <div class="close-sidebar">
-            </div>
+<!-- MARQUEE -->
+<div class="mq">
+  <div class="mq-inner">
+    <span class="mq-item"><span class="mq-dot"></span>Free Delivery Nationwide</span>
+    <span class="mq-item"><span class="mq-dot"></span>Bespoke Tailoring Available</span>
+    <span class="mq-item"><span class="mq-dot"></span>Handcrafted in Nigeria</span>
+    <span class="mq-item"><span class="mq-dot"></span>30-Day Returns</span>
+    <span class="mq-item"><span class="mq-dot"></span>Premium Ankara Fabrics</span>
+    <span class="mq-item"><span class="mq-dot"></span>Lagos &middot; Abuja &middot; Port Harcourt</span>
+    <span class="mq-item"><span class="mq-dot"></span>Custom Sizing on All Orders</span>
+    <span class="mq-item"><span class="mq-dot"></span>Free Delivery Nationwide</span>
+    <span class="mq-item"><span class="mq-dot"></span>Bespoke Tailoring Available</span>
+    <span class="mq-item"><span class="mq-dot"></span>Handcrafted in Nigeria</span>
+    <span class="mq-item"><span class="mq-dot"></span>30-Day Returns</span>
+    <span class="mq-item"><span class="mq-dot"></span>Premium Ankara Fabrics</span>
+    <span class="mq-item"><span class="mq-dot"></span>Lagos &middot; Abuja &middot; Port Harcourt</span>
+    <span class="mq-item"><span class="mq-dot"></span>Custom Sizing on All Orders</span>
+  </div>
+</div>
+
+<!-- BENTO -->
+<section class="bento-s" id="bento">
+  <div class="bento-hd">
+    <div style="margin-right: auto"><div class="sl" >What We Offer</div><h2 class="st">Fashion made<br><em>to last.</em></h2></div>
+    <p class="bento-cap">From concept to delivery — every piece is designed with intention, made with care, and built to turn heads wherever you go.</p>
+  </div>
+  <div class="bg">
+    <!-- Big left image -->
+    <div class="bc bc-5 bc-img" style="min-height:370px;">
+      <img src="https://images.unsplash.com/photo-1566174053879-31528523f8ae?w=700&h=750&fit=crop" alt="Evening Gown"/>
+      <div class="bc-ov"><div class="bc-ov-cat">New Arrival</div><div class="bc-ov-t">Evening Elegance<br>Collection</div><div class="bc-ov-p">From &#8358;45,000</div></div>
+    </div>
+    <!-- Right: nested grid -->
+    <div class="bc-7" style="display:grid;grid-template-rows:1fr auto;gap:1rem;background:transparent;border:none;border-radius:0;overflow:visible;">
+      <div class="bc bc-img" style="min-height:160px;">
+        <img src="https://images.unsplash.com/photo-1529374255404-311a2a4f1fd9?w=900&h=340&fit=crop&crop=center" alt="Ankara"/>
+        <div class="bc-ov"><div class="bc-ov-cat">Signature Series</div><div class="bc-ov-t">The Ankara Heritage Line</div><div class="bc-ov-p">From &#8358;28,000</div></div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;">
+        <div class="bc bc-stat bc-amber">
+          <div class="bc-stat-n gt-amber">180+</div>
+          <div class="bc-stat-l">Unique designs per season</div>
         </div>
-
-        <div class="mobile-nav-section">
-            
-            <div class="mobile-nav-item">
-                <span>Explore</span>
-                <div data-lucide="chevron-down"></div>
-            </div>
-            <div class="mobile-dropdown">
-                <a href="#trends">Fashion Trends</a>
-                <a href="#collections">New Collections</a>
-                <a href="#designers">Top Designers</a>
-                <a href="#seasonal">Seasonal Picks</a>
-            </div>
-
-            <div class="mobile-nav-item">
-                <span>Find leads</span>
-                <div data-lucide="chevron-down"></div>
-            </div>
-            <div class="mobile-dropdown">
-                <a href="#suppliers">Suppliers</a>
-                <a href="#manufacturers">Manufacturers</a>
-                <a href="#retailers">Retailers</a>
-                <a href="#boutiques">Local Boutiques</a>
-            </div>
-
-            <div class="mobile-nav-item">
-                <span>Get involved</span>
-                <div data-lucide="chevron-down"></div>
-            </div>
-            <div class="mobile-dropdown">
-                <a href="#community">Join Community</a>
-                <a href="#events">Upcoming Events</a>
-                <a href="#workshops">Workshops</a>
-                <a href="#partnerships">Partnerships</a>
-            </div>
+        <div class="bc bc-txt bc-coral">
+          <div class="bc-icon" style="background:rgba(212,92,58,.2);border-color:rgba(212,92,58,.3);color:var(--coral-l);"><i data-lucide="scissors" style="width:17px;height:17px;"></i></div>
+          <div><div class="bc-t" style="font-size:1.1rem;">Bespoke <em>Tailoring</em></div><div class="bc-d" style="font-size:.78rem;">Order a piece tailored to your exact measurements and vision.</div></div>
+          <div class="bc-lnk" style="color:var(--coral-l);">Start order <i data-lucide="arrow-right" style="width:11px;height:11px;"></i></div>
         </div>
+      </div>
+    </div>
+    <!-- Bottom row -->
+    <div class="bc bc-4 bc-txt bc-sage">
+      <div class="bc-icon" style="background:rgba(92,140,110,.2);border-color:rgba(92,140,110,.3);color:var(--sage-l);"><i data-lucide="truck" style="width:17px;height:17px;"></i></div>
+      <div><div class="bc-t">Nationwide <em>Delivery</em></div><div class="bc-d">Free delivery on all orders above &#8358;25,000, from Lagos to Kano.</div></div>
+      <div class="bc-lnk" style="color:var(--sage-l);">Learn more <i data-lucide="arrow-right" style="width:11px;height:11px;"></i></div>
+    </div>
+    <div class="bc bc-4 bc-txt bc-dark">
+      <div class="bc-icon"><i data-lucide="rotate-ccw" style="width:17px;height:17px;color:var(--amber);"></i></div>
+      <div><div class="bc-t">30-Day <em>Returns</em></div><div class="bc-d">Return any unworn piece within 30 days. No questions asked.</div></div>
+      <div class="bc-lnk">Policy <i data-lucide="arrow-right" style="width:11px;height:11px;"></i></div>
+    </div>
+    <div class="bc bc-4 bc-txt bc-ind">
+      <div class="bc-icon" style="background:rgba(61,79,214,.2);border-color:rgba(61,79,214,.3);color:var(--indigo-l);"><i data-lucide="gem" style="width:17px;height:17px;"></i></div>
+      <div><div class="bc-t">Premium <em>Quality</em></div><div class="bc-d">Every fabric handpicked. Every stitch intentional. Every piece inspected.</div></div>
+      <div class="bc-lnk" style="color:var(--indigo-l);">Our craft <i data-lucide="arrow-right" style="width:11px;height:11px;"></i></div>
+    </div>
+  </div>
+</section>
 
-        <button class="mobile-login-btn">Login</button>
-    </aside>
+<!-- PRODUCTS -->
+<section class="prod-s" id="products">
+  <div class="prod-hd">
+    <div><div class="sl">The Shop</div><h2 class="st">New <em>Season,</em><br>New You.</h2></div>
+    <div class="filt-row">
+      <button class="filt-btn active" data-f="all">All</button>
+      <button class="filt-btn" data-f="dresses">Dresses</button>
+      <button class="filt-btn" data-f="outerwear">Outerwear</button>
+      <button class="filt-btn" data-f="traditional">Traditional</button>
+      <button class="filt-btn" data-f="casual">Casual</button>
+    </div>
+  </div>
+  <div class="prod-grid" id="prodGrid"></div>
+</section>
 
-    <!-- Header -->
-    <header class="flex-row header diff4 ai-c">
-        <div class="logo">
+<!-- STORY -->
+<section class="story-s" id="story">
+  <div class="story-in">
+    <div class="story-gal">
+      <div class="si si-a"><img src="https://images.unsplash.com/photo-1551028719-00167b16eac5?w=600&h=800&fit=crop&crop=top" alt="Artisan"/></div>
+      <div class="si si-b"><img src="https://images.unsplash.com/photo-1509631179647-0177331693ae?w=500&h=380&fit=crop" alt="Style"/></div>
+      <div class="si si-c"><img src="https://images.unsplash.com/photo-1434389677669-e08b4cac3105?w=500&h=380&fit=crop" alt="Fabric"/></div>
+    </div>
+    <div>
+      <div class="story-pill"><i data-lucide="map-pin" style="width:10px;height:10px;"></i>Made in Nigeria</div>
+      <div class="sl">Our Story</div>
+      <h2 class="st">Rooted in<br>Nigerian <em>Craft.</em></h2>
+      <p class="story-body">BrightNal's was born from a belief that Nigerian fashion deserves a global stage. Founded by designers raised on Aso-oke and Ankara, we blend ancestral craft with modern silhouettes — creating pieces that are unmistakably African and unapologetically premium.</p>
+      <div class="story-pts">
+        <div class="spt"><div class="spt-ic"><i data-lucide="scissors" style="width:15px;height:15px;"></i></div><div><div class="spt-t">Handcrafted Locally</div><div class="spt-d">Every piece made by skilled Nigerian artisans. No outsourcing, no shortcuts.</div></div></div>
+        <div class="spt"><div class="spt-ic"><i data-lucide="leaf" style="width:15px;height:15px;"></i></div><div><div class="spt-t">Responsibly Sourced</div><div class="spt-d">Ethical suppliers only. Quality and sustainability are non-negotiable.</div></div></div>
+        <div class="spt"><div class="spt-ic"><i data-lucide="ruler" style="width:15px;height:15px;"></i></div><div><div class="spt-t">Made to Fit You</div><div class="spt-d">Every custom order measured, fitted, and finished to your specification.</div></div></div>
+      </div>
+      <button class="btn-p" style="width:fit-content;"><i data-lucide="arrow-right" style="width:15px;height:15px;"></i>Explore the Brand</button>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section class="tst-s">
+  <div class="tst-hd"><div class="sl" style="justify-content:center;">What They Say</div><h2 class="st">Styled by us, <em>loved by them.</em></h2></div>
+  <div class="tst-grid">
+    <div class="tc">
+      <div class="tc-stars"><i data-lucide="star" style="width:13px;height:13px;fill:var(--amber);"></i><i data-lucide="star" style="width:13px;height:13px;fill:var(--amber);"></i><i data-lucide="star" style="width:13px;height:13px;fill:var(--amber);"></i><i data-lucide="star" style="width:13px;height:13px;fill:var(--amber);"></i><i data-lucide="star" style="width:13px;height:13px;fill:var(--amber);"></i></div>
+      <p class="tc-q">I wore the BrightNal&rsquo;s Aso-oke ensemble to my sister&rsquo;s traditional wedding and people stopped me every five minutes. The craftsmanship is world-class.</p>
+      <div class="tc-p"><div class="tc-av"><img src="https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?w=80&h=80&fit=crop" alt="Chisom"/></div><div><div class="tc-name">Chisom Okafor</div><div class="tc-loc"><i data-lucide="map-pin" style="width:9px;height:9px;"></i>Enugu, Nigeria</div></div></div>
+    </div>
+    <div class="tc">
+      <div class="tc-stars"><i data-lucide="star" style="width:13px;height:13px;fill:var(--amber);"></i><i data-lucide="star" style="width:13px;height:13px;fill:var(--amber);"></i><i data-lucide="star" style="width:13px;height:13px;fill:var(--amber);"></i><i data-lucide="star" style="width:13px;height:13px;fill:var(--amber);"></i><i data-lucide="star" style="width:13px;height:13px;fill:var(--amber);"></i></div>
+      <p class="tc-q">Ordered a bespoke Agbada for my promotion ceremony. They captured exactly what I envisioned &mdash; the fitting, the embroidery, everything. Naija fashion at its finest.</p>
+      <div class="tc-p"><div class="tc-av"><img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=80&h=80&fit=crop" alt="Emeka"/></div><div><div class="tc-name">Emeka Eze</div><div class="tc-loc"><i data-lucide="map-pin" style="width:9px;height:9px;"></i>Lagos, Nigeria</div></div></div>
+    </div>
+    <div class="tc">
+      <div class="tc-stars"><i data-lucide="star" style="width:13px;height:13px;fill:var(--amber);"></i><i data-lucide="star" style="width:13px;height:13px;fill:var(--amber);"></i><i data-lucide="star" style="width:13px;height:13px;fill:var(--amber);"></i><i data-lucide="star" style="width:13px;height:13px;fill:var(--amber);"></i><i data-lucide="star" style="width:13px;height:13px;fill:var(--amber);"></i></div>
+      <p class="tc-q">The Contemporary Ankara blouse I got is now my most-complimented piece. Clients literally ask where I shop. BrightNal&rsquo;s is genuinely top tier.</p>
+      <div class="tc-p"><div class="tc-av"><img src="https://images.unsplash.com/photo-1488426862026-3ee34a7d66df?w=80&h=80&fit=crop" alt="Aisha"/></div><div><div class="tc-name">Aisha Bello</div><div class="tc-loc"><i data-lucide="map-pin" style="width:9px;height:9px;"></i>Abuja, Nigeria</div></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- NEWSLETTER -->
+<section class="nl-s">
+  <div class="nl-in">
+    <div class="nl-tag"><i data-lucide="mail" style="width:10px;height:10px;"></i>Stay in the loop</div>
+    <h2 class="nl-t">First to see,<br><em>first to wear.</em></h2>
+    <p class="nl-sub">Early access to new collections, exclusive discounts, and style content — delivered to your inbox.</p>
+    <form class="nl-form" onsubmit="handleNl(event)">
+      <input type="email" class="nl-inp" placeholder="your@email.com" required/>
+      <button type="submit" class="nl-btn">Subscribe</button>
+    </form>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="ft-in">
+    <div class="ft-top">
+      <div>
+        <div class="ft-bn">BrightNal's</div>
+        <div class="ft-bs">Fashion Concepts</div>
+        <p class="ft-desc">Premium Nigerian fashion. Designed with culture, crafted with care, delivered nationwide.</p>
+        <div class="ft-soc">
+          <div class="ft-s" title="Instagram"><i data-lucide="instagram" style="width:14px;height:14px;"></i></div>
+          <div class="ft-s" title="Twitter"><i data-lucide="twitter" style="width:14px;height:14px;"></i></div>
+          <div class="ft-s" title="Facebook"><i data-lucide="facebook" style="width:14px;height:14px;"></i></div>
+          <div class="ft-s" title="WhatsApp"><i data-lucide="message-circle" style="width:14px;height:14px;"></i></div>
         </div>
-        
-        <div class="searchBar">
-            <div data-lucide="search"></div>
-            <input type="text" id="searchInput">
-            <span class="animatedPlaceholder" id="animatedPlaceholder">Search elegant suits...</span>
-        </div>
- 
-        <nav class="flex-row ai-c">
-            <div class="flex-row ai-c diff1 dropdown-wrapper">
-                <span>Explore</span>
-                <div data-lucide="chevron-down"></div>
-                <div class="dropdown-menu">
-                    <a href="#trends">Fashion Trends</a>
-                    <a href="#collections">New Collections</a>
-                    <a href="#designers">Top Designers</a>
-                    <a href="#seasonal">Seasonal Picks</a>
-                </div>
-            </div>
-            <div class="flex-row ai-c diff1 dropdown-wrapper">
-                <span>Find leads</span>
-                <div data-lucide="chevron-down"></div>
-                <div class="dropdown-menu">
-                    <a href="#suppliers">Suppliers</a>
-                    <a href="#manufacturers">Manufacturers</a>
-                    <a href="#retailers">Retailers</a>
-                    <a href="#boutiques">Local Boutiques</a>
-                </div>
-            </div>
-            <div class="flex-row ai-c diff1 dropdown-wrapper">
-                <span>Get involved</span>
-                <div data-lucide="chevron-down"></div>
-                <div class="dropdown-menu">
-                    <a href="#community">Join Community</a>
-                    <a href="#events">Upcoming Events</a>
-                    <a href="#workshops">Workshops</a>
-                    <a href="#partnerships">Partnerships</a>
-                </div>
-            </div>
-        </nav>
-        
-                <span onclick="toggleCart()" style="cursor: pointer; position: relative; display: flex; align-items: center; margin-right: 1rem;">
-            <div data-lucide="shopping-cart" style="border-radius: 50%; width: 20px; height: 20px;"></div>
-            <span class="cart-badge" id="headerCartCount" style="position: absolute; top: -8px; right: -8px;">0</span>
-        </span>
-        
-        <span class="ai-c otherIcn">
-            <u>Login</u> 
-        </span>
+      </div>
+      <div><div class="ft-ct">Shop</div><ul class="ft-lks"><li><a href="#">New Arrivals</a></li><li><a href="#">Traditional Wear</a></li><li><a href="#">Contemporary</a></li><li><a href="#">Accessories</a></li><li><a href="#">Sale</a></li></ul></div>
+      <div><div class="ft-ct">Customer</div><ul class="ft-lks"><li><a href="#">Contact Us</a></li><li><a href="#">Size Guide</a></li><li><a href="#">Shipping Info</a></li><li><a href="#">Returns</a></li><li><a href="#">FAQ</a></li></ul></div>
+      <div><div class="ft-ct">Company</div><ul class="ft-lks"><li><a href="#">About Us</a></li><li><a href="#">Artisans</a></li><li><a href="#">Press</a></li><li><a href="#">Privacy Policy</a></li><li><a href="#">Terms</a></li></ul></div>
+    </div>
+    <div class="ft-bot">
+      <span>© 2025 BrightNal's Concepts. All rights reserved.</span>
+      <span style="display:flex;align-items:center;gap:.4rem;"><i data-lucide="map-pin" style="width:11px;height:11px;color:var(--amber);"></i>Made with pride in Nigeria</span>
+      <div class="ft-bot-links"><a href="#">Privacy</a><a href="#">Terms</a><a href="#">Cookies</a></div>
+    </div>
+  </div>
+</footer>
 
-        <!-- Mobile Menu Toggle -->
-        <div class="menu-toggle">
-            <span></span>
-            <span></span>
-            <span></span>
-        </div>
-    </header>
+<!-- CART -->
+<div class="cv" id="cv" onclick="toggleCart()"></div>
+<div class="cp" id="cp">
+  <div class="cp-top">
+    <div class="cp-title"><i data-lucide="shopping-bag" style="width:17px;height:17px;color:var(--amber);"></i>Your Bag<span class="cp-sub" id="cpSub"></span></div>
+    <button class="cp-cls" onclick="toggleCart()"><i data-lucide="x" style="width:13px;height:13px;"></i></button>
+  </div>
+  <div class="cp-body" id="cpBody">
+    <div class="cp-empty"><div class="cp-empty-ic"><i data-lucide="shopping-bag" style="width:20px;height:20px;"></i></div><div class="cp-empty-t">Your bag is empty</div><div class="cp-empty-s">Browse our collections and add pieces you love.</div></div>
+  </div>
+  <div class="cp-foot">
+    <div class="cp-tot"><span class="cp-tot-l">Total</span><span class="cp-tot-v" id="cpTotal">&#8358;0</span></div>
+    <button class="cp-chk" onclick="doCheckout()">Proceed to Checkout <i data-lucide="arrow-right" style="width:14px;height:14px;"></i></button>
+  </div>
+</div>
 
-    <!-- Main Content -->
-    <main class="main-content">
-        <!-- Hero Section -->
-        <div class="flex-row hero-section">
-            <section class="hero-title flex-col">
-                <h1>Discover the Best Designs and Outfits</h1>
-                <div class="animateTxt hero-title-tagline">
-                    The sparkle and craftsmanship partner for your style, crafted with elegance and passion you deserve.
-                </div>
-                
-                <!-- Tabs -->
-                <div class="tabs">  
-                    <div class="tab active" data-tab="collections">  
-                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2.7 10.3a2.41 2.41 0 0 0 0 3.41l7.59 7.59a2.41 2.41 0 0 0 3.41 0l7.59-7.59a2.41 2.41 0 0 0 0-3.41l-7.59-7.59a2.41 2.41 0 0 0-3.41 0Z"/></svg>  
-                        Collections  
-                    </div>  
-                    <div class="tab" data-tab="artisans">  
-                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>  
-                        Artisans  
-                    </div>  
-                    <div class="tab" data-tab="custom">  
-                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 12-8.5 8.5c-.83.83-2.17.83-3 0 0 0 0 0 0 0a2.12 2.12 0 0 1 0-3L12 9"/><path d="M17.64 15 22 10.64"/><path d="m20.91 11.7-1.25-1.25c-.6-.6-.93-1.4-.93-2.25v-.86L16.01 4.6a5.56 5.56 0 0 0-3.94-1.64H9l.92.82A6.18 6.18 0 0 1 12 8.4v1.56l2 2h2.47l2.26 1.91"/></svg>  
-                        Custom Orders  
-                    </div>  
-                </div>
-            </section>
-            
-            <div class="imageSlider">
-                <div class="slider-track">
-                    <img src="https://images.unsplash.com/photo-1490481651871-ab68de25d43d?w=500&h=400&fit=crop" alt="Fashion Dress" class="imageCarousel">
-                    <img src="https://images.unsplash.com/photo-1529374255404-311a2a4f1fd9?w=500&h=400&fit=crop" alt="Casual Outfit" class="imageCarousel">
-                    <img src="https://images.unsplash.com/photo-1509631179647-0177331693ae?w=500&h=400&fit=crop" alt="Designer Jacket" class="imageCarousel">
-                    <img src="https://images.unsplash.com/photo-1523381210434-271e8be1f52b?w=500&h=400&fit=crop" alt="T-Shirt Collection" class="imageCarousel">
-                    <img src="https://images.unsplash.com/photo-1578681994506-b8f463449011?w=500&h=400&fit=crop" alt="Stylish Sweater" class="imageCarousel">
-                </div>
-            </div>
-        </div>
-        
-        <!-- Content Below Hero -->
-        <section class="collections">
-            <!-- Popular Tags -->
-            <div class="popular-tags">
-                <div class="tags-list">
-                    <span class="tag">Summer Dresses</span>
-                    <span class="tag">Designer Jackets</span>
-                    <span class="tag">Casual Wear</span>
-                    <span class="tag">Luxury Bags</span>
-                    <span class="tag">Footwear</span>
-                    <span class="tag">Accessories</span>
-                </div>
-            </div>
-            <!-- Product Grid -->
-            <div class="content-grid" id="productGrid" style="margin-top: 3rem; display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 2.5rem;">
-                <!-- Products will be inserted here by JavaScript -->
-            </div>
-        </section>
-    </main>
+<!-- TOAST -->
+<div class="toast" id="toast"><span class="t-dot"></span><span id="toastMsg"></span></div>
 
-    <!-- Features Section -->
-    <section class="features">
-        <div class="features-grid">
-            <div class="feature-item">
-                <div class="feature-icon" data-lucide="truck"></div>
-                <h3 class="feature-title">Free Shipping</h3>
-                <p>On all orders over $100</p>
-            </div>
-            <div class="feature-item">
-                <div class="feature-icon" data-lucide="rotate-ccw"></div>
-                <h3 class="feature-title">Easy Returns</h3>
-                <p>30-day return policy</p>
-            </div>
-            <div class="feature-item">
-                <div class="feature-icon" data-lucide="lock"></div>
-                <h3 class="feature-title">Secure Payment</h3>
-                <p>100% secure transactions</p>
-            </div>
-            <div class="feature-item">
-                <div class="feature-icon" data-lucide="gem"></div>
-                <h3 class="feature-title">Premium Quality</h3>
-                <p>Handpicked designer pieces</p>
-            </div>
-        </div>
-    </section>
-
-    <!-- Newsletter Section -->
-    <section class="newsletter">
-        <h2>Stay In Style</h2>
-        <p>Subscribe to get special offers and fashion updates</p>
-        <form class="newsletter-form" onsubmit="subscribeNewsletter(event)">
-            <input type="email" class="newsletter-input" placeholder="Enter your email" required>
-            <button type="submit" class="newsletter-btn">Subscribe</button>
-        </form>
-    </section>
-
-    <!-- Footer -->
-    <footer>
-        <div class="footer-content">
-            <div class="footer-section">
-                <h3>About BrightNal's</h3>
-                <p style="color: #ccc; line-height: 1.8;">Your premier destination for luxury fashion and designer collections. We curate the finest pieces from around the world.</p>
-                <div class="social-icons">
-                    <div class="social-icon" data-lucide="facebook"></div>
-                    <div class="social-icon" data-lucide="instagram"></div>
-                    <div class="social-icon" data-lucide="twitter"></div>
-                    <div class="social-icon" data-lucide="whatsapp"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16.72 13.36c-.2-.1-1.17-.58-1.35-.64-.18-.06-.31-.1-.44.1s-.51.64-.63.77c-.12.13-.23.15-.43.05-.2-.1-.84-.31-1.6-.99a5.9 5.9 0 0 1-1.09-1.36c-.12-.2 0-.3.08-.4.08-.1.2-.23.3-.35.1-.12.13-.2.2-.33.07-.13.03-.25-.01-.35-.05-.1-.44-1.05-.6-1.44-.16-.39-.33-.33-.44-.34h-.38c-.13 0-.35.05-.53.25-.18.2-.7.68-.7 1.66 0 .98.72 1.93.83 2.06.1.13 1.42 2.17 3.44 3.05.48.21.85.33 1.14.43.48.15.93.13 1.28.08.39-.06 1.17-.48 1.33-.94.16-.46.16-.85.11-.94-.05-.1-.18-.15-.38-.25Z"/><path d="M20 3.5a10 10 0 0 0-15 12.12L4 21l5.5-1a10 10 0 0 0 10.5-16.5Z"/></svg></div>
-                </div>
-            </div>
-            <div class="footer-section">
-                <h3>Shop</h3>
-                <ul class="footer-links">
-                    <li><a href="#new">New Arrivals</a></li>
-                    <li><a href="#women">Women's Fashion</a></li>
-                    <li><a href="#men">Men's Fashion</a></li>
-                    <li><a href="#accessories">Accessories</a></li>
-                    <li><a href="#sale">Sale</a></li>
-                </ul>
-            </div>
-            <div class="footer-section">
-                <h3>Customer Service</h3>
-                <ul class="footer-links">
-                    <li><a href="#contact">Contact Us</a></li>
-                    <li><a href="#shipping">Shipping Info</a></li>
-                    <li><a href="#returns">Returns & Exchanges</a></li>
-                    <li><a href="#faq">FAQ</a></li>
-                    <li><a href="#size">Size Guide</a></li>
-                </ul>
-            </div>
-            <div class="footer-section">
-                <h3>Company</h3>
-                <ul class="footer-links">
-                    <li><a href="#about">About Us</a></li>
-                    <li><a href="#careers">Careers</a></li>
-                    <li><a href="#press">Press</a></li>
-                    <li><a href="#privacy">Privacy Policy</a></li>
-                    <li><a href="#terms">Terms of Service</a></li>
-                </ul>
-            </div>
-        </div>
-        <div class="footer-bottom">
-            <p>&copy; 2025 BrightNal's Concepts. All rights reserved.</div>
-    </footer>
-    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
-    <script src="https://unpkg.com/lucide@latest"></script>
-    <script src="/frontend/JS_SCRIPTS/main.js"></script>
+<script src="main.js" type="text/javascript" charset="utf-8"></script>
 </body>
 </html>
