@@ -1,6 +1,6 @@
 'use strict';
 
-const SERVER_URL = 'https://brghtnal.onrender.com';
+const SERVER_URL = 'https://brightnal.onrender.com';
 
 let cart = [];
 
