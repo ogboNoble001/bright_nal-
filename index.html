@@ -9,7 +9,84 @@
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
   <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,300;1,9..40,400&display=swap" rel="stylesheet"/>
-  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+
+  <style>
+    /* ---- CEO BADGE ---- */
+    .ceo-badge {
+      position: absolute;
+      top: 5rem;
+      right: 3rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.6rem;
+      z-index: 2;
+    }
+
+    .ceo-badge img {
+      width: 110px;
+      height: 110px;
+      border-radius: 50%;
+      border: 4px dashed lightseagreen;
+      object-fit: cover;
+      object-position: top center;
+      display: block;
+    }
+
+    .ceo-badge-name {
+    display: flex;
+    flex-direction: column-reverse;
+    gap: .5em;
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--ts);
+      text-align: center;
+      white-space: nowrap;
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 900px) {
+      .ceo-badge {
+        top: auto;
+        bottom: calc(350px + 3rem); /* sits above the image strip */
+        right: 1.5rem;
+      }
+
+      .ceo-badge img {
+        width: 80px;
+        height: 80px;
+      }
+
+      .ceo-badge-name {
+        font-size: 0.62rem;
+      }
+    }
+
+    @media (max-width: 640px) {
+      .ceo-badge {
+        /* inline flow — sits between heading and hero-bot */
+        position: static;
+        flex-direction: row;
+        align-items: center;
+        gap: 0.75rem;
+        margin: 1.2rem 0;
+      }
+
+      .ceo-badge img {
+        width: 54px;
+        height: 54px;
+        border-width: 3px;
+      }
+
+      .ceo-badge-name {
+        letter-spacing: 0.12em;
+        white-space: normal;
+        text-align: left;
+      }
+    }
+  </style>
 </head>
 <body>
 
@@ -27,7 +104,7 @@
   </ul>
   <div class="nav-r">
     <button class="nav-ib" onclick="toggleCart()" aria-label="Bag">
-      <i data-lucide="shopping-bag" style="width:16px;height:16px;"></i>
+      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
       <span class="nav-badge" id="cartCount">0</span>
     </button>
     <button class="nav-cta">Sign In</button>
@@ -41,8 +118,12 @@
 <div class="dbg" id="dbg" onclick="closeDrw()"></div>
 <div class="drw" id="drw">
   <div class="drw-hd">
-    <div class="nav-brand"><div class="nav-brand-n" style="font-size:1.2rem;">BrightNal's</div></div>
-    <button class="drw-close" onclick="closeDrw()"><i data-lucide="x" style="width:14px;height:14px;"></i></button>
+    <div class="nav-brand">
+      <div class="nav-brand-n" style="font-size:1.2rem;">Fashion</div>
+    </div>
+    <button class="drw-close" onclick="closeDrw()">
+      <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+    </button>
   </div>
   <a href="#collections" onclick="closeDrw()">Collections</a>
   <a href="#bento" onclick="closeDrw()">Services</a>
@@ -55,56 +136,62 @@
 <section class="hero" id="hero">
   <div class="hero-mesh"></div>
   <div class="hero-grid"></div>
+  <img style="width: 200px;
+height: 200px;
+border-radius: 50%;
+object-fit: contain;
+position: absolute;
+top: 5em;
+right: 3em;
+display: block;" src="/file_00000000ad1c7243bca2ad884194e32e.png" alt="" />
+<img style="width: 250px;
+height: 250px;
+object-fit: contain;
+position: absolute;
+top: 14em;
+right: -2em;
+display: block;" src="/file_00000000281871f494a004b80432b1e9.png" alt="" />
   <div class="hero-body">
-    <div class="hero-tag">
-      Nigerian Fashion House &mdash; Est. 2019</div>
+    <div class="hero-tag">&mdash; Est. 2019</div>
+
     <h1 class="hero-h">
       Dressed<br>
       <span class="line-indent"><em>in Culture,</em></span>
-      Worn
-      <br />
-      with&nbsp;Pride.
+      Worn<br>with&nbsp;Pride.
     </h1>
-    <div class="CEO" style="position: absolute;top: 6.4em; right: 3em;">
-<img 
-class="hero-ic" 
-src="/Picsart_26-03-15_19-53-08-781 (1).jpg" 
-alt=""
-style="
-width:150px;
-height:150px;
-border-radius:50%;
-border:7px dashed lightseagreen;
-object-fit:cover;
-object-position:top center; /* focus on the head */
-"
->
+
+    <!-- CEO BADGE — absolutely positioned on md+, inline on mobile -->
+    <div class="ceo-badge">
+      <img src="/Picsart_26-03-15_19-53-08-781 (1).jpg" alt="Bright Chinalu"/>
+            <div class="ceo-badge-name">C.E.O BRIGHTNAL'S CONCEPTS</span><span class="ceo-badge-name">Bright Chinalu
+      </div>
+    
+
     </div>
 
     <div class="hero-bot">
       <p class="hero-desc">Premium designs rooted in Nigerian heritage. From reimagined Aso-oke to contemporary silhouettes &mdash; every piece tells a story worth wearing.</p>
+
       <div class="hero-cta-c">
         <button class="btn-p" onclick="document.getElementById('products').scrollIntoView({behavior:'smooth'})">
-          <i data-lucide="arrow-right" style="width:15px;height:15px;"></i>Shop Collection
+          <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          Shop Now
         </button>
         <button class="btn-g" onclick="document.getElementById('story').scrollIntoView({behavior:'smooth'})">
-          Our Story <i data-lucide="chevron-right" style="width:12px;height:12px;"></i>
+          Our Story
+          <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
         </button>
       </div>
-      <div class="hero-stats-r">
-        <div class="hero-stats">
-          <div><div class="hero-stat-n gt-amber">2,400+</div><div class="hero-stat-l">Styled Clients</div></div>
-          <div><div class="hero-stat-n gt-amber">180+</div><div class="hero-stat-l">Designs</div></div>
-          <div><div class="hero-stat-n gt-amber">6 yrs</div><div class="hero-stat-l">In Craft</div></div>
-        </div>
-      </div>
+
+
     </div>
   </div>
+
   <div class="hero-imgs" id="collections">
-    <div class="hero-ic"><img src="https://images.unsplash.com/photo-1509631179647-0177331693ae?w=600&h=750&fit=crop&crop=top" alt="Evening"/><span class="hero-ic-lbl">Evening</span></div>
-    <div class="hero-ic"><img src="https://images.unsplash.com/photo-1594751543129-6701ad444259?w=500&h=700&fit=crop" alt="Contemporary"/><span class="hero-ic-lbl">Contemporary</span></div>
-    <div class="hero-ic"><img src="https://images.unsplash.com/photo-1595777457583-95e059d581b8?w=700&h=750&fit=crop" alt="Dresses"/><span class="hero-ic-lbl">Dresses</span></div>
-    <div class="hero-ic"><img src="https://images.unsplash.com/photo-1485968579580-b6d095142e6e?w=500&h=700&fit=crop" alt="Bridal"/><span class="hero-ic-lbl">Bridal</span></div>
+    <div class="hero-ic"><img src="/m3661khbfheuqsmvmdw7.png" alt="Evening"/><span class="hero-ic-lbl">Evening</span></div>
+    <div class="hero-ic"><img src="/17736084008436794626483816881688.png" alt="Contemporary"/><span class="hero-ic-lbl">Contemporary</span></div>
+    <div class="hero-ic"><img src="/image-23.jpg" alt="Dresses"/><span class="hero-ic-lbl">Cooprate</span></div>
+    <div class="hero-ic"><img src="/image-12.jpg" alt="Bridal"/><span class="hero-ic-lbl">Business</span></div>
     <div class="hero-ic"><img src="https://images.unsplash.com/photo-1434389677669-e08b4cac3105?w=600&h=700&fit=crop" alt="Knitwear"/><span class="hero-ic-lbl">Knitwear</span></div>
   </div>
 </section>
@@ -130,63 +217,20 @@ object-position:top center; /* focus on the head */
 </div>
 
 <!-- BENTO -->
-<section class="bento-s" id="bento">
-  <div class="bento-hd">
-    <div style="margin-right: auto"><div class="sl" >What We Offer</div><h2 class="st">Fashion made<br><em>to last.</em></h2></div>
-    <p class="bento-cap">From concept to delivery — every piece is designed with intention, made with care, and built to turn heads wherever you go.</p>
-  </div>
-  <div class="bg">
-    <!-- Big left image -->
-    <div class="bc bc-5 bc-img" style="min-height:370px;">
-      <img src="https://images.unsplash.com/photo-1566174053879-31528523f8ae?w=700&h=750&fit=crop" alt="Evening Gown"/>
-      <div class="bc-ov"><div class="bc-ov-cat">New Arrival</div><div class="bc-ov-t">Evening Elegance<br>Collection</div><div class="bc-ov-p">From &#8358;45,000</div></div>
-    </div>
-    <!-- Right: nested grid -->
-    <div class="bc-7" style="display:grid;grid-template-rows:1fr auto;gap:1rem;background:transparent;border:none;border-radius:0;overflow:visible;">
-      <div class="bc bc-img" style="min-height:160px;">
-        <img src="https://images.unsplash.com/photo-1529374255404-311a2a4f1fd9?w=900&h=340&fit=crop&crop=center" alt="Ankara"/>
-        <div class="bc-ov"><div class="bc-ov-cat">Signature Series</div><div class="bc-ov-t">The Ankara Heritage Line</div><div class="bc-ov-p">From &#8358;28,000</div></div>
-      </div>
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;">
-        <div class="bc bc-stat bc-amber">
-          <div class="bc-stat-n gt-amber">180+</div>
-          <div class="bc-stat-l">Unique designs per season</div>
-        </div>
-        <div class="bc bc-txt bc-coral">
-          <div class="bc-icon" style="background:rgba(212,92,58,.2);border-color:rgba(212,92,58,.3);color:var(--coral-l);"><i data-lucide="scissors" style="width:17px;height:17px;"></i></div>
-          <div><div class="bc-t" style="font-size:1.1rem;">Bespoke <em>Tailoring</em></div><div class="bc-d" style="font-size:.78rem;">Order a piece tailored to your exact measurements and vision.</div></div>
-          <div class="bc-lnk" style="color:var(--coral-l);">Start order <i data-lucide="arrow-right" style="width:11px;height:11px;"></i></div>
-        </div>
-      </div>
-    </div>
-    <!-- Bottom row -->
-    <div class="bc bc-4 bc-txt bc-sage">
-      <div class="bc-icon" style="background:rgba(92,140,110,.2);border-color:rgba(92,140,110,.3);color:var(--sage-l);"><i data-lucide="truck" style="width:17px;height:17px;"></i></div>
-      <div><div class="bc-t">Nationwide <em>Delivery</em></div><div class="bc-d">Free delivery on all orders above &#8358;25,000, from Lagos to Kano.</div></div>
-      <div class="bc-lnk" style="color:var(--sage-l);">Learn more <i data-lucide="arrow-right" style="width:11px;height:11px;"></i></div>
-    </div>
-    <div class="bc bc-4 bc-txt bc-dark">
-      <div class="bc-icon"><i data-lucide="rotate-ccw" style="width:17px;height:17px;color:var(--amber);"></i></div>
-      <div><div class="bc-t">30-Day <em>Returns</em></div><div class="bc-d">Return any unworn piece within 30 days. No questions asked.</div></div>
-      <div class="bc-lnk">Policy <i data-lucide="arrow-right" style="width:11px;height:11px;"></i></div>
-    </div>
-    <div class="bc bc-4 bc-txt bc-ind">
-      <div class="bc-icon" style="background:rgba(61,79,214,.2);border-color:rgba(61,79,214,.3);color:var(--indigo-l);"><i data-lucide="gem" style="width:17px;height:17px;"></i></div>
-      <div><div class="bc-t">Premium <em>Quality</em></div><div class="bc-d">Every fabric handpicked. Every stitch intentional. Every piece inspected.</div></div>
-      <div class="bc-lnk" style="color:var(--indigo-l);">Our craft <i data-lucide="arrow-right" style="width:11px;height:11px;"></i></div>
-    </div>
-  </div>
-</section>
 
 <!-- PRODUCTS -->
 <section class="prod-s" id="products">
   <div class="prod-hd">
-    <div><div class="sl">The Shop</div><h2 class="st">New <em>Season,</em><br>New You.</h2></div>
+    <div>
+      <div class="sl">The Shop</div>
+      <h2 class="st">New <em>Season,</em><br>New You.</h2>
+    </div>
     <div class="filt-row">
       <button class="filt-btn active" data-f="all">All</button>
       <button class="filt-btn" data-f="dresses">Dresses</button>
       <button class="filt-btn" data-f="outerwear">Outerwear</button>
       <button class="filt-btn" data-f="traditional">Traditional</button>
+      <button class="filt-btn" data-f="casual">Casual</button>
       <button class="filt-btn" data-f="casual">Casual</button>
     </div>
   </div>
@@ -202,46 +246,131 @@ object-position:top center; /* focus on the head */
       <div class="si si-c"><img src="https://images.unsplash.com/photo-1434389677669-e08b4cac3105?w=500&h=380&fit=crop" alt="Fabric"/></div>
     </div>
     <div>
-      <div class="story-pill"><i data-lucide="map-pin" style="width:10px;height:10px;"></i>Made in Nigeria</div>
+      <div class="story-pill">
+        <svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+        Made in Nigeria
+      </div>
       <div class="sl">Our Story</div>
       <h2 class="st">Rooted in<br>Nigerian <em>Craft.</em></h2>
       <p class="story-body">BrightNal's was born from a belief that Nigerian fashion deserves a global stage. Founded by designers raised on Aso-oke and Ankara, we blend ancestral craft with modern silhouettes — creating pieces that are unmistakably African and unapologetically premium.</p>
       <div class="story-pts">
-        <div class="spt"><div class="spt-ic"><i data-lucide="scissors" style="width:15px;height:15px;"></i></div><div><div class="spt-t">Handcrafted Locally</div><div class="spt-d">Every piece made by skilled Nigerian artisans. No outsourcing, no shortcuts.</div></div></div>
-        <div class="spt"><div class="spt-ic"><i data-lucide="leaf" style="width:15px;height:15px;"></i></div><div><div class="spt-t">Responsibly Sourced</div><div class="spt-d">Ethical suppliers only. Quality and sustainability are non-negotiable.</div></div></div>
-        <div class="spt"><div class="spt-ic"><i data-lucide="ruler" style="width:15px;height:15px;"></i></div><div><div class="spt-t">Made to Fit You</div><div class="spt-d">Every custom order measured, fitted, and finished to your specification.</div></div></div>
+        <div class="spt">
+          <div class="spt-ic">
+            <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="6" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><line x1="20" y1="4" x2="8.12" y2="15.88"/><line x1="14.47" y1="14.48" x2="20" y2="20"/><line x1="8.12" y1="8.12" x2="12" y2="12"/></svg>
+          </div>
+          <div>
+            <div class="spt-t">Handcrafted Locally</div>
+            <div class="spt-d">Every piece made by skilled Nigerian artisans. No outsourcing, no shortcuts.</div>
+          </div>
+        </div>
+        <div class="spt">
+          <div class="spt-ic">
+            <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10z"/><path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12"/></svg>
+          </div>
+          <div>
+            <div class="spt-t">Responsibly Sourced</div>
+            <div class="spt-d">Ethical suppliers only. Quality and sustainability are non-negotiable.</div>
+          </div>
+        </div>
+        <div class="spt">
+          <div class="spt-ic">
+            <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"/></svg>
+          </div>
+          <div>
+            <div class="spt-t">Made to Fit You</div>
+            <div class="spt-d">Every custom order measured, fitted, and finished to your specification.</div>
+          </div>
+        </div>
       </div>
-      <button class="btn-p" style="width:fit-content;"><i data-lucide="arrow-right" style="width:15px;height:15px;"></i>Explore the Brand</button>
+      <button class="btn-p" style="width:fit-content;">
+        <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+        Explore the Brand
+      </button>
     </div>
   </div>
 </section>
 
 <!-- TESTIMONIALS -->
 <section class="tst-s">
-  <div class="tst-hd"><div class="sl" style="justify-content:center;">What They Say</div><h2 class="st">Styled by us, <em>loved by them.</em></h2></div>
+  <div class="tst-hd">
+    <div class="sl" style="justify-content:center;">What They Say</div>
+    <h2 class="st">Styled by us, <em>loved by them.</em></h2>
+  </div>
   <div class="tst-grid">
+
     <div class="tc">
-      <div class="tc-stars"><i data-lucide="star" style="width:13px;height:13px;fill:var(--amber);"></i><i data-lucide="star" style="width:13px;height:13px;fill:var(--amber);"></i><i data-lucide="star" style="width:13px;height:13px;fill:var(--amber);"></i><i data-lucide="star" style="width:13px;height:13px;fill:var(--amber);"></i><i data-lucide="star" style="width:13px;height:13px;fill:var(--amber);"></i></div>
+      <div class="tc-stars">
+        <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="var(--amber)" stroke="var(--amber)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="var(--amber)" stroke="var(--amber)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="var(--amber)" stroke="var(--amber)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="var(--amber)" stroke="var(--amber)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="var(--amber)" stroke="var(--amber)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+      </div>
       <p class="tc-q">I wore the BrightNal&rsquo;s Aso-oke ensemble to my sister&rsquo;s traditional wedding and people stopped me every five minutes. The craftsmanship is world-class.</p>
-      <div class="tc-p"><div class="tc-av"><img src="https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?w=80&h=80&fit=crop" alt="Chisom"/></div><div><div class="tc-name">Chisom Okafor</div><div class="tc-loc"><i data-lucide="map-pin" style="width:9px;height:9px;"></i>Enugu, Nigeria</div></div></div>
+      <div class="tc-p">
+        <div class="tc-av"><img src="https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?w=80&h=80&fit=crop" alt="Chisom"/></div>
+        <div>
+          <div class="tc-name">Chisom Okafor</div>
+          <div class="tc-loc">
+            <svg xmlns="http://www.w3.org/2000/svg" width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+            Enugu, Nigeria
+          </div>
+        </div>
+      </div>
     </div>
+
     <div class="tc">
-      <div class="tc-stars"><i data-lucide="star" style="width:13px;height:13px;fill:var(--amber);"></i><i data-lucide="star" style="width:13px;height:13px;fill:var(--amber);"></i><i data-lucide="star" style="width:13px;height:13px;fill:var(--amber);"></i><i data-lucide="star" style="width:13px;height:13px;fill:var(--amber);"></i><i data-lucide="star" style="width:13px;height:13px;fill:var(--amber);"></i></div>
+      <div class="tc-stars">
+        <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="var(--amber)" stroke="var(--amber)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="var(--amber)" stroke="var(--amber)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="var(--amber)" stroke="var(--amber)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="var(--amber)" stroke="var(--amber)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="var(--amber)" stroke="var(--amber)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+      </div>
       <p class="tc-q">Ordered a bespoke Agbada for my promotion ceremony. They captured exactly what I envisioned &mdash; the fitting, the embroidery, everything. Naija fashion at its finest.</p>
-      <div class="tc-p"><div class="tc-av"><img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=80&h=80&fit=crop" alt="Emeka"/></div><div><div class="tc-name">Emeka Eze</div><div class="tc-loc"><i data-lucide="map-pin" style="width:9px;height:9px;"></i>Lagos, Nigeria</div></div></div>
+      <div class="tc-p">
+        <div class="tc-av"><img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=80&h=80&fit=crop" alt="Emeka"/></div>
+        <div>
+          <div class="tc-name">Emeka Eze</div>
+          <div class="tc-loc">
+            <svg xmlns="http://www.w3.org/2000/svg" width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+            Lagos, Nigeria
+          </div>
+        </div>
+      </div>
     </div>
+
     <div class="tc">
-      <div class="tc-stars"><i data-lucide="star" style="width:13px;height:13px;fill:var(--amber);"></i><i data-lucide="star" style="width:13px;height:13px;fill:var(--amber);"></i><i data-lucide="star" style="width:13px;height:13px;fill:var(--amber);"></i><i data-lucide="star" style="width:13px;height:13px;fill:var(--amber);"></i><i data-lucide="star" style="width:13px;height:13px;fill:var(--amber);"></i></div>
+      <div class="tc-stars">
+        <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="var(--amber)" stroke="var(--amber)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="var(--amber)" stroke="var(--amber)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="var(--amber)" stroke="var(--amber)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="var(--amber)" stroke="var(--amber)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="var(--amber)" stroke="var(--amber)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+      </div>
       <p class="tc-q">The Contemporary Ankara blouse I got is now my most-complimented piece. Clients literally ask where I shop. BrightNal&rsquo;s is genuinely top tier.</p>
-      <div class="tc-p"><div class="tc-av"><img src="https://images.unsplash.com/photo-1488426862026-3ee34a7d66df?w=80&h=80&fit=crop" alt="Aisha"/></div><div><div class="tc-name">Aisha Bello</div><div class="tc-loc"><i data-lucide="map-pin" style="width:9px;height:9px;"></i>Abuja, Nigeria</div></div></div>
+      <div class="tc-p">
+        <div class="tc-av"><img src="https://images.unsplash.com/photo-1488426862026-3ee34a7d66df?w=80&h=80&fit=crop" alt="Aisha"/></div>
+        <div>
+          <div class="tc-name">Aisha Bello</div>
+          <div class="tc-loc">
+            <svg xmlns="http://www.w3.org/2000/svg" width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+            Abuja, Nigeria
+          </div>
+        </div>
+      </div>
     </div>
+
   </div>
 </section>
 
 <!-- NEWSLETTER -->
 <section class="nl-s">
   <div class="nl-in">
-    <div class="nl-tag"><i data-lucide="mail" style="width:10px;height:10px;"></i>Stay in the loop</div>
+    <div class="nl-tag">
+      <svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+      Stay in the loop
+    </div>
     <h2 class="nl-t">First to see,<br><em>first to wear.</em></h2>
     <p class="nl-sub">Early access to new collections, exclusive discounts, and style content — delivered to your inbox.</p>
     <form class="nl-form" onsubmit="handleNl(event)">
@@ -260,20 +389,62 @@ object-position:top center; /* focus on the head */
         <div class="ft-bs">Fashion Concepts</div>
         <p class="ft-desc">Premium Nigerian fashion. Designed with culture, crafted with care, delivered nationwide.</p>
         <div class="ft-soc">
-          <div class="ft-s" title="Instagram"><i data-lucide="instagram" style="width:14px;height:14px;"></i></div>
-          <div class="ft-s" title="Twitter"><i data-lucide="twitter" style="width:14px;height:14px;"></i></div>
-          <div class="ft-s" title="Facebook"><i data-lucide="facebook" style="width:14px;height:14px;"></i></div>
-          <div class="ft-s" title="WhatsApp"><i data-lucide="message-circle" style="width:14px;height:14px;"></i></div>
+          <div class="ft-s" title="Instagram">
+            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+          </div>
+          <div class="ft-s" title="Twitter">
+            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"/></svg>
+          </div>
+          <div class="ft-s" title="Facebook">
+            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+          </div>
+          <div class="ft-s" title="WhatsApp">
+            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+          </div>
         </div>
       </div>
-      <div><div class="ft-ct">Shop</div><ul class="ft-lks"><li><a href="#">New Arrivals</a></li><li><a href="#">Traditional Wear</a></li><li><a href="#">Contemporary</a></li><li><a href="#">Accessories</a></li><li><a href="#">Sale</a></li></ul></div>
-      <div><div class="ft-ct">Customer</div><ul class="ft-lks"><li><a href="#">Contact Us</a></li><li><a href="#">Size Guide</a></li><li><a href="#">Shipping Info</a></li><li><a href="#">Returns</a></li><li><a href="#">FAQ</a></li></ul></div>
-      <div><div class="ft-ct">Company</div><ul class="ft-lks"><li><a href="#">About Us</a></li><li><a href="#">Artisans</a></li><li><a href="#">Press</a></li><li><a href="#">Privacy Policy</a></li><li><a href="#">Terms</a></li></ul></div>
+      <div>
+        <div class="ft-ct">Shop</div>
+        <ul class="ft-lks">
+          <li><a href="#">New Arrivals</a></li>
+          <li><a href="#">Traditional Wear</a></li>
+          <li><a href="#">Contemporary</a></li>
+          <li><a href="#">Accessories</a></li>
+          <li><a href="#">Sale</a></li>
+        </ul>
+      </div>
+      <div>
+        <div class="ft-ct">Customer</div>
+        <ul class="ft-lks">
+          <li><a href="#">Contact Us</a></li>
+          <li><a href="#">Size Guide</a></li>
+          <li><a href="#">Shipping Info</a></li>
+          <li><a href="#">Returns</a></li>
+          <li><a href="#">FAQ</a></li>
+        </ul>
+      </div>
+      <div>
+        <div class="ft-ct">Company</div>
+        <ul class="ft-lks">
+          <li><a href="#">About Us</a></li>
+          <li><a href="#">Artisans</a></li>
+          <li><a href="#">Press</a></li>
+          <li><a href="#">Privacy Policy</a></li>
+          <li><a href="#">Terms</a></li>
+        </ul>
+      </div>
     </div>
     <div class="ft-bot">
       <span>© 2025 BrightNal's Concepts. All rights reserved.</span>
-      <span style="display:flex;align-items:center;gap:.4rem;"><i data-lucide="map-pin" style="width:11px;height:11px;color:var(--amber);"></i>Made with pride in Nigeria</span>
-      <div class="ft-bot-links"><a href="#">Privacy</a><a href="#">Terms</a><a href="#">Cookies</a></div>
+      <span style="display:flex;align-items:center;gap:.4rem;">
+        <svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color:var(--amber);"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+        Made with pride in Nigeria
+      </span>
+      <div class="ft-bot-links">
+        <a href="#">Privacy</a>
+        <a href="#">Terms</a>
+        <a href="#">Cookies</a>
+      </div>
     </div>
   </div>
 </footer>
@@ -282,15 +453,32 @@ object-position:top center; /* focus on the head */
 <div class="cv" id="cv" onclick="toggleCart()"></div>
 <div class="cp" id="cp">
   <div class="cp-top">
-    <div class="cp-title"><i data-lucide="shopping-bag" style="width:17px;height:17px;color:var(--amber);"></i>Your Bag<span class="cp-sub" id="cpSub"></span></div>
-    <button class="cp-cls" onclick="toggleCart()"><i data-lucide="x" style="width:13px;height:13px;"></i></button>
+    <div class="cp-title">
+      <svg xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color:var(--amber);"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+      Your Bag<span class="cp-sub" id="cpSub"></span>
+    </div>
+    <button class="cp-cls" onclick="toggleCart()">
+      <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+    </button>
   </div>
   <div class="cp-body" id="cpBody">
-    <div class="cp-empty"><div class="cp-empty-ic"><i data-lucide="shopping-bag" style="width:20px;height:20px;"></i></div><div class="cp-empty-t">Your bag is empty</div><div class="cp-empty-s">Browse our collections and add pieces you love.</div></div>
+    <div class="cp-empty">
+      <div class="cp-empty-ic">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+      </div>
+      <div class="cp-empty-t">Your bag is empty</div>
+      <div class="cp-empty-s">Browse our collections and add pieces you love.</div>
+    </div>
   </div>
   <div class="cp-foot">
-    <div class="cp-tot"><span class="cp-tot-l">Total</span><span class="cp-tot-v" id="cpTotal">&#8358;0</span></div>
-    <button class="cp-chk" onclick="doCheckout()">Proceed to Checkout <i data-lucide="arrow-right" style="width:14px;height:14px;"></i></button>
+    <div class="cp-tot">
+      <span class="cp-tot-l">Total</span>
+      <span class="cp-tot-v" id="cpTotal">&#8358;0</span>
+    </div>
+    <button class="cp-chk" onclick="doCheckout()">
+      Proceed to Checkout
+      <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+    </button>
   </div>
 </div>
 
