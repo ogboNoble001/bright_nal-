@@ -14,7 +14,7 @@
     /* ---- CEO BADGE ---- */
     .ceo-badge {
       position: absolute;
-      top: 5rem;
+      
       right: 3rem;
       display: flex;
       flex-direction: column;
@@ -45,26 +45,6 @@
       text-align: center;
       white-space: nowrap;
     }
-
-    /* Responsive adjustments */
-    @media (max-width: 900px) {
-      .ceo-badge {
-        top: auto;
-        bottom: calc(350px + 3rem); /* sits above the image strip */
-        right: 1.5rem;
-      }
-
-      .ceo-badge img {
-        width: 80px;
-        height: 80px;
-      }
-
-      .ceo-badge-name {
-        font-size: 0.62rem;
-      }
-    }
-
-    @media (max-width: 640px) {
       .ceo-badge {
         /* inline flow — sits between heading and hero-bot */
         position: static;
@@ -73,18 +53,423 @@
         gap: 0.75rem;
         margin: 1.2rem 0;
       }
-
+      
       .ceo-badge img {
         width: 54px;
         height: 54px;
         border-width: 3px;
       }
-
+      
       .ceo-badge-name {
         letter-spacing: 0.12em;
         white-space: normal;
         text-align: left;
       }
+
+
+    /* ===== BOTTOM DRAWER SYSTEM ===== */
+
+    /* Shared backdrop */
+    .bdwg-bg {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.45);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      z-index: 2000;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.35s, visibility 0.35s;
+    }
+    .bdwg-bg.open { opacity: 1; visibility: visible; }
+
+    /* Base bottom drawer */
+    .bdwg {
+      position: fixed;
+      left: 0; right: 0; bottom: 0;
+      z-index: 2100;
+      background: var(--surface);
+      border-radius: 22px 22px 0 0;
+      border-top: 1px solid var(--border);
+      box-shadow: 0 -20px 80px rgba(0,0,0,0.15);
+      transform: translateY(100%);
+      transition: transform 0.42s cubic-bezier(0.32, 0.72, 0, 1);
+      max-height: 88vh;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+    .bdwg.open { transform: translateY(0); }
+
+    /* Anchor handle */
+    .bdwg-handle {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0.75rem 0 0.5rem;
+      cursor: grab;
+      flex-shrink: 0;
+    }
+    .bdwg-handle:active { cursor: grabbing; }
+    .bdwg-handle-bar {
+      width: 44px;
+      height: 4px;
+      background: var(--panel);
+      border-radius: 999px;
+      transition: background 0.2s, width 0.2s;
+    }
+    .bdwg-handle:hover .bdwg-handle-bar {
+      background: var(--border-b);
+      width: 56px;
+    }
+
+    /* Drawer inner scroll area */
+    .bdwg-inner {
+      overflow-y: auto;
+      flex: 1;
+      padding: 0 1.5rem 2.5rem;
+    }
+
+    /* ---- SEARCH DRAWER ---- */
+    .sdwg { max-height: 82vh; }
+
+    .sdwg-hd {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 0 1.1rem;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 1.4rem;
+    }
+    .sdwg-title {
+      font-family: var(--fd);
+      font-size: 1.4rem;
+      font-weight: 400;
+      color: var(--tp);
+    }
+    .sdwg-close {
+      width: 36px; height: 36px;
+      border-radius: var(--r2);
+      background: var(--deep);
+      border: 1px solid var(--border);
+      color: var(--ts);
+      display: flex; align-items: center; justify-content: center;
+      transition: all 0.2s;
+    }
+    .sdwg-close:hover { background: var(--tp); color: var(--surface); border-color: var(--tp); }
+
+    .sdwg-input-row {
+      display: flex;
+      gap: 0.6rem;
+      margin-bottom: 1.6rem;
+    }
+    .sdwg-inp {
+      flex: 1;
+      height: 48px;
+      padding: 0 1.2rem;
+      background: var(--deep);
+      border: 1px solid var(--border);
+      border-radius: var(--rp);
+      font-family: var(--fb);
+      font-size: 0.92rem;
+      color: var(--tp);
+      outline: none;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+    .sdwg-inp:focus {
+      border-color: var(--amber);
+      box-shadow: 0 0 0 3px rgba(196,97,26,0.12);
+    }
+    .sdwg-inp::placeholder { color: var(--tm); }
+
+    .sdwg-go {
+      height: 48px;
+      padding: 0 1.4rem;
+      background: var(--tp);
+      color: var(--surface);
+      border-radius: var(--rp);
+      font-size: 0.82rem;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      border: none;
+      transition: background 0.2s, transform 0.2s;
+      white-space: nowrap;
+      display: flex; align-items: center; gap: 0.5rem;
+    }
+    .sdwg-go:hover { background: var(--amber); transform: translateY(-1px); }
+
+    .sdwg-lbl {
+      font-size: 0.68rem;
+      font-weight: 700;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--tm);
+      margin-bottom: 0.9rem;
+    }
+    .sdwg-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin-bottom: 1.8rem;
+    }
+    .sdwg-tag {
+      padding: 0.4rem 0.9rem;
+      background: var(--deep);
+      border: 1px solid var(--border);
+      border-radius: var(--rp);
+      font-size: 0.76rem;
+      font-weight: 500;
+      color: var(--ts);
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .sdwg-tag:hover {
+      background: var(--tp);
+      color: var(--surface);
+      border-color: var(--tp);
+    }
+    .sdwg-results {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+      gap: 0.75rem;
+    }
+    .sdwg-res-item {
+      background: var(--deep);
+      border: 1px solid var(--border);
+      border-radius: var(--r3);
+      overflow: hidden;
+      cursor: pointer;
+      transition: border-color 0.2s, transform 0.2s;
+    }
+    .sdwg-res-item:hover { border-color: var(--border-b); transform: translateY(-2px); }
+    .sdwg-res-img {
+      height: 110px;
+      overflow: hidden;
+      background: var(--panel);
+    }
+    .sdwg-res-img img { width: 100%; height: 100%; object-fit: cover; object-position: top; }
+    .sdwg-res-body { padding: 0.6rem 0.75rem; }
+    .sdwg-res-name {
+      font-family: var(--fd);
+      font-size: 0.88rem;
+      color: var(--tp);
+      margin-bottom: 0.2rem;
+      line-height: 1.2;
+    }
+    .sdwg-res-price {
+      font-size: 0.76rem;
+      font-weight: 700;
+      color: var(--amber);
+    }
+
+    /* ---- INFO DRAWERS (footer links) ---- */
+    .idwg { max-height: 80vh; }
+
+    .idwg-hd {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 1rem;
+      padding-bottom: 1.1rem;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 1.6rem;
+    }
+    .idwg-hd-text {}
+    .idwg-eyebrow {
+      font-size: 0.62rem;
+      font-weight: 700;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--amber);
+      margin-bottom: 0.3rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .idwg-eyebrow::before {
+      content: '';
+      display: block;
+      width: 14px;
+      height: 1px;
+      background: var(--amber);
+    }
+    .idwg-title {
+      font-family: var(--fd);
+      font-size: 1.5rem;
+      font-weight: 400;
+      color: var(--tp);
+      line-height: 1.15;
+    }
+    .idwg-close {
+      width: 36px; height: 36px; flex-shrink: 0;
+      border-radius: var(--r2);
+      background: var(--deep);
+      border: 1px solid var(--border);
+      color: var(--ts);
+      display: flex; align-items: center; justify-content: center;
+      transition: all 0.2s;
+    }
+    .idwg-close:hover { background: var(--tp); color: var(--surface); border-color: var(--tp); }
+
+    .idwg-body {
+      font-size: 0.92rem;
+      color: var(--ts);
+      line-height: 1.8;
+    }
+    .idwg-body h3 {
+      font-family: var(--fd);
+      font-size: 1.05rem;
+      font-weight: 400;
+      color: var(--tp);
+      margin: 1.4rem 0 0.5rem;
+    }
+    .idwg-body h3:first-child { margin-top: 0; }
+    .idwg-body p { margin-bottom: 0.8rem; }
+    .idwg-body ul { padding-left: 1.1rem; margin-bottom: 0.8rem; }
+    .idwg-body ul li { margin-bottom: 0.35rem; }
+
+    /* Arrivals grid in drawer */
+    .idwg-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+      gap: 0.75rem;
+      margin-top: 0.5rem;
+    }
+    .idwg-card {
+      background: var(--deep);
+      border: 1px solid var(--border);
+      border-radius: var(--r3);
+      overflow: hidden;
+      cursor: pointer;
+      transition: border-color 0.2s, transform 0.2s;
+    }
+    .idwg-card:hover { border-color: var(--border-b); transform: translateY(-2px); }
+    .idwg-card-img { height: 100px; overflow: hidden; }
+    .idwg-card-img img { width: 100%; height: 100%; object-fit: cover; object-position: top; }
+    .idwg-card-body { padding: 0.5rem 0.65rem; }
+    .idwg-card-name { font-family: var(--fd); font-size: 0.82rem; color: var(--tp); margin-bottom: 0.15rem; line-height: 1.2; }
+    .idwg-card-price { font-size: 0.7rem; font-weight: 700; color: var(--amber); }
+
+    /* FAQ accordion */
+    .faq-item {
+      border-bottom: 1px solid var(--border);
+    }
+    .faq-q {
+      width: 100%;
+      background: none;
+      border: none;
+      padding: 1rem 0;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      font-family: var(--fb);
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: var(--tp);
+      text-align: left;
+      cursor: pointer;
+      transition: color 0.2s;
+    }
+    .faq-q:hover { color: var(--amber); }
+    .faq-q svg { flex-shrink: 0; transition: transform 0.25s; }
+    .faq-item.open .faq-q svg { transform: rotate(180deg); }
+    .faq-a {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.35s ease;
+      font-size: 0.86rem;
+      color: var(--ts);
+      line-height: 1.75;
+    }
+    .faq-item.open .faq-a { max-height: 300px; }
+    .faq-a-inner { padding-bottom: 1rem; }
+
+    /* Size table */
+    .size-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.82rem;
+      margin-top: 0.5rem;
+    }
+    .size-table th, .size-table td {
+      padding: 0.6rem 0.8rem;
+      text-align: left;
+      border-bottom: 1px solid var(--border);
+    }
+    .size-table th {
+      font-weight: 700;
+      font-size: 0.7rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--tm);
+      background: var(--deep);
+    }
+    .size-table tr:hover td { background: var(--deep); }
+
+    /* Contact form in drawer */
+    .contact-form { display: flex; flex-direction: column; gap: 0.9rem; }
+    .cf-label { font-size: 0.72rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ts); margin-bottom: 0.3rem; display: block; }
+    .cf-inp, .cf-ta {
+      width: 100%;
+      padding: 0.75rem 1rem;
+      background: var(--deep);
+      border: 1px solid var(--border);
+      border-radius: var(--r2);
+      font-family: var(--fb);
+      font-size: 0.88rem;
+      color: var(--tp);
+      outline: none;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+    .cf-inp:focus, .cf-ta:focus {
+      border-color: var(--amber);
+      box-shadow: 0 0 0 3px rgba(196,97,26,0.1);
+    }
+    .cf-ta { min-height: 100px; resize: vertical; }
+    .cf-send {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      background: var(--tp); color: var(--surface);
+      padding: 0.85rem 1.8rem;
+      border-radius: var(--rp);
+      font-size: 0.84rem; font-weight: 700; letter-spacing: 0.04em;
+      border: none; cursor: pointer;
+      transition: background 0.2s, transform 0.2s;
+      align-self: flex-start;
+    }
+    .cf-send:hover { background: var(--amber); transform: translateY(-1px); }
+
+    /* Artisans gallery */
+    .artisan-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.75rem;
+    }
+    .artisan-card {
+      border-radius: var(--r3);
+      overflow: hidden;
+      border: 1px solid var(--border);
+      background: var(--deep);
+    }
+    .artisan-card-img { height: 130px; overflow: hidden; }
+    .artisan-card-img img { width: 100%; height: 100%; object-fit: cover; object-position: top; }
+    .artisan-card-body { padding: 0.75rem; }
+    .artisan-name { font-family: var(--fd); font-size: 0.95rem; color: var(--tp); }
+    .artisan-role { font-size: 0.7rem; color: var(--amber); font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; margin-top: 0.15rem; }
+
+    /* Sale items */
+    .sale-badge {
+      display: inline-block;
+      background: var(--coral);
+      color: #fff;
+      font-size: 0.6rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 0.2rem 0.5rem;
+      border-radius: var(--rp);
+      margin-bottom: 0.3rem;
     }
   </style>
 </head>
@@ -103,6 +488,9 @@
     <li><a href="#products">Shop</a></li>
   </ul>
   <div class="nav-r">
+    <button class="nav-ib" aria-label="Search" onclick="openSearch()">
+      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21 21-4.34-4.34"/><circle cx="11" cy="11" r="8"/></svg>
+    </button>
     <button class="nav-ib" onclick="toggleCart()" aria-label="Bag">
       <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
       <span class="nav-badge" id="cartCount">0</span>
@@ -114,7 +502,7 @@
   </div>
 </nav>
 
-<!-- DRAWER -->
+<!-- MOBILE DRAWER -->
 <div class="dbg" id="dbg" onclick="closeDrw()"></div>
 <div class="drw" id="drw">
   <div class="drw-hd">
@@ -136,32 +524,13 @@
 <section class="hero" id="hero">
   <div class="hero-mesh"></div>
   <div class="hero-grid"></div>
-  <img style="width: 150px;
-height: 150px;
-border-radius: 50%;
-object-fit: contain;
-position: absolute;
-top: 7em;
-right: -.1em;
-display: block;" src="/file_00000000ad1c7243bca2ad884194e32e.png" alt="" />
-<img style="width: 200px;
-z-index: 999;
-height: 200px;
-object-fit: contain;
-position: absolute;
-top: 14em;
-right: -2em;
-display: block;" src="/file_00000000281871f494a004b80432b1e9.png" alt="" />
-  <img style="width: 200px;
-height: 200px;
-z-index: 1;
-border-radius: 50%;
-object-fit: contain;
-position: absolute;
-top: 11em;
-right: 3.5em;
-display: block;" src="/file_00000000d1b071f4813e19c92f11043a.png" alt="" />
+
   <div class="hero-body">
+    <div class="hero-img">
+      <img class="first" src="/file_00000000281871f494a004b80432b1e9.png" alt="" />
+      <img class="arrange" src="/file_00000000281871f494a004b80432b1e9.png" alt="" />
+      <img class="arrange" src="/file_00000000ad1c7243bca2ad884194e32e.png" alt="" />
+    </div>
     <div class="hero-tag">&mdash; Est. 2019</div>
 
     <h1 class="hero-h">
@@ -170,18 +539,16 @@ display: block;" src="/file_00000000d1b071f4813e19c92f11043a.png" alt="" />
       Worn<br>with&nbsp;Pride.
     </h1>
 
-    <!-- CEO BADGE — absolutely positioned on md+, inline on mobile -->
     <div class="ceo-badge">
       <img src="/Picsart_26-03-15_19-53-08-781 (1).jpg" alt="Bright Chinalu"/>
-            <div class="ceo-badge-name">C.E.O BRIGHTNAL'S CONCEPTS</span><span class="ceo-badge-name">Bright Chinalu
+      <div class="ceo-badge-name">
+        <span>Bright Chinalu</span>
+        <span>C.E.O — BrightNal's Concepts</span>
       </div>
-    
-
     </div>
 
     <div class="hero-bot">
       <p class="hero-desc">Premium designs rooted in Nigerian heritage. From reimagined Aso-oke to contemporary silhouettes &mdash; every piece tells a story worth wearing.</p>
-
       <div class="hero-cta-c">
         <button class="btn-p" onclick="document.getElementById('products').scrollIntoView({behavior:'smooth'})">
           <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
@@ -192,15 +559,13 @@ display: block;" src="/file_00000000d1b071f4813e19c92f11043a.png" alt="" />
           <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
         </button>
       </div>
-
-
     </div>
   </div>
 
   <div class="hero-imgs" id="collections">
     <div class="hero-ic"><img src="/m3661khbfheuqsmvmdw7.png" alt="Evening"/><span class="hero-ic-lbl">Mixed</span></div>
     <div class="hero-ic"><img src="/17736084008436794626483816881688.png" alt="Contemporary"/><span class="hero-ic-lbl">Contemporary</span></div>
-    <div class="hero-ic"><img src="/image-23.jpg" alt="Dresses"/><span class="hero-ic-lbl">Cooprate</span></div>
+    <div class="hero-ic"><img src="/image-23.jpg" alt="Dresses"/><span class="hero-ic-lbl">Corporate</span></div>
     <div class="hero-ic"><img src="/image-12.jpg" alt="Bridal"/><span class="hero-ic-lbl">Business</span></div>
     <div class="hero-ic"><img src="https://images.unsplash.com/photo-1434389677669-e08b4cac3105?w=600&h=700&fit=crop" alt="Knitwear"/><span class="hero-ic-lbl">Knitwear</span></div>
   </div>
@@ -226,8 +591,6 @@ display: block;" src="/file_00000000d1b071f4813e19c92f11043a.png" alt="" />
   </div>
 </div>
 
-<!-- BENTO -->
-
 <!-- PRODUCTS -->
 <section class="prod-s" id="products">
   <div class="prod-hd">
@@ -241,7 +604,7 @@ display: block;" src="/file_00000000d1b071f4813e19c92f11043a.png" alt="" />
       <button class="filt-btn" data-f="outerwear">Outerwear</button>
       <button class="filt-btn" data-f="traditional">Traditional</button>
       <button class="filt-btn" data-f="casual">Casual</button>
-      <button class="filt-btn" data-f="casual">Casual</button>
+      <button class="filt-btn" data-f="accessories">Accessories</button>
     </div>
   </div>
   <div class="prod-grid" id="prodGrid"></div>
@@ -251,9 +614,11 @@ display: block;" src="/file_00000000d1b071f4813e19c92f11043a.png" alt="" />
 <section class="story-s" id="story">
   <div class="story-in">
     <div class="story-gal">
-      <div class="si si-a"><img src="https://images.unsplash.com/photo-1551028719-00167b16eac5?w=600&h=800&fit=crop&crop=top" alt="Artisan"/></div>
-      <div class="si si-b"><img src="https://images.unsplash.com/photo-1509631179647-0177331693ae?w=500&h=380&fit=crop" alt="Style"/></div>
-      <div class="si si-c"><img src="https://images.unsplash.com/photo-1434389677669-e08b4cac3105?w=500&h=380&fit=crop" alt="Fabric"/></div>
+      <div class="si si-a"><img src="/20260319_164129.png" alt="Artisan"/></div>
+      <div class="si si-b"><img src="/20260319_164506.jpg" alt="Style"/></div>
+      <div class="si si-b"><img src="/IMG-20260215-WA0011.jpg" alt="Style"/></div>
+      <div class="si si-c"><img src="/20260319_175030.jpg" alt="Fabric"/></div>
+      <div class="si si-b"><img src="/image-12.jpg" alt="Style"/></div>
     </div>
     <div>
       <div class="story-pill">
@@ -262,7 +627,7 @@ display: block;" src="/file_00000000d1b071f4813e19c92f11043a.png" alt="" />
       </div>
       <div class="sl">Our Story</div>
       <h2 class="st">Rooted in<br>Nigerian <em>Craft.</em></h2>
-      <p class="story-body">BrightNal's Concept was born from a belief that Nigerian fashion deserves a global stage. Founded by Bright Chinalu , we blend ancestral craft with modern silhouettes — creating pieces that are unmistakably African and unapologetically premium.</p>
+      <p class="story-body">BrightNal's Concept was born from a belief that Nigerian fashion deserves a global stage. Founded by Bright Chinalu, we blend ancestral craft with modern silhouettes — creating pieces that are unmistakably African and unapologetically premium.</p>
       <div class="story-pts">
         <div class="spt">
           <div class="spt-ic">
@@ -292,7 +657,7 @@ display: block;" src="/file_00000000d1b071f4813e19c92f11043a.png" alt="" />
           </div>
         </div>
       </div>
-      <button class="btn-p" style="width:fit-content;">
+      <button class="btn-p" style="width:fit-content;" onclick="openInfoDrawer('about')">
         <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
         Explore the Brand
       </button>
@@ -307,7 +672,6 @@ display: block;" src="/file_00000000d1b071f4813e19c92f11043a.png" alt="" />
     <h2 class="st">Styled by us, <em>loved by them.</em></h2>
   </div>
   <div class="tst-grid">
-
     <div class="tc">
       <div class="tc-stars">
         <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="var(--amber)" stroke="var(--amber)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
@@ -318,7 +682,7 @@ display: block;" src="/file_00000000d1b071f4813e19c92f11043a.png" alt="" />
       </div>
       <p class="tc-q">I wore the BrightNal&rsquo;s Aso-oke ensemble to my sister&rsquo;s traditional wedding and people stopped me every five minutes. The craftsmanship is world-class.</p>
       <div class="tc-p">
-        <div class="tc-av"><img src="https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?w=80&h=80&fit=crop" alt="Chisom"/></div>
+        <div class="tc-av"><img src="/images (43).jpeg" alt="Chisom"/></div>
         <div>
           <div class="tc-name">Chisom Okafor</div>
           <div class="tc-loc">
@@ -339,7 +703,7 @@ display: block;" src="/file_00000000d1b071f4813e19c92f11043a.png" alt="" />
       </div>
       <p class="tc-q">Ordered a bespoke Agbada for my promotion ceremony. They captured exactly what I envisioned &mdash; the fitting, the embroidery, everything. Naija fashion at its finest.</p>
       <div class="tc-p">
-        <div class="tc-av"><img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=80&h=80&fit=crop" alt="Emeka"/></div>
+        <div class="tc-av"><img src="/images (44).jpeg" alt="Emeka"/></div>
         <div>
           <div class="tc-name">Emeka Eze</div>
           <div class="tc-loc">
@@ -360,7 +724,7 @@ display: block;" src="/file_00000000d1b071f4813e19c92f11043a.png" alt="" />
       </div>
       <p class="tc-q">The Contemporary Ankara blouse I got is now my most-complimented piece. Clients literally ask where I shop. BrightNal&rsquo;s is genuinely top tier.</p>
       <div class="tc-p">
-        <div class="tc-av"><img src="https://images.unsplash.com/photo-1488426862026-3ee34a7d66df?w=80&h=80&fit=crop" alt="Aisha"/></div>
+        <div class="tc-av"><img src="/images (45).jpeg" alt="Aisha"/></div>
         <div>
           <div class="tc-name">Aisha Bello</div>
           <div class="tc-loc">
@@ -370,7 +734,6 @@ display: block;" src="/file_00000000d1b071f4813e19c92f11043a.png" alt="" />
         </div>
       </div>
     </div>
-
   </div>
 </section>
 
@@ -416,31 +779,31 @@ display: block;" src="/file_00000000d1b071f4813e19c92f11043a.png" alt="" />
       <div>
         <div class="ft-ct">Shop</div>
         <ul class="ft-lks">
-          <li><a href="#">New Arrivals</a></li>
-          <li><a href="#">Traditional Wear</a></li>
-          <li><a href="#">Contemporary</a></li>
-          <li><a href="#">Accessories</a></li>
-          <li><a href="#">Sale</a></li>
+          <li><a href="#" onclick="openInfoDrawer('new-arrivals');return false;">New Arrivals</a></li>
+          <li><a href="#" onclick="openInfoDrawer('traditional');return false;">Traditional Wear</a></li>
+          <li><a href="#" onclick="openInfoDrawer('contemporary');return false;">Contemporary</a></li>
+          <li><a href="#" onclick="openInfoDrawer('accessories');return false;">Accessories</a></li>
+          <li><a href="#" onclick="openInfoDrawer('sale');return false;">Sale</a></li>
         </ul>
       </div>
       <div>
         <div class="ft-ct">Customer</div>
         <ul class="ft-lks">
-          <li><a href="#">Contact Us</a></li>
-          <li><a href="#">Size Guide</a></li>
-          <li><a href="#">Shipping Info</a></li>
-          <li><a href="#">Returns</a></li>
-          <li><a href="#">FAQ</a></li>
+          <li><a href="#" onclick="openInfoDrawer('contact');return false;">Contact Us</a></li>
+          <li><a href="#" onclick="openInfoDrawer('size-guide');return false;">Size Guide</a></li>
+          <li><a href="#" onclick="openInfoDrawer('shipping');return false;">Shipping Info</a></li>
+          <li><a href="#" onclick="openInfoDrawer('returns');return false;">Returns</a></li>
+          <li><a href="#" onclick="openInfoDrawer('faq');return false;">FAQ</a></li>
         </ul>
       </div>
       <div>
         <div class="ft-ct">Company</div>
         <ul class="ft-lks">
-          <li><a href="#">About Us</a></li>
-          <li><a href="#">Artisans</a></li>
-          <li><a href="#">Press</a></li>
-          <li><a href="#">Privacy Policy</a></li>
-          <li><a href="#">Terms</a></li>
+          <li><a href="#" onclick="openInfoDrawer('about');return false;">About Us</a></li>
+          <li><a href="#" onclick="openInfoDrawer('artisans');return false;">Artisans</a></li>
+          <li><a href="#" onclick="openInfoDrawer('press');return false;">Press</a></li>
+          <li><a href="#" onclick="openInfoDrawer('privacy');return false;">Privacy Policy</a></li>
+          <li><a href="#" onclick="openInfoDrawer('terms');return false;">Terms</a></li>
         </ul>
       </div>
     </div>
@@ -451,9 +814,9 @@ display: block;" src="/file_00000000d1b071f4813e19c92f11043a.png" alt="" />
         Made with pride in Nigeria
       </span>
       <div class="ft-bot-links">
-        <a href="#">Privacy</a>
-        <a href="#">Terms</a>
-        <a href="#">Cookies</a>
+        <a href="#" onclick="openInfoDrawer('privacy');return false;">Privacy</a>
+        <a href="#" onclick="openInfoDrawer('terms');return false;">Terms</a>
+        <a href="#" onclick="openInfoDrawer('cookies');return false;">Cookies</a>
       </div>
     </div>
   </div>
@@ -495,6 +858,72 @@ display: block;" src="/file_00000000d1b071f4813e19c92f11043a.png" alt="" />
 <!-- TOAST -->
 <div class="toast" id="toast"><span class="t-dot"></span><span id="toastMsg"></span></div>
 
+
+<!-- ============================================================
+     BOTTOM DRAWER SYSTEM
+     Shared backdrop (one for all bottom drawers)
+     ============================================================ -->
+<div class="bdwg-bg" id="bdwgBg" onclick="closeAllBottomDrawers()"></div>
+
+<!-- ---- SEARCH DRAWER ---- -->
+<div class="bdwg sdwg" id="searchDrawer" role="dialog" aria-label="Search">
+  <div class="bdwg-handle" id="searchHandle">
+    <div class="bdwg-handle-bar"></div>
+  </div>
+  <div class="bdwg-inner">
+    <div class="sdwg-hd">
+      <span class="sdwg-title">Search <em>BrightNal's</em></span>
+      <button class="sdwg-close" onclick="closeSearch()" aria-label="Close search">
+        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+    </div>
+
+    <div class="sdwg-input-row">
+      <input type="text" class="sdwg-inp" id="searchInp" placeholder="Search for Agbada, Ankara dress, Aso-oke…" oninput="handleSearch(this.value)" autocomplete="off"/>
+      <button class="sdwg-go" onclick="doSearch()">
+        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21 21-4.34-4.34"/><circle cx="11" cy="11" r="8"/></svg>
+        Search
+      </button>
+    </div>
+
+    <div class="sdwg-lbl">Popular Searches</div>
+    <div class="sdwg-tags" id="searchTags">
+      <span class="sdwg-tag" onclick="searchFor('Aso-oke')">Aso-oke</span>
+      <span class="sdwg-tag" onclick="searchFor('Agbada')">Agbada</span>
+      <span class="sdwg-tag" onclick="searchFor('Ankara Dress')">Ankara Dress</span>
+      <span class="sdwg-tag" onclick="searchFor('Bespoke')">Bespoke</span>
+      <span class="sdwg-tag" onclick="searchFor('Bridal')">Bridal</span>
+      <span class="sdwg-tag" onclick="searchFor('Kaftan')">Kaftan</span>
+      <span class="sdwg-tag" onclick="searchFor('Corporate')">Corporate</span>
+      <span class="sdwg-tag" onclick="searchFor('Traditional')">Traditional</span>
+    </div>
+
+    <div class="sdwg-lbl" id="searchResultsLbl">Trending Now</div>
+    <div class="sdwg-results" id="searchResults"></div>
+  </div>
+</div>
+
+<!-- ---- INFO DRAWER (reused for all footer links) ---- -->
+<div class="bdwg idwg" id="infoDrawer" role="dialog" aria-label="Information">
+  <div class="bdwg-handle" id="infoHandle">
+    <div class="bdwg-handle-bar"></div>
+  </div>
+  <div class="bdwg-inner">
+    <div class="idwg-hd">
+      <div class="idwg-hd-text">
+        <div class="idwg-eyebrow" id="idwgEyebrow">BrightNal's</div>
+        <div class="idwg-title" id="idwgTitle">Information</div>
+      </div>
+      <button class="idwg-close" onclick="closeInfoDrawer()" aria-label="Close">
+        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+    </div>
+    <div class="idwg-body" id="idwgBody"></div>
+  </div>
+</div>
+
 <script src="main.js" type="text/javascript" charset="utf-8"></script>
+<script src="drawer.js" type="text/javascript" charset="utf-8"></script>
+
 </body>
 </html>
