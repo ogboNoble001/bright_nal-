@@ -13,65 +13,58 @@
   <style>
     /* ---- CEO BADGE ---- */
     .ceo-badge {
-      position: static;
+      position: absolute;
+      
+      right: 3rem;
       display: flex;
-      flex-direction: row;
+      flex-direction: column;
       align-items: center;
-      gap: 0.75rem;
-      margin: 1.2rem 0;
+      gap: 0.6rem;
       z-index: 2;
     }
+
     .ceo-badge img {
-      width: 54px;
-      height: 54px;
+      width: 110px;
+      height: 110px;
       border-radius: 50%;
-      border: 3px dashed lightseagreen;
+      border: 4px dashed lightseagreen;
       object-fit: cover;
       object-position: top center;
       display: block;
     }
+
     .ceo-badge-name {
-      display: flex;
-      flex-direction: column-reverse;
-      gap: .35em;
-      font-size: 0.68rem;
+    display: flex;
+    flex-direction: column-reverse;
+    gap: .5em;
+      font-size: 0.72rem;
       font-weight: 600;
-      letter-spacing: 0.15em;
+      letter-spacing: 0.18em;
       text-transform: uppercase;
       color: var(--ts);
-      white-space: normal;
-      text-align: left;
+      text-align: center;
+      white-space: nowrap;
     }
-    .ceo-badge-name span {
-      display: block;
-    }
-    .ceo-badge-name span:last-child {
-      color: var(--amber);
-      font-size: 0.62rem;
-    }
-
-    @media (min-width: 900px) {
       .ceo-badge {
-        position: absolute;
-        right: 3rem;
-        top: 50%;
-        transform: translateY(-50%);
-        flex-direction: column;
+        /* inline flow — sits between heading and hero-bot */
+        position: static;
+        flex-direction: row;
         align-items: center;
-        gap: 0.6rem;
-        margin: 0;
+        gap: 0.75rem;
+        margin: 1.2rem 0;
       }
+      
       .ceo-badge img {
-        width: 110px;
-        height: 110px;
-        border-width: 4px;
+        width: 54px;
+        height: 54px;
+        border-width: 3px;
       }
+      
       .ceo-badge-name {
-        letter-spacing: 0.18em;
-        text-align: center;
-        white-space: nowrap;
+        letter-spacing: 0.12em;
+        white-space: normal;
+        text-align: left;
       }
-    }
 
     /* ===== BOTTOM DRAWER SYSTEM ===== */
 
