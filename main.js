@@ -56,22 +56,21 @@ function mapProduct(p) {
 async function fetchProducts() {
   showSkeleton();
   try {
-    const res  = await fetch(`${SERVER_URL}/api/products/all`);
+    const res = await fetch(`${SERVER_URL}/api/products/all`);
     const data = await res.json();
-
-    if (!data.success) {
-      showGridError('Failed to load products. Please try again.');
-      return;
-    }
-
-    PRODS        = data.products.map(mapProduct);
+    
+    if (!data.success) { showGridError('Failed to load products. Please try again.'); return; }
+    
+    PRODS = data.products.map(mapProduct);
     window.PRODS = PRODS;
-
+    
+    console.log([...new Set(PRODS.map(p => p.f))]); // ← remove after debugging
+    
     if (!PRODS.length) {
       $('prodGrid').innerHTML = `<p class="prod-empty">No products available yet.</p>`;
       return;
     }
-
+    
     renderProds(currentFilter);
   } catch (err) {
     console.error(err);
@@ -166,7 +165,7 @@ function renderSeeMore(count) {
     onmouseout="this.style.background='none';this.style.color='var(--ts)';this.style.borderColor='var(--border-b)';"
     >
       <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21 21-4.34-4.34"/><circle cx="11" cy="11" r="8"/></svg>
-      See all ${PRODS.length} pieces
+      See all pieces
     </button>
   `;
 
@@ -303,9 +302,9 @@ function closeDrw() {
 }
 $('ham').addEventListener('click', openDrw);
 
-/* ---- Filter buttons ---- */
 document.querySelectorAll('.filt-btn').forEach(b => {
   b.addEventListener('click', () => {
+    if (!PRODS.length) { showToast('Still loading products…'); return; }
     document.querySelectorAll('.filt-btn').forEach(x => x.classList.remove('active'));
     b.classList.add('active');
     renderProds(b.dataset.f);
