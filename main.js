@@ -14,8 +14,9 @@ const SVG = {
   shoppingBag: `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>`,
 };
 
-/* ---- Product data (populated from backend) ---- */
+/* ---- Product data — also exposed on window so drawer.js can read it ---- */
 let PRODS = [];
+window.PRODS = PRODS;
 let currentFilter = 'all';
 
 /* ---- Loading skeleton ---- */
@@ -33,34 +34,38 @@ function showSkeleton() {
   `).join('');
 }
 
-/* ---- Map backend fields to frontend shape ---- */
+/* ---- Map backend fields ---- */
 function mapProduct(p) {
   return {
-    id:    p.id,
-    name:  p.product_name,
-    cat:   p.category,
-    f:     (p.category || 'all').toLowerCase().trim(),  // ← was p.product_class
-    price: parseFloat(p.price),
-    orig:  null,
-    badge: null,
-    img:   p.image_url,
+    id:          p.id,
+    name:        p.product_name,
+    cat:         p.category,
+    f:           (p.category || 'all').toLowerCase().trim(),
+    price:       parseFloat(p.price),
+    orig:        null,
+    badge:       null,
+    img:         p.image_url,
+    description: p.description || '',
+    sizes:       p.sizes || '',
+    colors:      p.colors || '',
+    stock:       p.stock || 0,
   };
 }
-console.log(PRODS.map(p => ({ name: p.name, f: p.f })));
+
 /* ---- Fetch from backend ---- */
 async function fetchProducts() {
   showSkeleton();
   try {
-    const res  = await fetch(`${SERVER_URL}/api/products`);
+    const res  = await fetch(`${SERVER_URL}/api/products/all`);
     const data = await res.json();
-    console.log(data)
 
     if (!data.success) {
       showGridError('Failed to load products. Please try again.');
       return;
     }
 
-    PRODS = data.products.map(mapProduct);
+    PRODS        = data.products.map(mapProduct);
+    window.PRODS = PRODS;
 
     if (!PRODS.length) {
       $('prodGrid').innerHTML = `<p class="prod-empty">No products available yet.</p>`;
@@ -90,17 +95,18 @@ function renderProds(f = 'all') {
 
   if (!list.length) {
     $('prodGrid').innerHTML = `<p class="prod-empty">No products in this category yet.</p>`;
+    removeSeeMore();
     return;
   }
 
   $('prodGrid').innerHTML = list.map(p => `
     <div class="pc">
-      <div class="pc-img">
+      <div class="pc-img" onclick="openQuickView(${p.id})" style="cursor:pointer;">
         <img src="${p.img}" alt="${p.name}" loading="lazy"/>
         ${p.badge ? `<span class="pc-badge b-${p.badge}">${p.badge === 'new' ? 'New' : p.badge === 'sale' ? 'Sale' : 'Limited'}</span>` : ''}
         <div class="pc-acts">
-          <button class="pc-ab" onclick="doWish(${p.id})" title="Save">${SVG.bookmark}</button>
-          <button class="pc-ab" onclick="doQv(${p.id})"   title="Quick view">${SVG.eye}</button>
+          <button class="pc-ab" onclick="event.stopPropagation();doWish(${p.id})" title="Save">${SVG.bookmark}</button>
+          <button class="pc-ab" onclick="event.stopPropagation();doQv(${p.id})"   title="Quick view">${SVG.eye}</button>
         </div>
       </div>
       <div class="pc-body">
@@ -116,7 +122,82 @@ function renderProds(f = 'all') {
       </div>
     </div>
   `).join('');
+
+  renderSeeMore(list.length);
 }
+
+/* ---- Quick-view drawer ---- */
+function openQuickView(id) {
+  const p = PRODS.find(x => x.id === id);
+  if (!p) return;
+  if (typeof window.openProductDrawer === 'function') {
+    window.openProductDrawer(p.id);
+  }
+}
+window.openQuickView = openQuickView;
+
+/* ---- See More button ---- */
+function renderSeeMore(count) {
+  removeSeeMore();
+  const section = document.getElementById('products');
+  if (!section) return;
+
+  const wrap = document.createElement('div');
+  wrap.id = 'seeMoreWrap';
+  wrap.style.cssText = 'display:flex;justify-content:center;margin-top:2.5rem;';
+
+  wrap.innerHTML = `
+    <button id="seeMoreBtn" onclick="openSearchWithAll()" style="
+      display:inline-flex;align-items:center;gap:.6rem;
+      background:none;
+      border:1px solid var(--border-b);
+      color:var(--ts);
+      padding:.85rem 2.2rem;
+      border-radius:var(--rp);
+      font-family:var(--fb);
+      font-size:.82rem;
+      font-weight:600;
+      letter-spacing:.08em;
+      text-transform:uppercase;
+      cursor:pointer;
+      transition:all .2s;
+    "
+    onmouseover="this.style.background='var(--tp)';this.style.color='var(--surface)';this.style.borderColor='var(--tp)';"
+    onmouseout="this.style.background='none';this.style.color='var(--ts)';this.style.borderColor='var(--border-b)';"
+    >
+      <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21 21-4.34-4.34"/><circle cx="11" cy="11" r="8"/></svg>
+      See all ${PRODS.length} pieces
+    </button>
+  `;
+
+  section.appendChild(wrap);
+}
+
+function removeSeeMore() {
+  const existing = document.getElementById('seeMoreWrap');
+  if (existing) existing.remove();
+}
+
+function openSearchWithAll() {
+  if (typeof window.openSearch === 'function') window.openSearch();
+}
+window.openSearchWithAll = openSearchWithAll;
+
+/* ---- Hero collection card click — opens search with tag ---- */
+document.querySelectorAll('.hero-ic').forEach(function (card) {
+  card.style.cursor = 'pointer';
+  card.addEventListener('click', function () {
+    const lbl = card.querySelector('.hero-ic-lbl');
+    const tag = lbl ? lbl.textContent.trim() : '';
+    if (tag && typeof window.searchFor === 'function') {
+      window.openSearch();
+      // slight delay so drawer is open and input is focused before we set the value
+      setTimeout(function () {
+        window.searchFor(tag);
+      }, 120);
+    }
+  });
+});
 
 /* ---- Cart ---- */
 function addCart(id) {
@@ -190,8 +271,9 @@ function doWish(id) {
 }
 
 function doQv(id) {
-  const p = PRODS.find(x => x.id === id);
-  if (p) showToast(`${p.name} \u2014 ${p.price.toLocaleString('en-NG')} NGN`);
+  if (typeof window.openProductDrawer === 'function') {
+    window.openProductDrawer(id);
+  }
 }
 
 /* ---- Toast ---- */
