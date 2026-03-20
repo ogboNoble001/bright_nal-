@@ -39,20 +39,21 @@ function mapProduct(p) {
     id:    p.id,
     name:  p.product_name,
     cat:   p.category,
-    f:     (p.product_class || 'all').toLowerCase(),
+    f:     (p.category || 'all').toLowerCase().trim(),  // ← was p.product_class
     price: parseFloat(p.price),
     orig:  null,
     badge: null,
     img:   p.image_url,
   };
 }
-
+console.log(PRODS.map(p => ({ name: p.name, f: p.f })));
 /* ---- Fetch from backend ---- */
 async function fetchProducts() {
   showSkeleton();
   try {
     const res  = await fetch(`${SERVER_URL}/api/products`);
     const data = await res.json();
+    console.log(data)
 
     if (!data.success) {
       showGridError('Failed to load products. Please try again.');
